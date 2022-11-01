@@ -10,12 +10,12 @@ python prepare_source_sep_data.py
 
 Clean training:
 ```
-python train.py --dataset_dir datasets/GuitarSep/senvaityte_norm/ --cuda --hdf_dir hdfs/hdf --checkpoint_dir checkpoints/waveunet--log_dir logs/waveunet --channels 1 --patience 80
+python train.py --dataset_dir datasets/GuitarSep/senvaityte_norm/ --cuda --hdf_dir hdfs/hdf --checkpoint_dir checkpoints/waveunet --log_dir logs/waveunet --channels 1 --patience 80
 ```
 
 Testing:
 ```
-python train.py --dataset_dir datasets/GuitarSep/senvaityte_norm/ --cuda --hdf_dir hdfs/hdf --checkpoint_dir checkpoints/waveunet--log_dir logs/waveunet --channels 1 --patience -1
+python train.py --dataset_dir datasets/GuitarSep/senvaityte_norm/ --cuda --hdf_dir hdfs/hdf --checkpoint_dir checkpoints/waveunet --log_dir logs/waveunet --channels 1 --patience -1
 ```
 
 # Results Visualisation
