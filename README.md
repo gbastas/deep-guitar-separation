@@ -5,7 +5,7 @@ This repo is based on https://github.com/f90/Wave-U-Net-Pytorch.
 ## Datapreparation
 
 ```
-cd exps/GuitarSet/
+cd GuitarSet/
 python prepare_source_sep_data.py
 ```
 (and simply mv files by-patterns commands)
