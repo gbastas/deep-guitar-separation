@@ -1,43 +1,88 @@
-# Guitar String Separation
+# Separate and Transcribe
+
+This repository contains the code and experiments from the paper: *Separate and Transcribe: Deep Guitar Separation and its Application for Tablature Enhancement.* It provides implementations and dataset manipulation and preparation code used for training, evaluation, and analysis.
+
+
 
 This repo is based on https://github.com/f90/Wave-U-Net-Pytorch.
 
 
-Download from GuitarSet dataset (https://zenodo.org/record/3371780):
-
-    annotations.zip and extract all .jams files to data/annos.
-    audio_mono-mic.zip,  audio_mono-pickup_mix.zip and extract all .wav files to data/audio.
-
-On the configuration file constants.ini, specify the folders where annotations and input audio is stored.
-
-
 ## Data Preparation
+
+
+**GuitarSet**
+
+Download and put in ordet the GuitarSet dataset (https://zenodo.org/record/3371780).
+
+Use the unix commands below:
+
+```
+mkdir -p ./datasets/GuitarSet/data/{annos,audio,mic,mix,hex_cln}
+
+wget -P ./datasets/GuitarSet/ https://zenodo.org/record/3371780/files/{annotations.zip,audio_mono-mic.zip,audio_mono-pickup_mix.zip,audio_hex-pickup_debleeded.zip}
+
+unzip -j ./datasets/GuitarSet/annotations.zip '*.jams' -d ./datasets/GuitarSet/data/annos && \
+unzip -j ./datasets/GuitarSet/audio_mono-mic.zip '*.wav' -d ./datasets/GuitarSet/data/mic && \
+unzip -j ./datasets/GuitarSet/audio_mono-pickup_mix.zip '*.wav' -d ./datasets/GuitarSet/data/mix && \
+unzip -j ./datasets/GuitarSet/audio_hex-pickup_debleeded.zip '*.wav' -d ./datasets/GuitarSet/data/hex_cln
+
+ln -s ./datasets/GuitarSet/data/mic/*.wav ./datasets/GuitarSet/data/audio/
+ln -s ./datasets/GuitarSet/data/mix/*.wav ./datasets/GuitarSet/data/audio/
+```
+
+To get the dataset ready for training, we follow the *Senvaitytite train-test split* presented in [this repository](https://github.com/daliasen/GuitarStringSeparation-MF-NMF-NMFD):
 
 ```
 cd datasets/GuitarSet/
-python prepare_source_sep_data.py
-python prepare_source_sep_data-mic.py
-prepare_source_sep_datamono-pickup.py
+python prepare_source_sep_data.py # this create dir datasep/
+python prepare_source_sep_data-mic.py # this create dir datasep-mic/
+prepare_source_sep_datamono-pickup.py # this create dir datasep-mix/
+cd -
 ```
-(and simply mv files by-patterns commands)
 
-## For Guitarset Target Reconstructions for Solo-Mic Recordings
-Check here:
-https://gitlab.com/ilsp-spmd-all/music/tab-demo/-/tree/dev?ref_type=heads#creating-solo-target-reconstructions-from-gutarset
-(I normally use tab-demo repo locally)
+After running these scripts, the following directories will be created:
 
-The directory containing the reconstructions needs to be uploaded and moved to asimov ```datasets/{dir_name}```.
-The subdirectories corresponding to each guitar preformance need to be split to train/test datasets:
+- **`datasep/`** – for general source separation data
+- **`datasep-mic/`** – for microphone-based separation data
+- **`datasep-mix/`** – for pickup-mix separation data
+
+
+
+**GSCustomMic: Preparing the Dataset**
+
+Run the following commands to process and extract data:
 ```
-cd datasets/
-python pseudo_train_test_split.py -d {dir_name} # this will create ./datasets/{dir_name}/test/
-cd {dir_name}
+cd data-manipulation-code/
+python AuxDataPrep.py --action pseudo_sep --all_solos
+python AuxDataPrep.py --action pseudocomp_sep --all_solos
+cd -
+```
+
+Create the GSCustomMic Directory:
+```
+cd datasets
+mkdir -p GSCustomMic
+```
+
+Copy Processed Data into GSCustomMic:
+```
+cd datasets/GuitarSet
+cp -r ./pseudo_sep_all_solos_mic_wn/* ../GSCustomMic
+cp -r ./pseudocomp_sep_all_notes/* ../GSCustomMic
+```
+
+Perform Train-Test Split:
+```
+cd ..
+python pseudo_train_test_split.py -d GSCustomMic # this will create ./datasets/{dir_name}/test/
+cd GSCustomMic
 mkdir train
 mv * train # ignore warning
 mv train/test .
 ```
 
-## To Create Fake Data
+**MDGP: Preparing the Dataset**
+
 First we need to gather note instances:
 https://gitlab.com/ilsp-spmd-all/music/tab-demo/-/tree/dev?ref_type=heads#retrieving-note-instances-from-gutarset
 

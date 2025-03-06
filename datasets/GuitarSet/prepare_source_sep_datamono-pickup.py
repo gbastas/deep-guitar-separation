@@ -48,12 +48,12 @@ for gt_filename in os.listdir('data/audio_hex-pickup_debleeded'):
 
 
     # guitarist-wise splitting
-    dir_to_store = path+'/guitarist_'+guitarist+'/' + '_'.join(gt_filename.split('_')[:-2])
-    os.makedirs(dir_to_store)
-    sf.write(dir_to_store+'/E.wav', audio_gt[0,:], 44100, 'PCM_16')
-    sf.write(dir_to_store+'/A.wav', audio_gt[1,:], 44100, 'PCM_16')
-    sf.write(dir_to_store+'/D.wav', audio_gt[2,:], 44100, 'PCM_16')
-    sf.write(dir_to_store+'/G.wav', audio_gt[3,:], 44100, 'PCM_16')
-    sf.write(dir_to_store+'/B.wav', audio_gt[4,:], 44100, 'PCM_16')
-    sf.write(dir_to_store+'/e.wav', audio_gt[5,:], 44100, 'PCM_16')
-    sf.write(dir_to_store+'/mixture.wav', audio_in, 44100, 'PCM_16')
+    # dir_to_store = path+'/guitarist_'+guitarist+'/' + '_'.join(gt_filename.split('_')[:-2])
+    # os.makedirs(dir_to_store)
+    # sf.write(dir_to_store+'/E.wav', audio_gt[0,:], 44100, 'PCM_16')
+    # sf.write(dir_to_store+'/A.wav', audio_gt[1,:], 44100, 'PCM_16')
+    # sf.write(dir_to_store+'/D.wav', audio_gt[2,:], 44100, 'PCM_16')
+    # sf.write(dir_to_store+'/G.wav', audio_gt[3,:], 44100, 'PCM_16')
+    # sf.write(dir_to_store+'/B.wav', audio_gt[4,:], 44100, 'PCM_16')
+    # sf.write(dir_to_store+'/e.wav', audio_gt[5,:], 44100, 'PCM_16')
+    # sf.write(dir_to_store+'/mixture.wav', audio_in, 44100, 'PCM_16')

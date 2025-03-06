@@ -123,6 +123,7 @@ def GuitarSetProcessing(constants : Constants):
                 dest_path = './pseudo_sep_all_solos_'+constants.dataset+'_wn/'+name[:-5]+'_hex_'+constants.dataset+'/'
             else:
                 dest_path = './pseudo_sep_few_solos'+constants.dataset+'_wn/'+name[:-5]+'_hex_'+constants.dataset+'/'
+            
             # Assuming 'audio' is already defined and you want to match its length
             len_audio = len(audio)  # Length of your audio signal
             hex_audio = np.random.normal(0, 0.00005, (6, len_audio))  # mean=0, std=0.00005          WHITE NOISE!!!
