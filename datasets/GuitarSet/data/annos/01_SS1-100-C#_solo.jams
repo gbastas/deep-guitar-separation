@@ -24258,4 +24258,3864 @@
           {
             "voiced": true,
             "index": 13,
-          
+            "frequency": 417.024
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 417.009
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 416.957
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 416.918
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 416.809
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 416.772
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 416.766
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 416.652
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 416.582
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 416.494
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 416.374
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 416.321
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 416.206
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 416.114
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 416.068
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 416.092
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 416.044
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 416.113
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 416.266
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 416.312
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 416.295
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 416.279
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 416.247
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 416.307
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 416.26
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 416.316
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 416.375
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 416.353
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 416.216
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 416.118
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 415.961
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 415.908
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 416.661
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 418.013
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 419.332
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 421.692
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 424.077
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 433.681
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 452.013
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 0.0
+          },
+          {
+            "voiced": true,
+            "index": 13,
+            "frequency": 0.0
+          },
+          {
+            "voiced": true,
+            "index": 14,
+            "frequency": 418.761
+          },
+          {
+            "voiced": true,
+            "index": 14,
+            "frequency": 418.122
+          },
+          {
+            "voiced": true,
+            "index": 14,
+            "frequency": 417.572
+          },
+          {
+            "voiced": true,
+            "index": 14,
+            "frequency": 417.212
+          },
+          {
+            "voiced": true,
+            "index": 14,
+            "frequency": 417.025
+          },
+          {
+            "voiced": true,
+            "index": 14,
+            "frequency": 416.86
+          },
+          {
+            "voiced": true,
+            "index": 14,
+            "frequency": 416.648
+          },
+          {
+            "voiced": true,
+            "index": 14,
+            "frequency": 416.536
+          },
+          {
+            "voiced": true,
+            "index": 14,
+            "frequency": 416.31
+          },
+          {
+            "voiced": true,
+            "index": 14,
+            "frequency": 416.156
+          },
+          {
+            "voiced": true,
+            "index": 14,
+            "frequency": 416.122
+          },
+          {
+            "voiced": true,
+            "index": 14,
+            "frequency": 416.093
+          },
+          {
+            "voiced": true,
+            "index": 14,
+            "frequency": 416.118
+          },
+          {
+            "voiced": true,
+            "index": 14,
+            "frequency": 417.218
+          },
+          {
+            "voiced": true,
+            "index": 14,
+            "frequency": 417.444
+          },
+          {
+            "voiced": true,
+            "index": 14,
+            "frequency": 418.187
+          },
+          {
+            "voiced": true,
+            "index": 14,
+            "frequency": 420.727
+          },
+          {
+            "voiced": true,
+            "index": 14,
+            "frequency": 420.424
+          },
+          {
+            "voiced": true,
+            "index": 14,
+            "frequency": 422.983
+          },
+          {
+            "voiced": true,
+            "index": 14,
+            "frequency": 428.848
+          },
+          {
+            "voiced": true,
+            "index": 14,
+            "frequency": 418.858
+          },
+          {
+            "voiced": true,
+            "index": 14,
+            "frequency": 418.474
+          },
+          {
+            "voiced": true,
+            "index": 14,
+            "frequency": 422.414
+          },
+          {
+            "voiced": true,
+            "index": 14,
+            "frequency": 421.757
+          },
+          {
+            "voiced": true,
+            "index": 14,
+            "frequency": 422.286
+          },
+          {
+            "voiced": true,
+            "index": 14,
+            "frequency": 427.282
+          },
+          {
+            "voiced": true,
+            "index": 14,
+            "frequency": 450.218
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 497.825
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 497.291
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 496.956
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 496.852
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 496.753
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 496.649
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 496.534
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 496.424
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 496.232
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 496.208
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 496.134
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 496.028
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 495.918
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 495.898
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 495.81
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 495.588
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 495.43
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 495.465
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 495.489
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 495.48
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 495.354
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 495.37
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 495.22
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 494.604
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 493.178
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 490.543
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 486.871
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 483.142
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 477.218
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 475.349
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 475.921
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 472.535
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 466.121
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 0.0
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 494.611
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 491.071
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 495.296
+          },
+          {
+            "voiced": true,
+            "index": 15,
+            "frequency": 494.275
+          },
+          {
+            "voiced": true,
+            "index": 16,
+            "frequency": 417.395
+          },
+          {
+            "voiced": true,
+            "index": 16,
+            "frequency": 417.146
+          },
+          {
+            "voiced": true,
+            "index": 16,
+            "frequency": 416.757
+          },
+          {
+            "voiced": true,
+            "index": 16,
+            "frequency": 416.703
+          },
+          {
+            "voiced": true,
+            "index": 16,
+            "frequency": 416.57
+          },
+          {
+            "voiced": true,
+            "index": 16,
+            "frequency": 416.447
+          },
+          {
+            "voiced": true,
+            "index": 16,
+            "frequency": 416.332
+          },
+          {
+            "voiced": true,
+            "index": 16,
+            "frequency": 416.341
+          },
+          {
+            "voiced": true,
+            "index": 16,
+            "frequency": 416.293
+          },
+          {
+            "voiced": true,
+            "index": 16,
+            "frequency": 416.188
+          },
+          {
+            "voiced": true,
+            "index": 16,
+            "frequency": 416.094
+          },
+          {
+            "voiced": true,
+            "index": 16,
+            "frequency": 416.031
+          },
+          {
+            "voiced": true,
+            "index": 16,
+            "frequency": 415.789
+          },
+          {
+            "voiced": true,
+            "index": 16,
+            "frequency": 414.632
+          },
+          {
+            "voiced": true,
+            "index": 16,
+            "frequency": 413.359
+          },
+          {
+            "voiced": true,
+            "index": 16,
+            "frequency": 411.536
+          },
+          {
+            "voiced": true,
+            "index": 16,
+            "frequency": 409.683
+          },
+          {
+            "voiced": true,
+            "index": 16,
+            "frequency": 407.415
+          },
+          {
+            "voiced": true,
+            "index": 16,
+            "frequency": 406.001
+          },
+          {
+            "voiced": true,
+            "index": 16,
+            "frequency": 410.231
+          },
+          {
+            "voiced": true,
+            "index": 16,
+            "frequency": 419.157
+          },
+          {
+            "voiced": true,
+            "index": 16,
+            "frequency": 426.075
+          },
+          {
+            "voiced": true,
+            "index": 16,
+            "frequency": 422.693
+          },
+          {
+            "voiced": true,
+            "index": 16,
+            "frequency": 421.974
+          },
+          {
+            "voiced": true,
+            "index": 17,
+            "frequency": 417.912
+          },
+          {
+            "voiced": true,
+            "index": 17,
+            "frequency": 417.422
+          },
+          {
+            "voiced": true,
+            "index": 17,
+            "frequency": 416.976
+          },
+          {
+            "voiced": true,
+            "index": 17,
+            "frequency": 416.723
+          },
+          {
+            "voiced": true,
+            "index": 17,
+            "frequency": 416.472
+          },
+          {
+            "voiced": true,
+            "index": 17,
+            "frequency": 416.579
+          },
+          {
+            "voiced": true,
+            "index": 17,
+            "frequency": 416.729
+          },
+          {
+            "voiced": true,
+            "index": 17,
+            "frequency": 416.884
+          },
+          {
+            "voiced": true,
+            "index": 17,
+            "frequency": 416.797
+          },
+          {
+            "voiced": true,
+            "index": 17,
+            "frequency": 416.672
+          },
+          {
+            "voiced": true,
+            "index": 17,
+            "frequency": 416.421
+          },
+          {
+            "voiced": true,
+            "index": 17,
+            "frequency": 415.981
+          },
+          {
+            "voiced": true,
+            "index": 17,
+            "frequency": 415.223
+          },
+          {
+            "voiced": true,
+            "index": 17,
+            "frequency": 413.804
+          },
+          {
+            "voiced": true,
+            "index": 17,
+            "frequency": 412.161
+          },
+          {
+            "voiced": true,
+            "index": 17,
+            "frequency": 410.321
+          },
+          {
+            "voiced": true,
+            "index": 17,
+            "frequency": 408.686
+          },
+          {
+            "voiced": true,
+            "index": 17,
+            "frequency": 407.071
+          },
+          {
+            "voiced": true,
+            "index": 17,
+            "frequency": 405.499
+          },
+          {
+            "voiced": true,
+            "index": 17,
+            "frequency": 405.484
+          },
+          {
+            "voiced": true,
+            "index": 17,
+            "frequency": 406.816
+          },
+          {
+            "voiced": true,
+            "index": 17,
+            "frequency": 409.632
+          },
+          {
+            "voiced": true,
+            "index": 17,
+            "frequency": 414.945
+          },
+          {
+            "voiced": true,
+            "index": 17,
+            "frequency": 411.955
+          },
+          {
+            "voiced": true,
+            "index": 17,
+            "frequency": 405.372
+          },
+          {
+            "voiced": true,
+            "index": 17,
+            "frequency": 399.394
+          },
+          {
+            "voiced": true,
+            "index": 17,
+            "frequency": 400.106
+          },
+          {
+            "voiced": true,
+            "index": 17,
+            "frequency": 402.533
+          },
+          {
+            "voiced": true,
+            "index": 17,
+            "frequency": 406.954
+          },
+          {
+            "voiced": true,
+            "index": 18,
+            "frequency": 413.056
+          },
+          {
+            "voiced": true,
+            "index": 18,
+            "frequency": 413.398
+          },
+          {
+            "voiced": true,
+            "index": 18,
+            "frequency": 413.913
+          },
+          {
+            "voiced": true,
+            "index": 18,
+            "frequency": 414.587
+          },
+          {
+            "voiced": true,
+            "index": 18,
+            "frequency": 414.913
+          },
+          {
+            "voiced": true,
+            "index": 18,
+            "frequency": 415.23
+          },
+          {
+            "voiced": true,
+            "index": 18,
+            "frequency": 415.53
+          },
+          {
+            "voiced": true,
+            "index": 18,
+            "frequency": 415.685
+          },
+          {
+            "voiced": true,
+            "index": 18,
+            "frequency": 415.91
+          },
+          {
+            "voiced": true,
+            "index": 18,
+            "frequency": 415.915
+          },
+          {
+            "voiced": true,
+            "index": 18,
+            "frequency": 416.028
+          },
+          {
+            "voiced": true,
+            "index": 18,
+            "frequency": 416.064
+          },
+          {
+            "voiced": true,
+            "index": 18,
+            "frequency": 416.109
+          },
+          {
+            "voiced": true,
+            "index": 18,
+            "frequency": 416.052
+          },
+          {
+            "voiced": true,
+            "index": 18,
+            "frequency": 416.112
+          },
+          {
+            "voiced": true,
+            "index": 18,
+            "frequency": 416.057
+          },
+          {
+            "voiced": true,
+            "index": 18,
+            "frequency": 416.121
+          },
+          {
+            "voiced": true,
+            "index": 18,
+            "frequency": 416.11
+          },
+          {
+            "voiced": true,
+            "index": 18,
+            "frequency": 417.172
+          },
+          {
+            "voiced": true,
+            "index": 18,
+            "frequency": 418.253
+          },
+          {
+            "voiced": true,
+            "index": 18,
+            "frequency": 419.444
+          },
+          {
+            "voiced": true,
+            "index": 18,
+            "frequency": 422.546
+          },
+          {
+            "voiced": true,
+            "index": 18,
+            "frequency": 424.955
+          },
+          {
+            "voiced": true,
+            "index": 18,
+            "frequency": 417.536
+          },
+          {
+            "voiced": true,
+            "index": 18,
+            "frequency": 416.037
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 415.975
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 416.248
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 416.219
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 416.021
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 415.993
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 415.906
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 415.707
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 415.603
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 415.363
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 415.132
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 414.815
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 414.206
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 413.565
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 412.974
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 412.198
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 411.338
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 410.601
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 409.07
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 407.598
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 403.079
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 405.933
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 411.724
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 416.804
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 425.669
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 425.009
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 425.009
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 425.009
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 425.009
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 425.009
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 425.009
+          },
+          {
+            "voiced": true,
+            "index": 19,
+            "frequency": 425.009
+          },
+          {
+            "voiced": true,
+            "index": 20,
+            "frequency": 496.721
+          },
+          {
+            "voiced": true,
+            "index": 20,
+            "frequency": 496.607
+          },
+          {
+            "voiced": true,
+            "index": 20,
+            "frequency": 496.522
+          },
+          {
+            "voiced": true,
+            "index": 20,
+            "frequency": 496.395
+          },
+          {
+            "voiced": true,
+            "index": 20,
+            "frequency": 496.28
+          },
+          {
+            "voiced": true,
+            "index": 20,
+            "frequency": 495.982
+          },
+          {
+            "voiced": true,
+            "index": 20,
+            "frequency": 496.039
+          },
+          {
+            "voiced": true,
+            "index": 20,
+            "frequency": 495.869
+          },
+          {
+            "voiced": true,
+            "index": 20,
+            "frequency": 495.724
+          },
+          {
+            "voiced": true,
+            "index": 20,
+            "frequency": 495.521
+          },
+          {
+            "voiced": true,
+            "index": 20,
+            "frequency": 495.243
+          },
+          {
+            "voiced": true,
+            "index": 20,
+            "frequency": 494.638
+          },
+          {
+            "voiced": true,
+            "index": 20,
+            "frequency": 493.851
+          },
+          {
+            "voiced": true,
+            "index": 20,
+            "frequency": 493.045
+          },
+          {
+            "voiced": true,
+            "index": 20,
+            "frequency": 492.095
+          },
+          {
+            "voiced": true,
+            "index": 20,
+            "frequency": 490.517
+          },
+          {
+            "voiced": true,
+            "index": 20,
+            "frequency": 488.712
+          },
+          {
+            "voiced": true,
+            "index": 20,
+            "frequency": 487.059
+          },
+          {
+            "voiced": true,
+            "index": 20,
+            "frequency": 485.241
+          },
+          {
+            "voiced": true,
+            "index": 20,
+            "frequency": 485.584
+          },
+          {
+            "voiced": true,
+            "index": 20,
+            "frequency": 492.021
+          },
+          {
+            "voiced": true,
+            "index": 20,
+            "frequency": 485.333
+          },
+          {
+            "voiced": true,
+            "index": 20,
+            "frequency": 487.034
+          },
+          {
+            "voiced": true,
+            "index": 21,
+            "frequency": 416.574
+          },
+          {
+            "voiced": true,
+            "index": 21,
+            "frequency": 416.576
+          },
+          {
+            "voiced": true,
+            "index": 21,
+            "frequency": 416.555
+          },
+          {
+            "voiced": true,
+            "index": 21,
+            "frequency": 416.521
+          },
+          {
+            "voiced": true,
+            "index": 21,
+            "frequency": 416.426
+          },
+          {
+            "voiced": true,
+            "index": 21,
+            "frequency": 416.484
+          },
+          {
+            "voiced": true,
+            "index": 21,
+            "frequency": 416.23
+          },
+          {
+            "voiced": true,
+            "index": 21,
+            "frequency": 416.143
+          },
+          {
+            "voiced": true,
+            "index": 21,
+            "frequency": 416.011
+          },
+          {
+            "voiced": true,
+            "index": 21,
+            "frequency": 415.871
+          },
+          {
+            "voiced": true,
+            "index": 21,
+            "frequency": 415.575
+          },
+          {
+            "voiced": true,
+            "index": 21,
+            "frequency": 415.583
+          },
+          {
+            "voiced": true,
+            "index": 21,
+            "frequency": 415.513
+          },
+          {
+            "voiced": true,
+            "index": 21,
+            "frequency": 415.343
+          },
+          {
+            "voiced": true,
+            "index": 21,
+            "frequency": 415.168
+          },
+          {
+            "voiced": true,
+            "index": 21,
+            "frequency": 414.781
+          },
+          {
+            "voiced": true,
+            "index": 21,
+            "frequency": 414.772
+          },
+          {
+            "voiced": true,
+            "index": 21,
+            "frequency": 414.95
+          },
+          {
+            "voiced": true,
+            "index": 21,
+            "frequency": 415.146
+          },
+          {
+            "voiced": true,
+            "index": 21,
+            "frequency": 415.534
+          },
+          {
+            "voiced": true,
+            "index": 21,
+            "frequency": 416.664
+          },
+          {
+            "voiced": true,
+            "index": 21,
+            "frequency": 417.582
+          },
+          {
+            "voiced": true,
+            "index": 21,
+            "frequency": 419.897
+          },
+          {
+            "voiced": true,
+            "index": 21,
+            "frequency": 421.339
+          },
+          {
+            "voiced": true,
+            "index": 21,
+            "frequency": 424.882
+          },
+          {
+            "voiced": true,
+            "index": 21,
+            "frequency": 433.344
+          },
+          {
+            "voiced": true,
+            "index": 21,
+            "frequency": 434.943
+          },
+          {
+            "voiced": true,
+            "index": 21,
+            "frequency": 434.943
+          },
+          {
+            "voiced": true,
+            "index": 21,
+            "frequency": 434.943
+          },
+          {
+            "voiced": true,
+            "index": 22,
+            "frequency": 419.037
+          },
+          {
+            "voiced": true,
+            "index": 22,
+            "frequency": 418.166
+          },
+          {
+            "voiced": true,
+            "index": 22,
+            "frequency": 417.913
+          },
+          {
+            "voiced": true,
+            "index": 22,
+            "frequency": 417.623
+          },
+          {
+            "voiced": true,
+            "index": 22,
+            "frequency": 417.381
+          },
+          {
+            "voiced": true,
+            "index": 22,
+            "frequency": 417.242
+          },
+          {
+            "voiced": true,
+            "index": 22,
+            "frequency": 417.17
+          },
+          {
+            "voiced": true,
+            "index": 22,
+            "frequency": 417.176
+          },
+          {
+            "voiced": true,
+            "index": 22,
+            "frequency": 417.147
+          },
+          {
+            "voiced": true,
+            "index": 22,
+            "frequency": 417.19
+          },
+          {
+            "voiced": true,
+            "index": 22,
+            "frequency": 417.246
+          },
+          {
+            "voiced": true,
+            "index": 22,
+            "frequency": 417.216
+          },
+          {
+            "voiced": true,
+            "index": 22,
+            "frequency": 417.147
+          },
+          {
+            "voiced": true,
+            "index": 22,
+            "frequency": 417.12
+          },
+          {
+            "voiced": true,
+            "index": 22,
+            "frequency": 417.056
+          },
+          {
+            "voiced": true,
+            "index": 22,
+            "frequency": 417.106
+          },
+          {
+            "voiced": true,
+            "index": 22,
+            "frequency": 417.364
+          },
+          {
+            "voiced": true,
+            "index": 22,
+            "frequency": 417.919
+          },
+          {
+            "voiced": true,
+            "index": 22,
+            "frequency": 419.245
+          },
+          {
+            "voiced": true,
+            "index": 22,
+            "frequency": 421.069
+          },
+          {
+            "voiced": true,
+            "index": 22,
+            "frequency": 425.229
+          },
+          {
+            "voiced": true,
+            "index": 22,
+            "frequency": 434.451
+          },
+          {
+            "voiced": true,
+            "index": 22,
+            "frequency": 0.0
+          },
+          {
+            "voiced": true,
+            "index": 22,
+            "frequency": 0.0
+          },
+          {
+            "voiced": true,
+            "index": 22,
+            "frequency": 0.0
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 497.537
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 497.211
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 497.317
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 497.02
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 496.857
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 496.715
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 496.683
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 496.593
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 496.434
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 496.331
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 496.31
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 496.114
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 495.936
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 495.774
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 495.706
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 495.577
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 495.514
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 495.463
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 495.466
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 495.509
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 495.545
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 494.928
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 493.73
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 492.364
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 490.251
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 487.17
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 485.348
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 487.525
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 491.484
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 496.111
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 496.93
+          },
+          {
+            "voiced": true,
+            "index": 23,
+            "frequency": 495.268
+          }
+        ],
+        "confidence": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "sandbox": {},
+      "time": 244.4232,
+      "duration": 28.80000000000001
+    },
+    {
+      "annotation_metadata": {
+        "curator": {
+          "name": "",
+          "email": ""
+        },
+        "annotator": {},
+        "version": "",
+        "corpus": "",
+        "annotation_tools": "",
+        "annotation_rules": "",
+        "validation": "",
+        "data_source": "4"
+      },
+      "namespace": "note_midi",
+      "data": [
+        {
+          "time": 9.621584580498848,
+          "duration": 0.15092970521541815,
+          "value": 68.0684975971639,
+          "confidence": null
+        },
+        {
+          "time": 9.776074376417228,
+          "duration": 0.11029478458050335,
+          "value": 71.06396215680394,
+          "confidence": null
+        },
+        {
+          "time": 9.929838548752826,
+          "duration": 0.1044897959183686,
+          "value": 71.08718347051534,
+          "confidence": null
+        },
+        {
+          "time": 10.040065306122443,
+          "duration": 0.2380045351473825,
+          "value": 71.04212353474848,
+          "confidence": null
+        },
+        {
+          "time": 10.360450793650784,
+          "duration": 0.20317460317460245,
+          "value": 71.03449306917558,
+          "confidence": null
+        },
+        {
+          "time": 10.662945124716543,
+          "duration": 0.15092970521541815,
+          "value": 71.06037399841402,
+          "confidence": null
+        },
+        {
+          "time": 10.817434920634923,
+          "duration": 0.1335147392290139,
+          "value": 71.04914009212642,
+          "confidence": null
+        },
+        {
+          "time": 10.968296598639455,
+          "duration": 0.1277097505669076,
+          "value": 71.10570894174933,
+          "confidence": null
+        },
+        {
+          "time": 11.116981405895672,
+          "duration": 0.1277097505669076,
+          "value": 71.07653777460213,
+          "confidence": null
+        },
+        {
+          "time": 11.265666213151917,
+          "duration": 0.17995464852606347,
+          "value": 71.1302809178581,
+          "confidence": null
+        },
+        {
+          "time": 11.551176417233535,
+          "duration": 0.17414965986392872,
+          "value": 71.07581670574972,
+          "confidence": null
+        },
+        {
+          "time": 11.85033741496602,
+          "duration": 0.13351473922904233,
+          "value": 71.03914023831965,
+          "confidence": null
+        },
+        {
+          "time": 12.02659591836732,
+          "duration": 0.15092970521544657,
+          "value": 71.12437040406414,
+          "confidence": null
+        },
+        {
+          "time": 12.1810857142857,
+          "duration": 0.27283446712016257,
+          "value": 68.04575028588715,
+          "confidence": null
+        },
+        {
+          "time": 12.492423582766435,
+          "duration": 0.15673469387752448,
+          "value": 68.04074315488363,
+          "confidence": null
+        },
+        {
+          "time": 13.234214965986382,
+          "duration": 0.2205895691610067,
+          "value": 71.06813689574341,
+          "confidence": null
+        },
+        {
+          "time": 16.704464399093013,
+          "duration": 0.13931972789117708,
+          "value": 68.03782826386065,
+          "confidence": null
+        },
+        {
+          "time": 17.455915646258518,
+          "duration": 0.16834467120179397,
+          "value": 68.02761050662134,
+          "confidence": null
+        },
+        {
+          "time": 25.80106303854876,
+          "duration": 0.15092970521544657,
+          "value": 68.02293673900682,
+          "confidence": null
+        },
+        {
+          "time": 25.98022403628113,
+          "duration": 0.1857596371881982,
+          "value": 67.955159704912,
+          "confidence": null
+        },
+        {
+          "time": 26.41587029478461,
+          "duration": 0.13931972789117708,
+          "value": 71.0645982027632,
+          "confidence": null
+        },
+        {
+          "time": 26.57979319727889,
+          "duration": 0.17414965986392872,
+          "value": 68.01729398882188,
+          "confidence": null
+        },
+        {
+          "time": 26.893670748299314,
+          "duration": 0.14512471655331183,
+          "value": 68.07862697436197,
+          "confidence": null
+        },
+        {
+          "time": 27.790677551020394,
+          "duration": 0.1857596371881982,
+          "value": 71.07483002667331,
+          "confidence": null
+        }
+      ],
+      "sandbox": {},
+      "time": 244.4232,
+      "duration": 28.80000000000001
+    },
+    {
+      "annotation_metadata": {
+        "curator": {
+          "name": "",
+          "email": ""
+        },
+        "annotator": {},
+        "version": "",
+        "corpus": "",
+        "annotation_tools": "",
+        "annotation_rules": "",
+        "validation": "",
+        "data_source": "5"
+      },
+      "namespace": "pitch_contour",
+      "data": {
+        "time": [
+          16.696799999999996,
+          16.70260498800002,
+          16.708409976999974,
+          16.714214964999996,
+          16.72001995400001,
+          16.725824942999964,
+          16.731629930999986,
+          16.73743492,
+          16.74323990900001,
+          16.749044896999976,
+          16.754849885999988,
+          16.760654875,
+          16.766459862999966,
+          16.772264851999978,
+          16.77806984099999,
+          16.783874829000013,
+          16.789679817999968,
+          16.79548480699998,
+          16.801289795000002,
+          16.807094784000014,
+          16.81289977299997,
+          16.818704760999992,
+          16.824509750000004,
+          16.830314739000016,
+          16.836119726999982,
+          16.841924715999994,
+          16.847729705000006,
+          25.81643718800001,
+          25.822242175999975,
+          25.828047164999987,
+          25.833852154,
+          25.839657141999965,
+          25.845462130999977,
+          25.85126711999999,
+          25.85707210800001,
+          25.862877096999966,
+          25.86868208599998,
+          25.874487074,
+          25.880292063000013,
+          25.88609705199997,
+          25.89190203999999,
+          25.897707029000003,
+          25.903512018000015,
+          25.90931700599998,
+          25.915121994999993,
+          25.920926984000005,
+          25.92673197199997,
+          25.932536960999983,
+          25.938341949999995,
+          25.944146938000017,
+          25.949951926999972,
+          25.973171881999974,
+          25.978976869999997,
+          25.98478185900001,
+          25.990586847999964,
+          25.996391835999987,
+          26.002196825,
+          26.00800181400001,
+          26.013806801999976,
+          26.01961179099999,
+          26.02541678,
+          26.031221767999966,
+          26.03702675699998,
+          26.04283174599999,
+          26.048636734000013,
+          26.054441722999968,
+          26.06024671199998,
+          26.066051700000003,
+          26.071856689000015,
+          26.07766167799997,
+          26.083466665999993,
+          26.089271655000005,
+          26.09507664299997,
+          26.100881631999982,
+          26.106686620999994,
+          26.112491609000017,
+          26.118296597999972
+        ],
+        "duration": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "value": [
+          {
+            "voiced": true,
+            "index": 0,
+            "frequency": 558.327
+          },
+          {
+            "voiced": true,
+            "index": 0,
+            "frequency": 557.411
+          },
+          {
+            "voiced": true,
+            "index": 0,
+            "frequency": 557.122
+          },
+          {
+            "voiced": true,
+            "index": 0,
+            "frequency": 557.033
+          },
+          {
+            "voiced": true,
+            "index": 0,
+            "frequency": 556.766
+          },
+          {
+            "voiced": true,
+            "index": 0,
+            "frequency": 556.659
+          },
+          {
+            "voiced": true,
+            "index": 0,
+            "frequency": 556.594
+          },
+          {
+            "voiced": true,
+            "index": 0,
+            "frequency": 556.489
+          },
+          {
+            "voiced": true,
+            "index": 0,
+            "frequency": 556.374
+          },
+          {
+            "voiced": true,
+            "index": 0,
+            "frequency": 556.356
+          },
+          {
+            "voiced": true,
+            "index": 0,
+            "frequency": 556.312
+          },
+          {
+            "voiced": true,
+            "index": 0,
+            "frequency": 556.273
+          },
+          {
+            "voiced": true,
+            "index": 0,
+            "frequency": 556.15
+          },
+          {
+            "voiced": true,
+            "index": 0,
+            "frequency": 556.116
+          },
+          {
+            "voiced": true,
+            "index": 0,
+            "frequency": 555.575
+          },
+          {
+            "voiced": true,
+            "index": 0,
+            "frequency": 554.524
+          },
+          {
+            "voiced": true,
+            "index": 0,
+            "frequency": 552.929
+          },
+          {
+            "voiced": true,
+            "index": 0,
+            "frequency": 551.197
+          },
+          {
+            "voiced": true,
+            "index": 0,
+            "frequency": 550.06
+          },
+          {
+            "voiced": true,
+            "index": 0,
+            "frequency": 548.891
+          },
+          {
+            "voiced": true,
+            "index": 0,
+            "frequency": 547.133
+          },
+          {
+            "voiced": true,
+            "index": 0,
+            "frequency": 549.429
+          },
+          {
+            "voiced": true,
+            "index": 0,
+            "frequency": 580.24
+          },
+          {
+            "voiced": true,
+            "index": 0,
+            "frequency": 590.749
+          },
+          {
+            "voiced": true,
+            "index": 0,
+            "frequency": 608.955
+          },
+          {
+            "voiced": true,
+            "index": 0,
+            "frequency": 0.0
+          },
+          {
+            "voiced": true,
+            "index": 0,
+            "frequency": 0.0
+          },
+          {
+            "voiced": true,
+            "index": 1,
+            "frequency": 557.791
+          },
+          {
+            "voiced": true,
+            "index": 1,
+            "frequency": 557.05
+          },
+          {
+            "voiced": true,
+            "index": 1,
+            "frequency": 556.115
+          },
+          {
+            "voiced": true,
+            "index": 1,
+            "frequency": 555.94
+          },
+          {
+            "voiced": true,
+            "index": 1,
+            "frequency": 555.876
+          },
+          {
+            "voiced": true,
+            "index": 1,
+            "frequency": 555.842
+          },
+          {
+            "voiced": true,
+            "index": 1,
+            "frequency": 555.795
+          },
+          {
+            "voiced": true,
+            "index": 1,
+            "frequency": 555.785
+          },
+          {
+            "voiced": true,
+            "index": 1,
+            "frequency": 555.795
+          },
+          {
+            "voiced": true,
+            "index": 1,
+            "frequency": 555.758
+          },
+          {
+            "voiced": true,
+            "index": 1,
+            "frequency": 555.632
+          },
+          {
+            "voiced": true,
+            "index": 1,
+            "frequency": 555.617
+          },
+          {
+            "voiced": true,
+            "index": 1,
+            "frequency": 555.439
+          },
+          {
+            "voiced": true,
+            "index": 1,
+            "frequency": 555.374
+          },
+          {
+            "voiced": true,
+            "index": 1,
+            "frequency": 555.385
+          },
+          {
+            "voiced": true,
+            "index": 1,
+            "frequency": 555.228
+          },
+          {
+            "voiced": true,
+            "index": 1,
+            "frequency": 555.142
+          },
+          {
+            "voiced": true,
+            "index": 1,
+            "frequency": 555.12
+          },
+          {
+            "voiced": true,
+            "index": 1,
+            "frequency": 555.077
+          },
+          {
+            "voiced": true,
+            "index": 1,
+            "frequency": 555.156
+          },
+          {
+            "voiced": true,
+            "index": 1,
+            "frequency": 555.253
+          },
+          {
+            "voiced": true,
+            "index": 1,
+            "frequency": 555.439
+          },
+          {
+            "voiced": true,
+            "index": 1,
+            "frequency": 556.051
+          },
+          {
+            "voiced": true,
+            "index": 1,
+            "frequency": 558.976
+          },
+          {
+            "voiced": true,
+            "index": 2,
+            "frequency": 556.663
+          },
+          {
+            "voiced": true,
+            "index": 2,
+            "frequency": 556.547
+          },
+          {
+            "voiced": true,
+            "index": 2,
+            "frequency": 556.286
+          },
+          {
+            "voiced": true,
+            "index": 2,
+            "frequency": 556.191
+          },
+          {
+            "voiced": true,
+            "index": 2,
+            "frequency": 556.041
+          },
+          {
+            "voiced": true,
+            "index": 2,
+            "frequency": 555.802
+          },
+          {
+            "voiced": true,
+            "index": 2,
+            "frequency": 555.205
+          },
+          {
+            "voiced": true,
+            "index": 2,
+            "frequency": 554.627
+          },
+          {
+            "voiced": true,
+            "index": 2,
+            "frequency": 553.581
+          },
+          {
+            "voiced": true,
+            "index": 2,
+            "frequency": 552.262
+          },
+          {
+            "voiced": true,
+            "index": 2,
+            "frequency": 551.064
+          },
+          {
+            "voiced": true,
+            "index": 2,
+            "frequency": 550.06
+          },
+          {
+            "voiced": true,
+            "index": 2,
+            "frequency": 548.932
+          },
+          {
+            "voiced": true,
+            "index": 2,
+            "frequency": 547.565
+          },
+          {
+            "voiced": true,
+            "index": 2,
+            "frequency": 545.05
+          },
+          {
+            "voiced": true,
+            "index": 2,
+            "frequency": 543.522
+          },
+          {
+            "voiced": true,
+            "index": 2,
+            "frequency": 540.369
+          },
+          {
+            "voiced": true,
+            "index": 2,
+            "frequency": 537.508
+          },
+          {
+            "voiced": true,
+            "index": 2,
+            "frequency": 537.511
+          },
+          {
+            "voiced": true,
+            "index": 2,
+            "frequency": 537.039
+          },
+          {
+            "voiced": true,
+            "index": 2,
+            "frequency": 536.79
+          },
+          {
+            "voiced": true,
+            "index": 2,
+            "frequency": 535.592
+          },
+          {
+            "voiced": true,
+            "index": 2,
+            "frequency": 531.835
+          },
+          {
+            "voiced": true,
+            "index": 2,
+            "frequency": 527.531
+          },
+          {
+            "voiced": true,
+            "index": 2,
+            "frequency": 536.828
+          },
+          {
+            "voiced": true,
+            "index": 2,
+            "frequency": 530.393
+          }
+        ],
+        "confidence": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "sandbox": {},
+      "time": 244.4232,
+      "duration": 28.80000000000001
+    },
+    {
+      "annotation_metadata": {
+        "curator": {
+          "name": "",
+          "email": ""
+        },
+        "annotator": {},
+        "version": "",
+        "corpus": "",
+        "annotation_tools": "",
+        "annotation_rules": "",
+        "validation": "",
+        "data_source": "5"
+      },
+      "namespace": "note_midi",
+      "data": [
+        {
+          "time": 16.692128798185934,
+          "duration": 0.15673469387752448,
+          "value": 73.06341604622524,
+          "confidence": null
+        },
+        {
+          "time": 25.81092698412698,
+          "duration": 0.13931972789117708,
+          "value": 73.04257741897324,
+          "confidence": null
+        },
+        {
+          "time": 25.971221768707494,
+          "duration": 0.15092970521544657,
+          "value": 72.9335954649659,
+          "confidence": null
+        }
+      ],
+      "sandbox": {},
+      "time": 244.4232,
+      "duration": 28.80000000000001
+    },
+    {
+      "annotation_metadata": {
+        "curator": {
+          "name": "",
+          "email": ""
+        },
+        "annotator": {},
+        "version": "",
+        "corpus": "",
+        "annotation_tools": "",
+        "annotation_rules": "",
+        "validation": "",
+        "data_source": ""
+      },
+      "namespace": "beat_position",
+      "data": [
+        {
+          "time": 0.0,
+          "duration": 0.0,
+          "value": {
+            "position": 1,
+            "measure": 1,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 0.6,
+          "duration": 0.0,
+          "value": {
+            "position": 2,
+            "measure": 1,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 1.2,
+          "duration": 0.0,
+          "value": {
+            "position": 3,
+            "measure": 1,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 1.7999999999999998,
+          "duration": 0.0,
+          "value": {
+            "position": 4,
+            "measure": 1,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 2.4,
+          "duration": 0.0,
+          "value": {
+            "position": 1,
+            "measure": 2,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 3.0,
+          "duration": 0.0,
+          "value": {
+            "position": 2,
+            "measure": 2,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 3.5999999999999996,
+          "duration": 0.0,
+          "value": {
+            "position": 3,
+            "measure": 2,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 4.2,
+          "duration": 0.0,
+          "value": {
+            "position": 4,
+            "measure": 2,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 4.8,
+          "duration": 0.0,
+          "value": {
+            "position": 1,
+            "measure": 3,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 5.3999999999999995,
+          "duration": 0.0,
+          "value": {
+            "position": 2,
+            "measure": 3,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 6.0,
+          "duration": 0.0,
+          "value": {
+            "position": 3,
+            "measure": 3,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 6.6,
+          "duration": 0.0,
+          "value": {
+            "position": 4,
+            "measure": 3,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 7.199999999999999,
+          "duration": 0.0,
+          "value": {
+            "position": 1,
+            "measure": 4,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 7.8,
+          "duration": 0.0,
+          "value": {
+            "position": 2,
+            "measure": 4,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 8.4,
+          "duration": 0.0,
+          "value": {
+            "position": 3,
+            "measure": 4,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 9.0,
+          "duration": 0.0,
+          "value": {
+            "position": 4,
+            "measure": 4,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 9.6,
+          "duration": 0.0,
+          "value": {
+            "position": 1,
+            "measure": 5,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 10.2,
+          "duration": 0.0,
+          "value": {
+            "position": 2,
+            "measure": 5,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 10.799999999999999,
+          "duration": 0.0,
+          "value": {
+            "position": 3,
+            "measure": 5,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 11.4,
+          "duration": 0.0,
+          "value": {
+            "position": 4,
+            "measure": 5,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 12.0,
+          "duration": 0.0,
+          "value": {
+            "position": 1,
+            "measure": 6,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 12.6,
+          "duration": 0.0,
+          "value": {
+            "position": 2,
+            "measure": 6,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 13.2,
+          "duration": 0.0,
+          "value": {
+            "position": 3,
+            "measure": 6,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 13.799999999999999,
+          "duration": 0.0,
+          "value": {
+            "position": 4,
+            "measure": 6,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 14.399999999999999,
+          "duration": 0.0,
+          "value": {
+            "position": 1,
+            "measure": 7,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 15.0,
+          "duration": 0.0,
+          "value": {
+            "position": 2,
+            "measure": 7,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 15.6,
+          "duration": 0.0,
+          "value": {
+            "position": 3,
+            "measure": 7,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 16.2,
+          "duration": 0.0,
+          "value": {
+            "position": 4,
+            "measure": 7,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 16.8,
+          "duration": 0.0,
+          "value": {
+            "position": 1,
+            "measure": 8,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 17.4,
+          "duration": 0.0,
+          "value": {
+            "position": 2,
+            "measure": 8,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 18.0,
+          "duration": 0.0,
+          "value": {
+            "position": 3,
+            "measure": 8,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 18.599999999999998,
+          "duration": 0.0,
+          "value": {
+            "position": 4,
+            "measure": 8,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 19.2,
+          "duration": 0.0,
+          "value": {
+            "position": 1,
+            "measure": 9,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 19.8,
+          "duration": 0.0,
+          "value": {
+            "position": 2,
+            "measure": 9,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 20.4,
+          "duration": 0.0,
+          "value": {
+            "position": 3,
+            "measure": 9,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 21.0,
+          "duration": 0.0,
+          "value": {
+            "position": 4,
+            "measure": 9,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 21.599999999999998,
+          "duration": 0.0,
+          "value": {
+            "position": 1,
+            "measure": 10,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 22.2,
+          "duration": 0.0,
+          "value": {
+            "position": 2,
+            "measure": 10,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 22.8,
+          "duration": 0.0,
+          "value": {
+            "position": 3,
+            "measure": 10,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 23.4,
+          "duration": 0.0,
+          "value": {
+            "position": 4,
+            "measure": 10,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 24.0,
+          "duration": 0.0,
+          "value": {
+            "position": 1,
+            "measure": 11,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 24.599999999999998,
+          "duration": 0.0,
+          "value": {
+            "position": 2,
+            "measure": 11,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 25.2,
+          "duration": 0.0,
+          "value": {
+            "position": 3,
+            "measure": 11,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 25.8,
+          "duration": 0.0,
+          "value": {
+            "position": 4,
+            "measure": 11,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 26.4,
+          "duration": 0.0,
+          "value": {
+            "position": 1,
+            "measure": 12,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 27.0,
+          "duration": 0.0,
+          "value": {
+            "position": 2,
+            "measure": 12,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 27.599999999999998,
+          "duration": 0.0,
+          "value": {
+            "position": 3,
+            "measure": 12,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        },
+        {
+          "time": 28.2,
+          "duration": 0.0,
+          "value": {
+            "position": 4,
+            "measure": 12,
+            "num_beats": 4,
+            "beat_units": 4
+          },
+          "confidence": null
+        }
+      ],
+      "sandbox": {},
+      "time": 0,
+      "duration": 28.80000000000001
+    },
+    {
+      "annotation_metadata": {
+        "curator": {
+          "name": "",
+          "email": ""
+        },
+        "annotator": {},
+        "version": "",
+        "corpus": "",
+        "annotation_tools": "",
+        "annotation_rules": "",
+        "validation": "",
+        "data_source": ""
+      },
+      "namespace": "tempo",
+      "data": [
+        {
+          "time": 0.0,
+          "duration": 28.80000000000001,
+          "value": 100.0,
+          "confidence": 1.0
+        }
+      ],
+      "sandbox": {},
+      "time": 0,
+      "duration": 28.80000000000001
+    },
+    {
+      "annotation_metadata": {
+        "curator": {
+          "name": "",
+          "email": ""
+        },
+        "annotator": {},
+        "version": "",
+        "corpus": "",
+        "annotation_tools": "",
+        "annotation_rules": "",
+        "validation": "",
+        "data_source": ""
+      },
+      "namespace": "chord",
+      "data": [
+        {
+          "time": 0.0,
+          "duration": 9.6,
+          "value": "C#:maj",
+          "confidence": null
+        },
+        {
+          "time": 9.6,
+          "duration": 4.799999999999999,
+          "value": "F#:maj",
+          "confidence": null
+        },
+        {
+          "time": 14.399999999999999,
+          "duration": 4.800000000000001,
+          "value": "C#:maj",
+          "confidence": null
+        },
+        {
+          "time": 19.2,
+          "duration": 2.3999999999999986,
+          "value": "G#:maj",
+          "confidence": null
+        },
+        {
+          "time": 21.599999999999998,
+          "duration": 2.400000000000002,
+          "value": "F#:maj",
+          "confidence": null
+        },
+        {
+          "time": 24.0,
+          "duration": 4.800000000000011,
+          "value": "C#:maj",
+          "confidence": null
+        }
+      ],
+      "sandbox": {},
+      "time": 0,
+      "duration": 28.80000000000001
+    },
+    {
+      "annotation_metadata": {
+        "curator": {
+          "name": "",
+          "email": ""
+        },
+        "annotator": {},
+        "version": 0.9,
+        "corpus": "",
+        "annotation_tools": "",
+        "annotation_rules": "Chord sheet-informed symbolic chord transcription based on the included separate string note transcriptions with the chord segmentation and root derived from sheet music.",
+        "validation": "",
+        "data_source": "Semi-automatic chord transcription with manual verification"
+      },
+      "namespace": "chord",
+      "data": [
+        {
+          "time": 0.0,
+          "duration": 9.6,
+          "value": "C#:maj/1",
+          "confidence": null
+        },
+        {
+          "time": 9.6,
+          "duration": 4.799999999999999,
+          "value": "F#:maj/1",
+          "confidence": null
+        },
+        {
+          "time": 14.399999999999999,
+          "duration": 4.800000000000001,
+          "value": "C#:maj/1",
+          "confidence": null
+        },
+        {
+          "time": 19.2,
+          "duration": 2.3999999999999986,
+          "value": "G#:maj/1",
+          "confidence": null
+        },
+        {
+          "time": 21.599999999999998,
+          "duration": 2.400000000000002,
+          "value": "F#:maj/1",
+          "confidence": null
+        },
+        {
+          "time": 24.0,
+          "duration": 4.800000000000011,
+          "value": "C#:maj/1",
+          "confidence": null
+        }
+      ],
+      "sandbox": {},
+      "time": 0,
+      "duration": null
+    },
+    {
+      "annotation_metadata": {
+        "curator": {
+          "name": "",
+          "email": ""
+        },
+        "annotator": {},
+        "version": "",
+        "corpus": "",
+        "annotation_tools": "",
+        "annotation_rules": "",
+        "validation": "",
+        "data_source": ""
+      },
+      "namespace": "key_mode",
+      "data": [
+        {
+          "time": 0.0,
+          "duration": 28.80000000000001,
+          "value": "C#:major",
+          "confidence": 1
+        }
+      ],
+      "sandbox": {},
+      "time": 0,
+      "duration": 28.80000000000001
+    }
+  ],
+  "file_metadata": {
+    "title": "01_SS1-100-C#_solo",
+    "artist": "",
+    "release": "",
+    "duration": 28.80000000000001,
+    "identifiers": {},
+    "jams_version": "0.3.1"
+  },
+  "sandbox": {}
+}

@@ -1,0 +1,16 @@
+__pycache__/
+.vscode
+*wav
+*pth
+*npz
+*.zip*
+GuitarSet/data*/
+Wave-U-Net-Pytorch-6string*/datasets/GuitarSep/
+Wave-U-Net-Pytorch-6string*/hdf*/
+Wave-U-Net-Pytorch-6string*/checkpoints/
+Wave-U-Net-Pytorch-6string*/logs/
+Wave-U-Net-Pytorch-6string*/logs_ath/
+Wave-U-Net-Pytorch-6string*/train/
+Wave-U-Net-Pytorch-6string*/data-tab/
+data-manipulation-code/note_instances
+data-manipulation-code/bar_total_new.png

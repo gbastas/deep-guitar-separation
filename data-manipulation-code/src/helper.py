@@ -3,10 +3,8 @@ from pathlib import Path
 import itertools
 import matplotlib.pyplot as plt
 from sympy import symbols, solveset, S
-from sympy import Poly
 
 import math
-from Inharmonic_Detector import StringBetas
 
 # from playsound import playsound
 import soundfile as sf
@@ -98,15 +96,15 @@ class ConfusionMatrix():
             return plt
 
 
-def compute_partial_orders(StrBetaObj : StringBetas, constants):
-    StrBetaObj.beta_lim = [[] for x in range(0, constants.tuning[-1] + constants.no_of_frets - 40)]
-    for string, open_midi in enumerate(constants.tuning):
-        for fret in range(0,constants.no_of_frets):
-            beta = StrBetaObj.betas_array[string][0]*2**(fret/6)
-            k = symbols('k')
-            sol = solveset(beta*k**4 -k -1/2<0, k, S.Reals)
-            StrBetaObj.beta_lim[open_midi + fret - 40].append(math.floor(sol.end))
-    print(StrBetaObj.beta_lim)
+# def compute_partial_orders(StrBetaObj : StringBetas, constants):
+#     StrBetaObj.beta_lim = [[] for x in range(0, constants.tuning[-1] + constants.no_of_frets - 40)]
+#     for string, open_midi in enumerate(constants.tuning):
+#         for fret in range(0,constants.no_of_frets):
+#             beta = StrBetaObj.betas_array[string][0]*2**(fret/6)
+#             k = symbols('k')
+#             sol = solveset(beta*k**4 -k -1/2<0, k, S.Reals)
+#             StrBetaObj.beta_lim[open_midi + fret - 40].append(math.floor(sol.end))
+#     print(StrBetaObj.beta_lim)
 
 # Print iterations progress
 # https://stackoverflow.com/questions/3173320/text-progress-bar-in-the-console/30740258

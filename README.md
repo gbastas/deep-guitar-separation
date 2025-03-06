@@ -3,10 +3,6 @@
 This repository contains the code and experiments from the paper: *Separate and Transcribe: Deep Guitar Separation and its Application for Tablature Enhancement.* It provides implementations and dataset manipulation and preparation code used for training, evaluation, and analysis.
 
 
-
-This repo is based on https://github.com/f90/Wave-U-Net-Pytorch.
-
-
 ## Data Preparation
 
 
@@ -17,17 +13,14 @@ Download and put in ordet the GuitarSet dataset (https://zenodo.org/record/33717
 Use the unix commands below:
 
 ```
-mkdir -p ./datasets/GuitarSet/data/{annos,audio,mic,mix,hex_cln}
+mkdir -p ./datasets/GuitarSet/data/{audio,mic,mix,hex_cln}
 
-wget -P ./datasets/GuitarSet/ https://zenodo.org/record/3371780/files/{annotations.zip,audio_mono-mic.zip,audio_mono-pickup_mix.zip,audio_hex-pickup_debleeded.zip}
+wget -P ./datasets/GuitarSet/ https://zenodo.org/record/3371780/files/{audio_mono-mic.zip,audio_mono-pickup_mix.zip,audio_hex-pickup_debleeded.zip}
 
-unzip -j ./datasets/GuitarSet/annotations.zip '*.jams' -d ./datasets/GuitarSet/data/annos && \
 unzip -j ./datasets/GuitarSet/audio_mono-mic.zip '*.wav' -d ./datasets/GuitarSet/data/mic && \
 unzip -j ./datasets/GuitarSet/audio_mono-pickup_mix.zip '*.wav' -d ./datasets/GuitarSet/data/mix && \
 unzip -j ./datasets/GuitarSet/audio_hex-pickup_debleeded.zip '*.wav' -d ./datasets/GuitarSet/data/hex_cln
 
-ln -s ./datasets/GuitarSet/data/mic/*.wav ./datasets/GuitarSet/data/audio/
-ln -s ./datasets/GuitarSet/data/mix/*.wav ./datasets/GuitarSet/data/audio/
 ```
 
 To get the dataset ready for training, we follow the *Senvaitytite train-test split* presented in [this repository](https://github.com/daliasen/GuitarStringSeparation-MF-NMF-NMFD):
@@ -83,8 +76,12 @@ mv train/test .
 
 **MDGP: Preparing the Dataset**
 
-First we need to gather note instances:
-https://gitlab.com/ilsp-spmd-all/music/tab-demo/-/tree/dev?ref_type=heads#retrieving-note-instances-from-gutarset
+For the creation of the MDGP dataset we first need to gather note instances from the GuitarSet mic solos:
+```
+python AuxDataPrep.py --action gather_notes 
+```
+
+This command will create dir ```note_instances```.
 
 Now Check this README:
 https://gitlab.com/ilsp-spmd-all/phds/phd-grigoris/string_separation#fake-full-track-audio-data-from-midi
@@ -118,6 +115,10 @@ tensorboard --logdir logs/
 
 **Wave-U-Net**
 
+The implementation code for Wave-U-Net is based on [this repository](https://github.com/f90/Wave-U-Net-Pytorch).
+
+
+```
 python train.py --dataset_dir ../datasets/GuitarSet/datasep/ --cuda --hdf_dir hdfs/hdf_guit --checkpoint_dir checkpoints/waveunet_guit --channels 1 --patience 200 
 
 python train.py --dataset_dir ../datasets/GuitarSet/datasep/ --cuda --hdf_dir hdfs/hdf_guit-comp --checkpoint_dir checkpoints/waveunet_guit-comp --channels 1 --patience 200 --version HQ-comp
@@ -125,6 +126,7 @@ python train.py --dataset_dir ../datasets/GuitarSet/datasep/ --cuda --hdf_dir hd
 python train.py --dataset_dir ../datasets/GuitarSet/datasep/ --cuda --hdf_dir hdfs/hdf_guit-solo --checkpoint_dir checkpoints/waveunet_guit-solo --channels 1 --patience 200 --version HQ-solo
 
 python train.py --dataset_dir ../datasets/GuitarSet/datasep/ --cuda --hdf_dir hdfs/hdf_guit --checkpoint_dir checkpoints/waveunet_guit_monosep --channels 1 --patience 200 --separate 0
+```
 
 **Wave-U-Net-Tab**
 
@@ -136,7 +138,7 @@ python train.py
 --load_model ../Wave-U-Net-Pytorch-6string/checkpoints/{waveunet_guit, waveunet_guit_monopickup, waveunet_guit_mic, waveunet_guit_mic_fakemic, waveunet_guit_pseudoboth_wn, waveunet_guit_pseudoboth_sep_all_solos_fake}/best_checkpoint_{}
 --cuda --patience 20 --batch_size 1 --fakeframes_n 87 --task tablature --tab_version 2up2down {--freeze}
 
-
+```
 CUDA_VISIBLE_DEVICES=0 python train.py --dataset_dir ../datasets/GuitarSet/datasep-mic/ --hdf_dir hdfs/hdf_guit-pret-mic --checkpoint_dir ../Wave-U-Net-Pytorch-6string/checkpoints/waveunet_guit_mic-pret5up5down-freeze --load_model ../Wave-U-Net-Pytorch-6string/checkpoints/waveunet_guit_mic/best_checkpoint_555000 --cuda --patience 20 --batch_size 1 --fakeframes_n 87 --task tablature --tab_version 2up2down --freeze
 
 CUDA_VISIBLE_DEVICES=1 python train.py --dataset_dir ../datasets/GuitarSet/datasep-mic/ --hdf_dir hdfs/hdf_guit-pret-mic --checkpoint_dir ../Wave-U-Net-Pytorch-6string/checkpoints/waveunet_guit_mic-pret5up5down --load_model ../Wave-U-Net-Pytorch-6string/checkpoints/waveunet_guit_mic/best_checkpoint_555000 --cuda --patience 20  --batch_size 1 --fakeframes_n 87 --task tablature --tab_version 2up2down 
@@ -145,5 +147,5 @@ CUDA_VISIBLE_DEVICES=2 python train.py --dataset_dir ../datasets/GuitarSet/datas
 
 CUDA_VISIBLE_DEVICES=3 python train.py --dataset_dir ../datasets/GuitarSet/datasep-mix/ --hdf_dir hdfs/hdf_guit-pret-mix --checkpoint_dir ../Wave-U-Net-Pytorch-6string/checkpoints/waveunet_guit_mix-pret5up5down --load_model ../Wave-U-Net-Pytorch-6string/checkpoints/waveunet_guit_monopickup/best_checkpoint_540200 --cuda --patience 20  --batch_size 1 --fakeframes_n 87 --task tablature --tab_version 2up2down
 
-
+```
 

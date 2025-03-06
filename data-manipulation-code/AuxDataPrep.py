@@ -9,7 +9,6 @@ sys.path.append('./src')
 from track_class import Tablature
 from helper import printProgressBar
 from constants_parser import Constants
-from string_betas import StringBetas
 import soundfile as sf
 import utils
 import matplotlib.pyplot as plt
@@ -82,17 +81,16 @@ def GuitarSetProcessing(constants : Constants):
 
     for count, name in enumerate(lines): # iterate over filenames
         
-        # name='02_SS2-88-F_solo.jams'
-        name = name.replace('\n', '')
+        name = name.replace('\n', '')         # e.g. '02_SS2-88-F_solo.jams'
         print('testfile', name)
         annosfilepath = os.path.join(constants.annos_path, name)
 
-        if constants.verbose:
-            print()
-            print('Audio-based detection running...')
-            print(name, count,'/',len(lines))
-        else:
-            printProgressBar(count,len(lines),decimals=0, length=50)
+        # if constants.verbose:
+        #     print()
+        #     print('Audio-based detection running...')
+        #     print(name, count,'/',len(lines))
+        # else:
+        printProgressBar(count,len(lines),decimals=0, length=50)
 
         tablature=None
         audiofilepath = constants.track_path + name[:-5] + '_' + constants.dataset +'.wav' # TODO: set dataset to either mix or mic in constants.ini
@@ -103,10 +101,10 @@ def GuitarSetProcessing(constants : Constants):
 
         audio, _ = librosa.load(audiofilepath, sr=constants.sampling_rate) 
 
-        if args.pred_onset:
-            test_onsets = demo_utils.get_onsets(audiofilepath, constants)
-        else:
-            test_onsets = [tab_element.onset for tab_element in annos_tab_list]
+        # if args.pred_onset:
+        #     test_onsets = demo_utils.get_onsets(audiofilepath, constants)
+        # else:
+        test_onsets = [tab_element.onset for tab_element in annos_tab_list]
         test_offsets = [tab_element.offset for tab_element in annos_tab_list]
 
 
@@ -298,7 +296,7 @@ def plot_note_hist(Strings_gt_total_count):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-pred_onset', action='store_true', help='')
+    # parser.add_argument('-pred_onset', action='store_true', help='')
     parser.add_argument('-create_no', action='store_true', help='')
     parser.add_argument('--action', type=str, help='gather_notes, pseudo_sep, pseudocomp_sep')
     parser.add_argument('--all_solos', action='store_true', help='if True: allsolos.txt, else: names.txt')
@@ -309,7 +307,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     config_path = 'constants.ini'
-    workspace_folder = 'datasets/GuitarSet'
+    workspace_folder = '../datasets/GuitarSet'
 
     constants = Constants(config_path, workspace_folder)    
     
