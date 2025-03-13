@@ -21,9 +21,6 @@ from test import evaluate, validate
 from model.waveunet import Waveunet
 import csv
 
-# import openunmix
-
-
 def main(args):
 
     # MODEL
@@ -34,10 +31,6 @@ def main(args):
                      target_output_size=target_outputs, depth=args.depth, strides=args.strides,
                      conv_type=args.conv_type, res=args.res, separate=args.separate)
 
-    # if args.model == 'open-unmix':   
-    #     model = openunmix.Unmix('umxhq') 
-    #     features='stft'
-    
     features=None
 
     print('cuda', args.cuda)
@@ -47,21 +40,18 @@ def main(args):
         print("move model to gpu")
         model.cuda()
 
-    # print('model: ', model)
     print('parameter count: ', str(sum(p.numel() for p in model.parameters())))
 
     writer = SummaryWriter(args.log_dir)
 
     ### DATASET
     musdb = get_musdb_folds(args.dataset_dir, version=args.version, guitID=args.split)
-    # musdb = get_musdbhq(args.dataset_dir)#, guitID=args.split)
     # If not data augmentation, at least crop targets to fit model output shape
     crop_func = partial(crop_targets, shapes=model.shapes)
     # Data augmentation function for training
     augment_func = partial(random_amplify, shapes=model.shapes, min=0.7, max=1.0)
     train_data = SeparationDataset(musdb, "train", args.instruments, args.sr, args.channels, model.shapes, True, args.hdf_dir, audio_transform=augment_func, features=features) # NOTE: augmentation
     val_data = SeparationDataset(musdb, "val", args.instruments, args.sr, args.channels, model.shapes, False, args.hdf_dir, audio_transform=crop_func, features=features)
-    # try:
     if args.version=='pseudo':
         try:
             val_comp_data = SeparationDataset(musdb, "val_comp", args.instruments, args.sr, args.channels, model.shapes, False, args.hdf_dir, audio_transform=crop_func, features=features)
@@ -116,12 +106,12 @@ def main(args):
     if args.load_model is not None:
         print("Continuing training full model from checkpoint " + str(args.load_model))
         state = model_utils.load_model(model, optimizer, args.load_model, args.cuda)
-        state["best_loss"]=np.Inf # __gbastas__ This is to train anew
-        state["best_comp_loss"]=np.Inf # __gbastas__ This is to train anew
-        state["best_solo_loss"]=np.Inf # __gbastas__ This is to train anew
-        state["best_mic_loss"]=np.Inf # __gbastas__ This is to train anew
-        state["best_mix_loss"]=np.Inf # __gbastas__ This is to train anew
-        state["best_hex_cln_loss"]=np.Inf # __gbastas__ This is to train anew
+        state["best_loss"]=np.Inf 
+        state["best_comp_loss"]=np.Inf 
+        state["best_solo_loss"]=np.Inf 
+        state["best_mic_loss"]=np.Inf 
+        state["best_mix_loss"]=np.Inf 
+        state["best_hex_cln_loss"]=np.Inf 
 
     print('TRAINING START')
     while state["worse_epochs"] < args.patience:
@@ -198,7 +188,7 @@ def main(args):
             state["best_checkpoint"] = checkpoint_best_path
             model_utils.save_model(model, optimizer, state, checkpoint_best_path)
 
-        # extra __gbastas__
+        
         if val_comp_loss < state["best_comp_loss"]:
             print("MODEL IMPROVED ON VALIDATION SET!")
             checkpoint_comp_best_path = os.path.join(args.checkpoint_dir, "best_comp_checkpoint_" + str(state["step"]))
@@ -210,7 +200,7 @@ def main(args):
             state["best_comp_loss"] = val_comp_loss
             model_utils.save_model(model, optimizer, state, checkpoint_comp_best_path)
     
-        # extra __gbastas__
+        
         if val_solo_loss < state["best_solo_loss"]:
             print("MODEL IMPROVED ON SOLO VALIDATION SET!")
             checkpoint_solo_best_path = os.path.join(args.checkpoint_dir, "best_solo_checkpoint_" + str(state["step"]))
@@ -222,7 +212,7 @@ def main(args):
             state["best_solo_loss"] = val_solo_loss
             model_utils.save_model(model, optimizer, state, checkpoint_solo_best_path)
 
-        # extra __gbastas__
+        
         if val_hex_cln_loss < state["best_hex_cln_loss"] and args.version=='mic':
             print("MODEL IMPROVED ON hex_cln VALIDATION SET!")
             checkpoint_hex_cln_best_path = os.path.join(args.checkpoint_dir, "best_hex_cln_checkpoint_" + str(state["step"]))
@@ -234,7 +224,6 @@ def main(args):
             state["best_hex_cln_loss"] = val_hex_cln_loss
             model_utils.save_model(model, optimizer, state, checkpoint_hex_cln_best_path)
 
-        # # extra __gbastas__
         if val_mic_loss < state["best_mic_loss"] and args.version=='mic':
             print("MODEL IMPROVED ON mic VALIDATION SET!")
             checkpoint_mic_best_path = os.path.join(args.checkpoint_dir, "best_mic_checkpoint_" + str(state["step"]))
@@ -246,7 +235,7 @@ def main(args):
             state["best_mic_loss"] = val_mic_loss
             model_utils.save_model(model, optimizer, state, checkpoint_mic_best_path)
 
-        # extra __gbastas__
+        
         if val_mix_loss < state["best_mix_loss"] and args.version=='mic':
             print("MODEL IMPROVED ON mix VALIDATION SET!")
             checkpoint_mix_best_path = os.path.join(args.checkpoint_dir, "best_mix_checkpoint_" + str(state["step"]))
@@ -313,10 +302,6 @@ def main(args):
         print('!!Evaluating on '+ key + ' test set!!')
         print()
 
-
-        # print('test_metrics', len(test_metrics), len(test_metrics[0]))
-        # aaa
-
         # Write most important metrics into Tensorboard log
         avg_SDRs = {inst : np.mean([np.nanmean(song[inst]["SDR"]) for song in test_metrics]) for inst in args.instruments}
         avg_SIRs = {inst : np.mean([np.nanmean(song[inst]["SIR"]) for song in test_metrics]) for inst in args.instruments}
@@ -328,11 +313,6 @@ def main(args):
             resfile = open(args.checkpoint_dir+'/'+key+'_results_'+ args.load_model.split('_')[-1] +'.csv', 'w')
         csvwriter = csv.writer(resfile)
         csvwriter.writerow([" ","SDR", "SIR", "SAR", "SI-SDR"])
-        # print(" ","SDR", "SIR", "SAR", "SI-SDR")
-        
-        # for inst in args.instruments:
-        #     csvwriter.writerow([inst, round(avg_SDRs[inst],3), round(avg_SIRs[inst],3), round(avg_SARs[inst],3), round(avg_SISDRs[inst],3)])
-        #     print(inst, round(avg_SDRs[inst],3), round(avg_SIRs[inst],3), round(avg_SARs[inst],3), round(avg_SISDRs[inst],3))
 
         print()
 
@@ -410,7 +390,6 @@ if __name__ == '__main__':
     parser.add_argument('--feature_growth', type=str, default="double",
                         help="How the features in each layer should grow, either (add) the initial number of features each time, or multiply by 2 (double)")
 
-    # __gbastas__
     parser.add_argument('--split', type=int, default=-1)
     parser.add_argument('--version', type=str, default='HQ', help='"cross-val" alternatively')
     args = parser.parse_args()

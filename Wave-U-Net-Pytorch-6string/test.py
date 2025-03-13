@@ -167,7 +167,7 @@ def evaluate(args, dataset, model, instruments):
             pred_sources = predict_song(args, example["mix"], model)
             pred_sources = np.stack([pred_sources[key].T for key in instruments])
 
-            ### __gbastas__ ###
+            ### ___________ ###
             n = min(pred_sources.shape[1], target_sources.shape[1])
             pred_sources = pred_sources[:,:n]
             target_sources = target_sources[:,:n]
