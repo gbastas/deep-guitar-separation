@@ -36,8 +36,8 @@ def compute_model_output(model, inputs, x_cqt=None, task='separation'):
 
         output, aggr_tab_out = model(inputs, x_cqt, inst=None) # aggr_tab_out: N x 21 x 6 x T     
 
-        if x_cqt is not None:
-            x_cqt = x_cqt.cuda()
+        # if x_cqt is not None:
+        #     x_cqt = x_cqt.cuda()
 
         inputs = inputs.cuda() 
 
@@ -108,7 +108,7 @@ def predict(audio, model, args, x_cqt=None):
     
     x_cqt_pad = np.pad(x_cqt_frontpad, [(0,0), (4, 4)], mode="constant", constant_values=0.0) # NEW!
 
-    findices = [0] 
+    findices = [0] # 
 
     # Iterate over mixture magnitudes, fetch network prediction
     with torch.no_grad():
@@ -117,7 +117,7 @@ def predict(audio, model, args, x_cqt=None):
 
             # Prepare mixture excerpt by selecting time interval
             curr_input = audio[:, target_start_pos:target_start_pos + model.shapes["input_frames"]] # Since audio was front-padded input of [targetpos:targetpos+inputframes] actually predicts [targetpos:targetpos+outputframes] target range
-            original_length = curr_input.shape[1] 
+            original_length = curr_input.shape[1] # 
 
             if args.task in ['tablature', 'multitask']:# and 'TabCNN' in args.tab_version:
 
@@ -134,6 +134,7 @@ def predict(audio, model, args, x_cqt=None):
             # Convert to Pytorch tensor for model prediction
             curr_input = torch.from_numpy(curr_input).unsqueeze(0)
 
+            # TODO: call compute_model_output only ONCE!
 
             # Predict source
             if args.task in ['separation', 'multitask']:
@@ -148,7 +149,8 @@ def predict(audio, model, args, x_cqt=None):
                 findices += list(indices[1:])
                   
                 # ******************************************************************************* #                
-                for key, curr_targets in compute_model_output(model, curr_input, x_cqt_section, task=args.task)[1].items():  
+                for key, curr_targets in compute_model_output(model, curr_input, x_cqt_section, task=args.task)[1].items(): #  tab_outputs
+                # ******************************************************************************* #                
 
                     tab_outputs[key][:,tab_start_pos:tab_start_pos+fakeframes_n] = curr_targets.squeeze(0).cpu().numpy()
                     resampled_tab_outputs[key] = tab_outputs[key] # NOTE: provisional
@@ -156,18 +158,23 @@ def predict(audio, model, args, x_cqt=None):
 
     # Crop to expected length (since we padded to handle the frame shift)
     sep_outputs = {key : sep_outputs[key][:,:expected_outputs] for key in sep_outputs.keys()}
+    # TODO: maybe
+    # tab_outputs = {key : sep_outputs[key][:,:expected_outputs] for key in tab_outputs.keys()} # 
 
     if return_mode == "pytorch":
         sep_outputs = torch.from_numpy(sep_outputs)
         if is_cuda:
             sep_outputs = sep_outputs.cuda()
 
-    if return_mode == "pytorch": 
+    if return_mode == "pytorch": # 
         resampled_tab_outputs = torch.from_numpy(resampled_tab_outputs)
         if is_cuda:
             resampled_tab_outputs = resampled_tab_outputs.cuda()
 
-    return sep_outputs, resampled_tab_outputs, findices
+    # print("#expected_outputs", expected_outputs)
+            
+    # return sep_outputs, tab_outputs, findices
+    return sep_outputs, resampled_tab_outputs, findices#, frame_indices, cqt_times #  
 
 
 ############## FROM TABCNN REPO ###############
@@ -321,14 +328,14 @@ def predict_song(args, audio_path, model):
 
     if args.task in ['tablature', 'multitask']:                        
 
-        # Get labels and resample them __gbastas__
+        # Get labels and resample them 
         np.set_printoptions(threshold=np.inf)
         resampled_labels_dict = {}   
         mix_audio, mix_sr = data.utils.load(audio_path, sr=None, mono=False)
         
         
         ###########NOTE#####################
-        # labels_samples_dict = load_jams(args, audio_path, mix_audio)  21
+        # labels_samples_dict = load_jams(args, audio_path, mix_audio) #  21
         # # print('findices', findices)
         
         # for key in labels_samples_dict.keys():
@@ -343,7 +350,7 @@ def predict_song(args, audio_path, model):
         ###########NOTE#####################
 
         # NOTE: provisionl testing
-        resampled_labels_dict = load_tabcnn_jams(args, audio_path, cqt_times, frame_indices)#.long()  21
+        resampled_labels_dict = load_tabcnn_jams(args, audio_path, cqt_times, frame_indices)#.long() #  21
 
     if args.task in ['separation', 'multitask']:
 
@@ -387,19 +394,27 @@ def evaluate(args, dataset, model, instruments):
     perfs_comp = list()
     perfs_solo = list()
     model.eval()
-    PP = list()
-    PR = list()
-    PF = list()
-    TP = list()
-    TR = list()
-    TF = list()
-    TDR = list()
+    # PP = list()
+    # PR = list()
+    # PF = list()
+    # TP = list()
+    # TR = list()
+    # TF = list()
+    # TDR = list()
     with torch.no_grad():
         Y_preds = []
-        Y_gts = []        
+        Y_gts = []     
+           
+        Y_preds_comp = []
+        Y_gts_comp = []
+
+        Y_preds_solo = []
+        Y_gts_solo = []
+        
         # for example in dataset:
         for example_num, example in enumerate(dataset):
-            
+            # if example_num > 1: #__gbastas_
+            #     break                
             print("Evaluating " + example["mix"])
 
             # Load source references in their original sr and channel number
@@ -435,6 +450,7 @@ def evaluate(args, dataset, model, instruments):
                     song[name] = {"SDR" : SDR[idx], "ISR" : ISR[idx], "SIR" : SIR[idx], "SAR" : SAR[idx], "SI-SDR": si_sdr_values[idx]}
                 perfs.append(song)
 
+
                 if '_comp' in example['mix']:
                     perfs_comp.append(song)
 
@@ -442,7 +458,8 @@ def evaluate(args, dataset, model, instruments):
                     perfs_solo.append(song)
                     
 
-            if args.task in ['tablature', 'multitask']:                        
+            if args.task in ['tablature', 'multitask']:          
+                # individual song tab result insights              
                 y_preds, y_gts = [], []
                 for key in pred_tab.keys():
                     y_preds.append(pred_tab[key])
@@ -455,9 +472,21 @@ def evaluate(args, dataset, model, instruments):
                 y_gts = np.transpose(y_gts, (2, 0, 1)) # (78760, 6, 21)
 
                 extra = y_preds.shape[0] - y_gts.shape[0]
+
                 y_preds = y_preds[:-extra]
+
+                # gather all song frames in one long matrix
                 Y_preds.append(y_preds)
                 Y_gts.append(y_gts)
+                if '_comp' in example['mix']:
+                    Y_preds_comp.append(y_preds)
+                    Y_gts_comp.append(y_gts)
+
+                if '_solo' in example['mix']:
+                    Y_preds_solo.append(y_preds)
+                    Y_gts_solo.append(y_gts)
+
+
 
                 print_tablature(y_preds[:])
                 print_tablature(y_gts[:])      
@@ -470,13 +499,6 @@ def evaluate(args, dataset, model, instruments):
                 tf = Metrics.tab_f_measure(y_preds, y_gts)
                 tdr = Metrics.tab_disamb(y_preds, y_gts)
 
-                PP.append(pp)
-                PR.append(pr)
-                PF.append(pf)
-                TP.append(tp)
-                TR.append(tr)
-                TF.append(tf)
-                TDR.append(tdr)            
                 print('tf', round(tf,2))
 
 
@@ -500,6 +522,32 @@ def evaluate(args, dataset, model, instruments):
             TDR = Metrics.tab_disamb(Y_preds, Y_gts)
 
 
+            Y_preds_comp = np.concatenate(Y_preds_comp)
+            Y_gts_comp = np.concatenate(Y_gts_comp)
+            print('Y_preds_comp', Y_preds_comp.shape)
+            print('Y_gts_comp', Y_gts_comp.shape)   
+
+            PP_comp = Metrics.pitch_precision(Y_preds_comp, Y_gts_comp)
+            PR_comp = Metrics.pitch_recall(Y_preds_comp, Y_gts_comp)
+            PF_comp = Metrics.pitch_f_measure(Y_preds_comp, Y_gts_comp)
+            TP_comp = Metrics.tab_precision(Y_preds_comp, Y_gts_comp)
+            TR_comp = Metrics.tab_recall(Y_preds_comp, Y_gts_comp)
+            TF_comp = Metrics.tab_f_measure(Y_preds_comp, Y_gts_comp)
+            TDR_comp = Metrics.tab_disamb(Y_preds_comp, Y_gts_comp)
+
+            Y_preds_solo = np.concatenate(Y_preds_solo)
+            Y_gts_solo = np.concatenate(Y_gts_solo)
+            print('Y_preds_solo', Y_preds_solo.shape)
+            print('Y_gts_solo', Y_gts_solo.shape)   
+            
+            PP_solo = Metrics.pitch_precision(Y_preds_solo, Y_gts_solo)
+            PR_solo = Metrics.pitch_recall(Y_preds_solo, Y_gts_solo)
+            PF_solo = Metrics.pitch_f_measure(Y_preds_solo, Y_gts_solo)
+            TP_solo = Metrics.tab_precision(Y_preds_solo, Y_gts_solo)
+            TR_solo = Metrics.tab_recall(Y_preds_solo, Y_gts_solo)
+            TF_solo = Metrics.tab_f_measure(Y_preds_solo, Y_gts_solo)
+            TDR_solo = Metrics.tab_disamb(Y_preds_solo, Y_gts_solo)            
+            
             print('PP', round(np.mean(PP), 3))
             print('PR', round(np.mean(PR), 3))
             print('PF', round(np.mean(PF), 3))
@@ -508,10 +556,30 @@ def evaluate(args, dataset, model, instruments):
             print('TF', round(np.mean(TF), 3))
             print('TDR', round(np.mean(TDR), 3))
 
-            return perfs, perfs_comp, perfs_solo   
+            # Print metrics for comp
+            print('\nComp Metrics:')
+            print('PF_comp', round(np.mean(PF_comp), 3))
+            print('TF_comp', round(np.mean(TF_comp), 3))
+            print('TDR_comp', round(np.mean(TDR_comp), 3))
 
-        if args.task in ['separation', 'multitask']:
-            return perfs, perfs_comp, perfs_solo   
+            # Print metrics for solo
+            print('\nSolo Metrics:')
+            print('PF_solo', round(np.mean(PF_solo), 3))
+            print('TF_solo', round(np.mean(TF_solo), 3))
+            print('TDR_solo', round(np.mean(TDR_solo), 3))
+
+            tab_res = (PP, PR, PF, TP, TR, TF, TDR)
+            tab_res_comp = (PP_comp, PR_comp, PF_comp, TP_comp, TR_comp, TF_comp, TDR_comp)
+            tab_res_solo = (PP_solo, PR_solo, PF_solo, TP_solo, TR_solo, TF_solo, TDR_solo)
+            # return perfs, perfs_comp, perfs_solo   
+            
+    return perfs, perfs_comp, perfs_solo, tab_res, tab_res_comp, tab_res_solo 
+
+
+
+
+        # if args.task in ['separation', 'multitask']:
+        #     return perfs, perfs_comp, perfs_solo, tab_res, tab_res_comp, tab_res_solo 
 
 
 
@@ -542,15 +610,23 @@ def validate(args, model, criterion, tab_criterion, test_data):
                 if args.task in ['separation', 'multitask']:
                     for k in list(targets.keys()):
                         targets[k] = targets[k].cuda()
-                if args.task in ['tablature', 'multitask']:                        
-                    cqt = cqt.cuda()
+                if args.task in ['tablature', 'multitask']:  
+                    if "TabCNN" in args.tab_version:
+                        cqt = cqt.cuda()
                     for k in list(tab_labels.keys()):
+                        # tab_labels[k] = tab_labels[k].cuda()
                         tab_labels[k] = tab_labels[k].long().cuda()
-
+            # try:                        
             _, avg_loss, avg_tab_loss, avg_tab_acc = model_utils.compute_loss(model, x, targets, tab_labels, cqt, criterion, tab_criterion, task=args.task, tab_version=args.tab_version)
+            # except RuntimeError as e:
+            #     continue
+
             total_loss += (1. / float(example_num + 1)) * (avg_loss - total_loss)
             total_tab_loss += (1. / float(example_num + 1)) * (avg_tab_loss - total_tab_loss)
 
+            # pbar.set_description("Current loss: {:.4f}".format(total_loss))
+            # pbar.set_description("Current tab loss: {:.4f}".format(total_tab_loss))
+            # pbar.set_description("Current tab Acc: {:.4f}".format(avg_tab_acc))
 
             description = "Current loss: {:.4f}, Current tab loss: {:.4f}, Current tab Acc: {:.4f}".format(
                 total_loss, total_tab_loss, avg_tab_acc
@@ -585,6 +661,7 @@ def tab2bin(tab):
         fret_vector = tab[string_num]
         fret_class = np.argmax(fret_vector, -1)
         # 0 means that the string is closed 
+        # if fret_class > 0:
         fret_num = fret_class - 1
         tab_arr[string_num] = fret_num 
     return tab_arr        

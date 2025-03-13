@@ -389,9 +389,9 @@ class Waveunet(nn.Module):
             tab_out = module.tab_fc2(tab_out)
             tab_out = tab_out.transpose(1, 2)  # Return to (N, C, T) format
         
-            # Resample
-            indices = np.linspace(0, tab_out.shape[0] - 1, 87, endpoint=True).astype(int)
-            tab_out = tab_out[:, :, indices]            
+            # # Resample
+            # indices = np.linspace(0, tab_out.shape[2] - 1, 87, endpoint=True).astype(int)
+            # tab_out = tab_out[:, :, indices]            
 
 
         # OUTPUT CONV
@@ -405,41 +405,16 @@ class Waveunet(nn.Module):
         curr_input_size = x.shape[-1]
         assert(curr_input_size == self.input_size)  # User promises to feed the proper input himself, to get the pre-calculated (NOT the originally desired) output size
         assert(inst is None)
-        tab_list = []
         tab_enc_list = []
         tab_outs = {}
-        aggr_tab_pred = 90
 
 
 
-        if self.tab_version != 'TabCNN':
-            for inst in self.model_list:
-                out, tab_out, tab_enc = self.forward_module(x, self.waveunets[inst])
+        for inst in self.model_list:
+            out, tab_out, tab_enc = self.forward_module(x, self.waveunets[inst])
 
-                tab_enc_list.append(tab_enc)
-                tab_outs[inst] = {"output": out, "tab_pred": tab_out}  # tab_pred changes value further on for TabCNN version
-
-        if 'TabCNN' in self.tab_version:
-            ############ TabCNN ############
-            x_cqt_tensor = x_cqt  # Shape: (1, 192, T)
-            overlapping_windows = create_overlapping_windows(x_cqt_tensor, window_size=9, step_size=1)  # Break it to 9 frame batches!
-            tabcnn_pred, tabcnn_enc = self.tab_cnn(overlapping_windows)  # Assuming overlapping_windows has shape (N, 1, 192, 9), where N is the number of windows (N=342)
-            ############ TabCNN ############        
-
-            if self.tab_version == '2up2down-TabCNN':
-                concatenated_tab_enc = torch.cat(tab_enc_list, dim=1)
-                concatenated_tab_enc = concatenated_tab_enc.transpose(1, 2)  # Prepare for dense layer (N, T, C), e.g. [1, 342, 3072]             
-                aggr_tab_pred = torch.cat((tabcnn_enc, concatenated_tab_enc), dim=2) # 1, 87, 5952 and 1, 87, 1536
-
-                # Output Head for WaveUNet-TabCNN
-                aggr_tab_pred = self.waveunet_head(aggr_tab_pred)
-                
-
-            elif self.tab_version == 'TabCNN':
-                aggr_tab_pred = tabcnn_pred.unsqueeze(0)
-                aggr_tab_pred = aggr_tab_pred.permute(0, 3, 2, 1)
-
-        return tab_outs, aggr_tab_pred
+            tab_enc_list.append(tab_enc)
+            tab_outs[inst] = {"output": out, "tab_pred": tab_out}  # tab_pred changes value further on for TabCNN version
 
 
 

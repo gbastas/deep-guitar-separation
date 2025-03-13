@@ -7,7 +7,7 @@ __pycache__/
 GuitarSet/data*/
 Wave-U-Net-Pytorch-6string*/datasets/GuitarSep/
 Wave-U-Net-Pytorch-6string*/hdf*/
-Wave-U-Net-Pytorch-6string*/checkpoints/
+# Wave-U-Net-Pytorch-6string*/checkpoints/
 Wave-U-Net-Pytorch-6string*/logs/
 Wave-U-Net-Pytorch-6string*/logs_ath/
 Wave-U-Net-Pytorch-6string*/train/
