@@ -29,7 +29,7 @@ To get the dataset ready for training, we follow the *Senvaitytite train-test sp
 cd datasets/GuitarSet/
 python prepare_source_sep_data.py # this create dir datasep/
 python prepare_source_sep_data-mic.py # this create dir datasep-mic/
-prepare_source_sep_datamono-pickup.py # this create dir datasep-mix/
+python prepare_source_sep_datamono-pickup.py # this create dir datasep-mix/
 cd -
 ```
 
@@ -48,25 +48,17 @@ Run the following commands to process and extract data:
 cd data-manipulation-code/
 python AuxDataPrep.py --action pseudo_sep --all_solos
 python AuxDataPrep.py --action pseudocomp_sep --all_solos
-cd -
-```
-
-Create the GSCustomMic Directory:
-```
-cd datasets
-mkdir -p GSCustomMic
 ```
 
 Copy Processed Data into GSCustomMic:
 ```
-cd datasets/GuitarSet
-cp -r ./pseudo_sep_all_solos_mic_wn/* ../GSCustomMic
-cp -r ./pseudocomp_sep_all_notes/* ../GSCustomMic
+mkdir -p GSCustomMic
+cp -r ./pseudo_sep_all_solos_mic_wn/* GSCustomMic
+cp -r ./pseudocomp_sep_all_notes/* GSCustomMic
 ```
 
-Perform Train-Test Split:
+Perform Train-Test Split: # TODO
 ```
-cd ..
 python pseudo_train_test_split.py -d GSCustomMic # this will create ./datasets/{dir_name}/test/
 cd GSCustomMic
 mkdir train
@@ -90,12 +82,23 @@ https://gitlab.com/ilsp-spmd-all/phds/phd-grigoris/string_separation#fake-full-t
 
 Clean training:
 ```
-CUDA_VISIBLE_DEVICES=0 python train.py --dataset_dir ../GuitarSet/datasep/ --cuda --hdf_dir hdfs/hdf --checkpoint_dir checkpoints/waveunet --log_dir logs/waveunet --channels 1 --patience 200```
+python train.py \
+  --dataset_dir ../datasets/GuitarSet/<your_dataset_dir> \
+  --hdf_dir hdfs/<choose_dirname> \
+  --checkpoint_dir checkpoints/<choose_dirname> \
+  --patience 200 \
+  --channels 1 \
+  --cuda
 ```
 
-Quantitative Evaluation:
+For Quantitative Evaluation:
 ```
-python train.py --dataset_dir ../GuitarSet/{datasep}/ --cuda --hdf_dir hdfs/hdf --checkpoint_dir checkpoints/{waveunet} --log_dir logs/{waveunet} --channels 1 --patience -1 --split # --load_model checkpoints/{checkpoint_dir}/best_checkpoint_#
+python train.py \
+  --dataset_dir datasets/GuitarSet/<your_dataset_dir> \
+  --hdf_dir hdfs/<your_hdf_dir> \
+  --checkpoint_dir checkpoints/<your_checkpoint_dir> \
+  --patience -1 \
+  --load_model checkpoints/<your_checkpoint_dir>/best_checkpoint_<N>
 ```
 
 Qualitative Testing:
