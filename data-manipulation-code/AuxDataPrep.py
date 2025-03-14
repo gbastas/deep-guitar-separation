@@ -228,7 +228,8 @@ def GuitarSetProcessing(constants : Constants):
 
         if args.action == "gather_notes":
             # NOTE: To create note_instances dataset uncomment and in constants.ini set crop_win=3 and listoftracksfile = allsolos.txt
-            note_instances_dir = './note_instances/'+constants.dataset+'guitar'
+            note_instances_dir = './note_instances/data/train/'+constants.dataset+'guitar'
+            # os.makedirs(note_instances_dir, exist_ok=True)            
             for tabelement, annoselement in zip(tablature.tabList, annotations.tablature.tabList):
                 note_audio = tabelement.note_audio
 
