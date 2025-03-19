@@ -54,7 +54,7 @@ def GuitarSetProcessing(constants : Constants):
                 Note[i,fret] = notes[(start_idx + fret) % 12]
 
 
-    if args.action in ['gather_notes', 'pseudo_sep', 'pseudocomp_sep']:
+    if args.action in ['gather_notes', 'pseudo_sep', 'pseudocomp_sep', 'plot']:
         constants.crop_win=3
         if args.all_solos:
             constants.listoftracksfile = 'allsolos.txt'
@@ -78,18 +78,13 @@ def GuitarSetProcessing(constants : Constants):
     count_omitted_note_events = 0
     count_total_note_events = 0
     Strings_gt_total_count = [0]*6
-
+    print('Ongoing Pitch-Fret-String Estimation...') # __new__
     for count, name in enumerate(lines): # iterate over filenames
         
         name = name.replace('\n', '')         # e.g. '02_SS2-88-F_solo.jams'
-        print('testfile', name)
+        # print('testfile', name)
         annosfilepath = os.path.join(constants.annos_path, name)
 
-        # if constants.verbose:
-        #     print()
-        #     print('Audio-based detection running...')
-        #     print(name, count,'/',len(lines))
-        # else:
         printProgressBar(count,len(lines),decimals=0, length=50)
 
         tablature=None
@@ -101,9 +96,6 @@ def GuitarSetProcessing(constants : Constants):
 
         audio, _ = librosa.load(audiofilepath, sr=constants.sampling_rate) 
 
-        # if args.pred_onset:
-        #     test_onsets = demo_utils.get_onsets(audiofilepath, constants)
-        # else:
         test_onsets = [tab_element.onset for tab_element in annos_tab_list]
         test_offsets = [tab_element.offset for tab_element in annos_tab_list]
 
@@ -111,12 +103,11 @@ def GuitarSetProcessing(constants : Constants):
         test_strings = [tab_element.string for tab_element in annos_tab_list]
         test_frets = [tab_element.fret for tab_element in annos_tab_list]
 
-        print('Ongoing Pitch-Fret-String Estimation...') # __new__
 
         # to get the note audio instances:
         tablature = Tablature(test_onsets, test_offsets, audio, constants)
 
-        if args.action == 'pseudo_sep':
+        if args.action == 'pseudo_sep' or args.action == 'plot':
             if args.all_solos:
                 dest_path = './pseudo_sep_all_solos_'+constants.dataset+'_wn/'+name[:-5]+'_hex_'+constants.dataset+'/'
             else:
@@ -133,11 +124,16 @@ def GuitarSetProcessing(constants : Constants):
                 end = int(round((offset)*(constants.sampling_rate)))
 
                 count_total_note_events+=1
+                Strings_gt_total_count[string]+=1
+
+                if args.plot:
+                    continue
+
                 # avoid chords
                 if i>0 and i<len(test_onsets)-1 and (test_onsets[i+1]-test_onsets[i]<0.06 or test_onsets[i]-test_onsets[i-1]<0.06): # (test_onsets[i+1] < offset or prev_offset > onset): 
                     # print('"chord" occurrence!')#, test_onsets[i+1]-test_onsets[i], test_onsets[i]-test_onsets[i-1])
                     count_omitted_note_events+=1
-                    Strings_gt_total_count[string]+=1
+                    # Strings_gt_total_count[string]+=1
                     prev_offset = offset
                     start_diff += start - prev_start
                     prev_start = start
@@ -229,6 +225,7 @@ def GuitarSetProcessing(constants : Constants):
         if args.action == "gather_notes":
             # NOTE: To create note_instances dataset uncomment and in constants.ini set crop_win=3 and listoftracksfile = allsolos.txt
             note_instances_dir = './note_instances/data/train/'+constants.dataset+'guitar'
+            onset_instances_dir = './note_instances/data/onsets/'+constants.dataset+'guitar'
             # os.makedirs(note_instances_dir, exist_ok=True)            
             for tabelement, annoselement in zip(tablature.tabList, annotations.tablature.tabList):
                 note_audio = tabelement.note_audio
@@ -259,23 +256,30 @@ def GuitarSetProcessing(constants : Constants):
                 string = annoselement.string
                 if note[:-1].replace('♯','#')!= Note[string, fret]:
                     print('Notes', note[:-1].replace('♯','#'), Note[string, fret])
-                    print('String-fret', string, fret)
+                    print('String-fret', string, fret)  
                     continue
 
                 Matrix[string,fret]+=1
                 if Matrix[string,fret]>100:
                     continue
 
+                # Store the note audio in the corresponding directory
                 note_audio = tabelement.note_audio
-                
                 note_instances_stringdir = os.path.join(note_instances_dir+str(int(Matrix[string,fret])), 'string'+str(string+1))
                 os.makedirs(note_instances_stringdir, exist_ok=True)
-
                 dest_path = os.path.join(note_instances_stringdir, str(fret))+'.wav'
                 sf.write(dest_path, note_audio, constants.sampling_rate)
 
+                # Handle txt file creation and replacing .wav with .txt
+                txt_filename = os.path.splitext(os.path.basename(dest_path))[0] + '.txt'
+                txt_file_stringdir = os.path.join(onset_instances_dir+str(int(Matrix[string,fret])), 'string'+str(string+1))
+                os.makedirs(txt_file_stringdir, exist_ok=True)
+                dest_path = os.path.join(txt_file_stringdir, str(fret))+'.txt'
+                with open(dest_path, 'w') as txt_file:
+                    txt_file.write("0")
+
     print('Ommited ' + str(count_omitted_note_events) + ' note events out of ' + str(count_total_note_events) +'.')
-    if args.all_tracks:
+    if args.plot:
         plot_note_hist(Strings_gt_total_count)
 
 def plot_note_hist(Strings_gt_total_count):
@@ -304,11 +308,13 @@ if __name__ == "__main__":
     parser.add_argument('--all_comps', action='store_true', help='if True: allsolos.txt, else: names.txt')
     parser.add_argument('--all_tracks', action='store_true', help='if True: allsolos.txt, else: names.txt')
     parser.add_argument('--pickup', action='store_true', help='pickup(="mix") else "mic"')
+    parser.add_argument('--plot', action='store_true', help='')
+    
 
     args = parser.parse_args()
 
     config_path = 'constants.ini'
-    workspace_folder = '../datasets/GuitarSet'
+    workspace_folder = '../datasets/GuitarSet/'
 
     constants = Constants(config_path, workspace_folder)    
     
