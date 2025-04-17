@@ -62,13 +62,14 @@ def main(args):
         val_comp_loss=np.Inf
         val_solo_loss=np.Inf
 
-    if args.version=='mic':
-        val_mic_data = SeparationDataset(musdb, "val_mic", args.instruments, args.sr, args.channels, model.shapes, False, args.hdf_dir, audio_transform=crop_func, features=features)
-        val_mix_data = SeparationDataset(musdb, "val_mix", args.instruments, args.sr, args.channels, model.shapes, False, args.hdf_dir, audio_transform=crop_func, features=features)
-        val_hex_cln_data = SeparationDataset(musdb, "val_hex_cln", args.instruments, args.sr, args.channels, model.shapes, False, args.hdf_dir, audio_transform=crop_func, features=features)
-    else:
-        val_mix_loss=np.Inf
-        val_hex_cln_loss=np.Inf
+    # if args.version=='mic':
+    #     val_mic_data = SeparationDataset(musdb, "val_mic", args.instruments, args.sr, args.channels, model.shapes, False, args.hdf_dir, audio_transform=crop_func, features=features)
+    #     val_mix_data = SeparationDataset(musdb, "val_mix", args.instruments, args.sr, args.channels, model.shapes, False, args.hdf_dir, audio_transform=crop_func, features=features)
+    #     val_hex_cln_data = SeparationDataset(musdb, "val_hex_cln", args.instruments, args.sr, args.channels, model.shapes, False, args.hdf_dir, audio_transform=crop_func, features=features)
+    # else:
+    #     val_mix_loss=np.Inf
+    #     val_hex_cln_loss=np.Inf
+    #     val_mic_loss=np.Inf
 
         
     print('No comp/solo distinct val scores will be considered')
@@ -156,10 +157,10 @@ def main(args):
         except Exception as e:
             print("warning couldn't load val_comp or val_solo")
 
-        if args.version=='mic':
-            val_mic_loss = validate(args, model, criterion, val_mic_data)
-            val_mix_loss = validate(args, model, criterion, val_mix_data)
-            val_hex_cln_loss = validate(args, model, criterion, val_hex_cln_data)
+        # if args.version=='mic':
+        #     val_mic_loss = validate(args, model, criterion, val_mic_data)
+        #     val_mix_loss = validate(args, model, criterion, val_mix_data)
+        #     val_hex_cln_loss = validate(args, model, criterion, val_hex_cln_data)
             
         print("VALIDATION FINISHED: LOSS: " + str(val_loss))
         writer.add_scalar("val_loss", val_loss, state["step"])
@@ -213,39 +214,39 @@ def main(args):
             model_utils.save_model(model, optimizer, state, checkpoint_solo_best_path)
 
         
-        if val_hex_cln_loss < state["best_hex_cln_loss"] and args.version=='mic':
-            print("MODEL IMPROVED ON hex_cln VALIDATION SET!")
-            checkpoint_hex_cln_best_path = os.path.join(args.checkpoint_dir, "best_hex_cln_checkpoint_" + str(state["step"]))
-            try:
-                os.remove(checkpoint_hex_cln_best_path_prev)
-            except Exception as e:
-                print('Caught exception solo:', e)
-            print("Saving best solo model...")           
-            state["best_hex_cln_loss"] = val_hex_cln_loss
-            model_utils.save_model(model, optimizer, state, checkpoint_hex_cln_best_path)
+        # if val_hex_cln_loss < state["best_hex_cln_loss"] and args.version=='mic':
+        #     print("MODEL IMPROVED ON hex_cln VALIDATION SET!")
+        #     checkpoint_hex_cln_best_path = os.path.join(args.checkpoint_dir, "best_hex_cln_checkpoint_" + str(state["step"]))
+        #     try:
+        #         os.remove(checkpoint_hex_cln_best_path_prev)
+        #     except Exception as e:
+        #         print('Caught exception solo:', e)
+        #     print("Saving best solo model...")           
+        #     state["best_hex_cln_loss"] = val_hex_cln_loss
+        #     model_utils.save_model(model, optimizer, state, checkpoint_hex_cln_best_path)
 
-        if val_mic_loss < state["best_mic_loss"] and args.version=='mic':
-            print("MODEL IMPROVED ON mic VALIDATION SET!")
-            checkpoint_mic_best_path = os.path.join(args.checkpoint_dir, "best_mic_checkpoint_" + str(state["step"]))
-            try:
-                os.remove(checkpoint_mic_best_path_prev)
-            except Exception as e:
-                print('Caught exception solo:', e)
-            print("Saving best solo model...")           
-            state["best_mic_loss"] = val_mic_loss
-            model_utils.save_model(model, optimizer, state, checkpoint_mic_best_path)
+        # if val_mic_loss < state["best_mic_loss"] and args.version=='mic':
+        #     print("MODEL IMPROVED ON mic VALIDATION SET!")
+        #     checkpoint_mic_best_path = os.path.join(args.checkpoint_dir, "best_mic_checkpoint_" + str(state["step"]))
+        #     try:
+        #         os.remove(checkpoint_mic_best_path_prev)
+        #     except Exception as e:
+        #         print('Caught exception solo:', e)
+        #     print("Saving best solo model...")           
+        #     state["best_mic_loss"] = val_mic_loss
+        #     model_utils.save_model(model, optimizer, state, checkpoint_mic_best_path)
 
         
-        if val_mix_loss < state["best_mix_loss"] and args.version=='mic':
-            print("MODEL IMPROVED ON mix VALIDATION SET!")
-            checkpoint_mix_best_path = os.path.join(args.checkpoint_dir, "best_mix_checkpoint_" + str(state["step"]))
-            try:
-                os.remove(checkpoint_mix_best_path_prev)
-            except Exception as e:
-                print('Caught exception solo:', e)
-            print("Saving best solo model...")           
-            state["best_mix_loss"] = val_mix_loss
-            model_utils.save_model(model, optimizer, state, checkpoint_mix_best_path)
+        # if val_mix_loss < state["best_mix_loss"] and args.version=='mic':
+        #     print("MODEL IMPROVED ON mix VALIDATION SET!")
+        #     checkpoint_mix_best_path = os.path.join(args.checkpoint_dir, "best_mix_checkpoint_" + str(state["step"]))
+        #     try:
+        #         os.remove(checkpoint_mix_best_path_prev)
+        #     except Exception as e:
+        #         print('Caught exception solo:', e)
+        #     print("Saving best solo model...")           
+        #     state["best_mix_loss"] = val_mix_loss
+        #     model_utils.save_model(model, optimizer, state, checkpoint_mix_best_path)
 
 
         # CHECKPOINT
