@@ -365,23 +365,19 @@ class Waveunet(nn.Module):
 
         # # UPSAMPLING BLOCKS
         for idx, block in enumerate(module.upsampling_blocks):
-            out, short = block(out, shortcuts[-1 - idx])
-
-            if idx==4: # i.e 5 upsampling layers
-                tab_out = out.clone()
+            out, short = block(out, shortcuts[-1 - idx])       
             upsampled_short.append(short)
+        
+        tab_out = out.clone()
+
         tab_enc = None
         if self.tab_branches_added:
-            if self.tab_version=='2up2down' or self.tab_version=='2up2down-TabCNN':
-                tab_out, _ = module.tab_downsampling_block1(tab_out)
-                tab_out, _ = module.tab_downsampling_block2(tab_out)
-                tab_out, _ = module.tab_downsampling_block3(tab_out)
-                tab_out, _ = module.tab_downsampling_block4(tab_out)
-                tab_out, _ = module.tab_downsampling_block5(tab_out)
-                if 'TabCNN' in self.tab_version:
-                    ################
-                    tab_enc = tab_out.clone()
-                    ################
+            tab_out, _ = module.tab_downsampling_block1(tab_out)
+            tab_out, _ = module.tab_downsampling_block2(tab_out)
+            tab_out, _ = module.tab_downsampling_block3(tab_out)
+            tab_out, _ = module.tab_downsampling_block4(tab_out)
+            tab_out, _ = module.tab_downsampling_block5(tab_out)
+
 
             tab_out = tab_out.transpose(1, 2)  # Prepare for dense layer (N, T, C)
      
@@ -389,10 +385,6 @@ class Waveunet(nn.Module):
             tab_out = module.tab_fc2(tab_out)
             tab_out = tab_out.transpose(1, 2)  # Return to (N, C, T) format
         
-            # # Resample
-            # indices = np.linspace(0, tab_out.shape[2] - 1, 87, endpoint=True).astype(int)
-            # tab_out = tab_out[:, :, indices]            
-
 
         # OUTPUT CONV
         out = module.output_conv(out)
@@ -407,8 +399,7 @@ class Waveunet(nn.Module):
         assert(inst is None)
         tab_enc_list = []
         tab_outs = {}
-
-
+        aggr_tab_pred = 90
 
         for inst in self.model_list:
             out, tab_out, tab_enc = self.forward_module(x, self.waveunets[inst])
@@ -417,6 +408,7 @@ class Waveunet(nn.Module):
             tab_outs[inst] = {"output": out, "tab_pred": tab_out}  # tab_pred changes value further on for TabCNN version
 
 
+        return tab_outs, aggr_tab_pred
 
         
 

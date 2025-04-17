@@ -13,7 +13,7 @@ import numpy as np
 import sys
 import os
 from pathlib import Path
-cur_path = Path('../src/')
+cur_path = Path('src/')
 sys.path.append(str(cur_path))
 
 # from Inharmonic_Detector import Constants#, StringBetas
@@ -23,39 +23,40 @@ import argparse
 import numpy as np
 import random
 import soundfile as sf
+import warnings
+warnings.simplefilter("ignore")
 
 n_empty = 0
-# random.seed(0)
 
-# def get_audio_sample(constants : Constants, dataset_no, string, fret):
 def get_audio_sample(args, dataset_no, string, fret):	
-    path_to_track = Path(args.training_path +
-                         args.guitar + str(dataset_no) +
-                         '/string' + str(string + 1) + '/' + str(fret) + '.wav')
+	path_to_track = os.path.join(args.note_instances, 'data', 'train',
+						 args.guitar + str(dataset_no),
+						 'string' + str(string + 1),  
+						 str(fret) + '.wav')
 
-    try:    
-        rec_audio, _ = librosa.load(path_to_track, sr=args.sampling_rate)
-    except FileNotFoundError as e:
-        print('[My Warning]', e)    
-        return None
+	try:    
+		rec_audio, _ = librosa.load(path_to_track, sr=args.sampling_rate)
+		print("Found note evenet for: strig " + str(string) + ", fret " + str(fret) + ", dataset_no " + str(dataset_no))
 
-    path_to_onsettime = Path(args.note_instances + '/data/onsets/' +
-                             args.guitar + str(dataset_no) +
-                             '/string' + str(string + 1) + '/' + str(fret) + '.txt')
+	except FileNotFoundError as e:
+		return None
 
-    with open(path_to_onsettime, 'r') as f:
-        onsetsec = float(f.read())
-        onsetidx = int(onsetsec * args.sampling_rate)
-        minus25idx = int(0.025 * args.sampling_rate)
+	path_to_onsettime = Path(args.note_instances + '/data/onsets/' +
+							 args.guitar + str(dataset_no) +
+							 '/string' + str(string + 1) + '/' + str(fret) + '.txt')
 
-    scaling_factor = np.random.uniform(0.1, 1.0)
-    res_audio = rec_audio[onsetidx:]
+	with open(path_to_onsettime, 'r') as f:
+		onsetsec = float(f.read())
+		onsetidx = int(onsetsec * args.sampling_rate)
 
-    # random scaling
-    scaling_factor = np.random.uniform(0.8, 1.0)
-    res_audio = res_audio * scaling_factor
+	scaling_factor = np.random.uniform(0.1, 1.0)
+	res_audio = rec_audio[onsetidx:]
 
-    return rec_audio[onsetidx:]
+	# random scaling
+	scaling_factor = np.random.uniform(0.8, 1.0)
+	res_audio = res_audio * scaling_factor
+
+	return rec_audio[onsetidx:]
 
 
 def parse_isolated_note_recordings(args):
@@ -67,7 +68,6 @@ def parse_isolated_note_recordings(args):
 	for string in range(6):
 		for fret in range(args.max_fret):
 			for dataset_no in range(args.n_samples):
-				print(string, fret, dataset_no)
 				# Replace 'None' with your actual array/signal generation logic
 				audio_sample = get_audio_sample(args, dataset_no+1, string, fret)
 				# Check if the result is None, and if so, assign None to the array
@@ -99,12 +99,10 @@ def render_beat_to_audio(args, beat, dur_samples, recs):
 
 		c=0
 		for element in recs[string,fret,:]:
-			# if len(element)<2:
 			if element is None:
 				if c!=0:
 					print('No. samples ', c)
-					# print(recs[string,fret,i])
-					# print(len(recs[string,fret,c]))
+
 				break
 			c+=1
 
@@ -133,21 +131,19 @@ if __name__ == '__main__':
 	parser.add_argument('--input_dir', type=str, default='gp_token_examples', help='gp_token_examples or DadaGP-v1.1')
 	parser.add_argument('--guitar', type=str, help= 'martin or firebrand')
 	parser.add_argument('--max_fret', type=int, default=18)
-	parser.add_argument('--n_samples', type=int, default=44100)
+	parser.add_argument('--n_samples', type=int, default=30)
+	parser.add_argument('--sampling_rate', type=int, default=44100)
 	args = parser.parse_args()
 
 	np.random.seed(0) 
 	data_percentage=0.03
 
-	# os.makedirs('data/fake_audio/')
-
-	file_exists = os.path.exists(args.config_path)
-	if not file_exists:
-		print('MyError: File', args.config_path, 'does not exist.')
-
 
 	# prepare
-	main_folder = 'data/'+args.input_dir
+	main_folder = args.input_dir
+	if not os.path.isdir(main_folder):
+		print("Input dir" + args.input_dir + "does not exist.")
+		exit(1)
 	
 	recs = parse_isolated_note_recordings(args)
 
@@ -219,11 +215,8 @@ if __name__ == '__main__':
 
 										artif_multichannel_track = np.append(artif_multichannel_track, artif_multichannel_event, axis=1)
 
-										# print(artif_multichannel_track.shape)
-										# artif_multichannel_track = np.append( artif_multichannel_track, artif_multichannel_event, axis=1)
 							try:
-								# os.makedirs('data/Fake_Audio_mic_gp_token_examples/'+file[:-4]+'_track'+str(t_id)+'/')
-								os.makedirs('data/Fake_Audio_mic_'+args.input_dir+'/'+file[:-4]+'_track'+str(t_id)+'/')
+								os.makedirs('mdgp/'+file[:-4]+'_track'+str(t_id)+'/')
 							except:
 								continue
 
@@ -233,17 +226,13 @@ if __name__ == '__main__':
 							except:
 								continue
 							
-							sf.write('data/Fake_Audio_mic_'+args.input_dir+'/'+file[:-4]+'_track'+str(t_id)+'/'+'E.wav', artif_multichannel_track[0,:], args.sampling_rate, 'PCM_16')
-							sf.write('data/Fake_Audio_mic_'+args.input_dir+'/'+file[:-4]+'_track'+str(t_id)+'/'+'A.wav', artif_multichannel_track[1,:], args.sampling_rate, 'PCM_16')
-							sf.write('data/Fake_Audio_mic_'+args.input_dir+'/'+file[:-4]+'_track'+str(t_id)+'/'+'D.wav', artif_multichannel_track[2,:], args.sampling_rate, 'PCM_16')
-							sf.write('data/Fake_Audio_mic_'+args.input_dir+'/'+file[:-4]+'_track'+str(t_id)+'/'+'G.wav', artif_multichannel_track[3,:], args.sampling_rate, 'PCM_16')
-							sf.write('data/Fake_Audio_mic_'+args.input_dir+'/'+file[:-4]+'_track'+str(t_id)+'/'+'B.wav', artif_multichannel_track[4,:], args.sampling_rate, 'PCM_16')
-							sf.write('data/Fake_Audio_mic_'+args.input_dir+'/'+file[:-4]+'_track'+str(t_id)+'/'+'e.wav', artif_multichannel_track[5,:], args.sampling_rate, 'PCM_16')					
-							sf.write('data/Fake_Audio_mic_'+args.input_dir+'/'+file[:-4]+'_track'+str(t_id)+'/'+'mixture.wav', artif_mono_track.T, args.sampling_rate, 'PCM_16')
+							sf.write('mdgp/'+file[:-4]+'_track'+str(t_id)+'/'+'E.wav', artif_multichannel_track[0,:], args.sampling_rate, 'PCM_16')
+							sf.write('mdgp/'+file[:-4]+'_track'+str(t_id)+'/'+'A.wav', artif_multichannel_track[1,:], args.sampling_rate, 'PCM_16')
+							sf.write('mdgp/'+file[:-4]+'_track'+str(t_id)+'/'+'D.wav', artif_multichannel_track[2,:], args.sampling_rate, 'PCM_16')
+							sf.write('mdgp/'+file[:-4]+'_track'+str(t_id)+'/'+'G.wav', artif_multichannel_track[3,:], args.sampling_rate, 'PCM_16')
+							sf.write('mdgp/'+file[:-4]+'_track'+str(t_id)+'/'+'B.wav', artif_multichannel_track[4,:], args.sampling_rate, 'PCM_16')
+							sf.write('mdgp/'+file[:-4]+'_track'+str(t_id)+'/'+'e.wav', artif_multichannel_track[5,:], args.sampling_rate, 'PCM_16')					
+							sf.write('mdgp/'+file[:-4]+'_track'+str(t_id)+'/'+'mixture.wav', artif_mono_track.T, args.sampling_rate, 'PCM_16')
 
 							artif_multichannel_track = np.empty([6,0]) # initialization, see [None]*6
 
-
-
-
-		

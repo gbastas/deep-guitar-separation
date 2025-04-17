@@ -1,0 +1,6 @@
+data*/
+demos/
+*.npz
+*.h5
+*pth
+*.pyc*
