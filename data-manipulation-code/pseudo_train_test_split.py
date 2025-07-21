@@ -10,12 +10,12 @@ args = parser.parse_args()
 
 
 pseudo_sep_path = args.dir_to_split 
-datasep_mic_test_path = "../datasets/GuitarSet/datasep-mic/test/"
+datasep_mic_test_path_asref = "../datasets/GuitarSet/datasep-mic/test/"
 os.makedirs(pseudo_sep_path+'/test/', exist_ok=True)
 for dir_name in os.listdir(pseudo_sep_path): # e.g. 01_BN3-119-G_comp_hex_mic
     source_dir = os.path.join(pseudo_sep_path, dir_name)
     dest_dir_name = '_'.join(dir_name.split('_')[:3]) # e.g. 01_BN3-119-G_comp
-    dest_dir = os.path.join(datasep_mic_test_path, dest_dir_name)
+    dest_dir = os.path.join(datasep_mic_test_path_asref, dest_dir_name)
 
 
     # print('os.path.exists(pseudo_sep_path):', os.path.exists(pseudo_sep_path))
