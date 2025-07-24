@@ -58,6 +58,7 @@ def get_musdbh_crossval(database_path):
 
 def get_musdb_folds(root_path, version="HQ", guitID=None):
     val_list_mic, val_list_mix, val_list_hex_cln = [], [], []
+    val_list = []
     
     if version == "HQ" or version == "HQ-half" or version == "HQ-3quarters" or version == "HQ-quarter" or version == "HQ-eighth"  or version == "HQ-sixteenth" or  version == "HQ-comp" or version == "HQ-solo" or version == 'mic' or version == 'pseudo'  or version == 'fake':
         dataset = get_musdbhq(root_path)
@@ -145,7 +146,7 @@ def get_musdb_folds(root_path, version="HQ", guitID=None):
         val_list = [elem for elem in train_val_list if elem not in train_list and elem not in train_val_list_other and elem not in list_comp]
 
 
-    elif version in ["mic", 'pseudo']: # mic means mic-mix-hex
+    elif version in ['pseudo']: # "mic" means mic-mix-hex
         train_val_list = dataset[0]
         test_list = dataset[1]
         
@@ -173,72 +174,42 @@ def get_musdb_folds(root_path, version="HQ", guitID=None):
                             '05_SS3-84-Bb_comp'] # sampled with np.random.seed(1337)
 
         train_list=[]
-        tmp=[]
+        # tmp=[]
         for track in train_val_list:
             is_it = '_'.join(track['mix'].split('/')[-2].split('_')[:3])
-            # print(is_it)
             if is_it in val_list_prefices: # check prefix (e.g. 00_BN1-129-Eb_comp) to separate between val and train
-                # print(track['mix'])
-                if '_mic' in track['mix']:
-                    tmp.append(is_it)
-                    val_list_mic.append(track)
-                if '_mix' in track['mix']:
-                    # print(track['mix'])
-                    val_list_mix.append(track)
-                if '_hex_cln' in track['mix']:
-                    val_list_hex_cln.append(track)
+                val_list.append(track) # NEW
+                # if '_mic' in track['mix']:
+                #     tmp.append(is_it)
+                #     val_list_mic.append(track)
+                # if '_mix' in track['mix']:
+                #     val_list_mix.append(track)
+                # if '_hex_cln' in track['mix']:
+                #     val_list_hex_cln.append(track)
             else:
                 train_list.append(track)
         
-        print('val_list_mic', len(val_list_mic))
-        print('val_list_mix', len(val_list_mix))
-        print('val_list_hex_cln', len(val_list_hex_cln))
 
-        print('val mix data:', len(val_list_mix))
-        print('val hex data:', len(val_list_hex_cln))
 
-    if val_list_mic: # if not empty
-        val_list = val_list_mic
+    # if val_list_mic: # if not empty
+    #     val_list = val_list_mic
 
     val_list_comp = np.array([track for track in val_list if 'comp' in track['mix']])
     val_list_solo = np.array([track for track in val_list if 'solo' in track['mix']])
     
     val_list_names = np.array([ track['mix'].split('/')[-2] for track in val_list ])
 
-    # print('val_list_names:', val_list_names)
+
+
     print('train data:', len(train_list))
     print('val data:', len(val_list))
+    print('val comp data',  len(val_list_comp))
+    print('val solo data',  len(val_list_solo))
 
-    # else:
-    #     print('[MyError] Check again the args.dataset_dir you have given!')
-    #     exit()
+    # aaa
 
-    # return {"train" : train_list, "val" : val_list, "test" : test_list}
-    # return {"train" : train_list, "val" : val_list, "val_comp": val_list_comp, "val_solo":val_list_solo, "test" : test_list}
+
     return {"train" : train_list, "val" : val_list, "val_comp": val_list_comp, "val_solo": val_list_solo, "test" : test_list,
             'val_mic': val_list_mic, "val_mix": val_list_mix, 'val_hex_cln': val_list_hex_cln}
 
 
-# def get_musdb_folds(root_path, version="cross-val", guitID=None):
-#     # if version == "senvaityte":
-#     dataset = get_musdbhq(root_path)
-#     # elif version == "cross-val":
-#     # dataset = get_musdbh_crossval(root_path)
-
-#     print(guitID)
-
-#     rnge = [i for i in range(0,6) if i not in [guitID, (guitID+1)%6] ]
-
-#     test_list = dataset[guitID]
-#     val_list = dataset[(guitID+1)%6] 
-#     train_list = [item for i in rnge for item in dataset[i]] 
-
-#     val_list_comp = np.array([track for track in val_list if 'comp' in track['mix']])
-#     val_list_solo = np.array([track for track in val_list if 'solo' in track['mix']])
-
-#     np.random.seed(1337) # Ensure that partitioning is always the same on each run
-
-#     print('train data:', len(train_list))
-#     print('val data:', len(val_list))
-
-#     return {"train" : train_list, "val" : val_list, "test" : test_list, "val_comp": val_list_comp, "val_solo": val_list_solo}

@@ -20,6 +20,7 @@ from data.utils import crop_targets, random_amplify
 from test import evaluate, validate
 from model.waveunet import Waveunet
 import csv
+import glob
 
 def main(args):
 
@@ -53,11 +54,11 @@ def main(args):
     train_data = SeparationDataset(musdb, "train", args.instruments, args.sr, args.channels, model.shapes, True, args.hdf_dir, audio_transform=augment_func, features=features) # NOTE: augmentation
     val_data = SeparationDataset(musdb, "val", args.instruments, args.sr, args.channels, model.shapes, False, args.hdf_dir, audio_transform=crop_func, features=features)
     if args.version=='pseudo':
-        try:
+        # try:
             val_comp_data = SeparationDataset(musdb, "val_comp", args.instruments, args.sr, args.channels, model.shapes, False, args.hdf_dir, audio_transform=crop_func, features=features)
             val_solo_data = SeparationDataset(musdb, "val_solo", args.instruments, args.sr, args.channels, model.shapes, False, args.hdf_dir, audio_transform=crop_func, features=features)
-        except Exception as e:
-            print("warning couldn't load val_comp or val_solo")
+        # except Exception as e:
+        #     print("warning couldn't load val_comp or val_solo")
     else:
         val_comp_loss=np.Inf
         val_solo_loss=np.Inf
@@ -151,11 +152,11 @@ def main(args):
 
         # VALIDATE
         val_loss = validate(args, model, criterion, val_data)
-        try:
-            val_comp_loss = validate(args, model, criterion, val_comp_data)
-            val_solo_loss = validate(args, model, criterion, val_solo_data)
-        except Exception as e:
-            print("warning couldn't load val_comp or val_solo")
+        # try:
+        val_comp_loss = validate(args, model, criterion, val_comp_data)
+        val_solo_loss = validate(args, model, criterion, val_solo_data)
+        # except Exception as e:
+        #     print("warning couldn't load val_comp or val_solo")
 
         # if args.version=='mic':
         #     val_mic_loss = validate(args, model, criterion, val_mic_data)
@@ -166,9 +167,9 @@ def main(args):
         writer.add_scalar("val_loss", val_loss, state["step"])
         writer.add_scalar("val_comp_loss", val_comp_loss, state["step"])
         writer.add_scalar("val_solo_loss", val_solo_loss, state["step"])
-        if args.version=='mic':
-            writer.add_scalar("val_mix_loss", val_mix_loss, state["step"])
-            writer.add_scalar("val_hex_cln_loss", val_hex_cln_loss, state["step"])
+        # if args.version=='mic':
+        #     writer.add_scalar("val_mix_loss", val_mix_loss, state["step"])
+        #     writer.add_scalar("val_hex_cln_loss", val_hex_cln_loss, state["step"])
 
         # EARLY STOPPING CHECK
         checkpoint_path = os.path.join(args.checkpoint_dir, "checkpoint_" + str(state["step"]))
@@ -268,10 +269,10 @@ def main(args):
         except Exception as e:
             print("MyException", e)
             
-        if args.version == 'mic':
-            checkpoint_hex_cln_best_path_prev = checkpoint_hex_cln_best_path
-            checkpoint_mix_best_path_prev = checkpoint_mix_best_path
-            checkpoint_mic_best_path_prev = checkpoint_mic_best_path
+        # if args.version == 'mic':
+        #     checkpoint_hex_cln_best_path_prev = checkpoint_hex_cln_best_path
+        #     checkpoint_mix_best_path_prev = checkpoint_mix_best_path
+        #     checkpoint_mic_best_path_prev = checkpoint_mic_best_path
 
         state["epochs"] += 1
 
@@ -281,9 +282,16 @@ def main(args):
     # Load best model based on validation loss
     if args.patience > 0:
         state = model_utils.load_model(model, None, state["best_checkpoint"], args.cuda) 
-    else:
+    elif args.load_model is not None:
         state = model_utils.load_model(model, None, args.load_model, args.cuda)
-
+    else:
+        #  NEW: for easier testing
+        checkpoints = sorted(glob.glob(os.path.join(args.checkpoint_dir, "best_checkpoint_*")))
+        if len(checkpoints) == 0:
+            raise FileNotFoundError(f"No best_checkpoint_# file found in {args.checkpoint_dir}")
+        args.load_model = checkpoints[-1]  # or use [0] for lowest step
+        state = model_utils.load_model(model, None, args.load_model, args.cuda)
+        
     if args.patience>=0:
         test_loss = validate(args, model, criterion, test_data)
         print("TEST FINISHED: LOSS: " + str(test_loss))
@@ -301,7 +309,6 @@ def main(args):
     for key,test_metrics in reversed(test_metrics.items()):
         print()
         print('!!Evaluating on '+ key + ' test set!!')
-        print()
 
         # Write most important metrics into Tensorboard log
         avg_SDRs = {inst : np.mean([np.nanmean(song[inst]["SDR"]) for song in test_metrics]) for inst in args.instruments}
@@ -315,7 +322,6 @@ def main(args):
         csvwriter = csv.writer(resfile)
         csvwriter.writerow([" ","SDR", "SIR", "SAR", "SI-SDR"])
 
-        print()
 
         overall_SDR = np.mean([v for v in avg_SDRs.values()])
         overall_SIR = np.mean([v for v in avg_SIRs.values()])

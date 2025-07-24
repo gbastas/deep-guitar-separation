@@ -46,8 +46,8 @@ After running these scripts, the following directories will be created:
 Run the following commands to process and extract data:
 ```
 cd data-manipulation-code/
-python AuxDataPrep.py --action pseudo_sep --all_solos
-python AuxDataPrep.py --action pseudocomp_sep --all_solos
+python PseudoCompSep.py {-all_solos}
+python PseudoSep.py  {--all_solos}
 ```
 
 Copy Processed Data into GSCustomMic:
@@ -57,9 +57,9 @@ cp -r ./pseudo_sep_all_solos_mic_wn/* GSCustomMic
 cp -r ./pseudocomp_sep_all_notes/* GSCustomMic
 ```
 
-Perform Train-Test Split: # TODO
+Perform Train-Test Split: 
 ```
-python pseudo_train_test_split.py -d GSCustomMic # 
+python pseudo_train_test_split.py -d GSCustomMic 
 ```
 This will create ```GSCustomMic/{test, train}/```.
 
@@ -78,7 +78,7 @@ Hence, our dataset for separation is ready:
 For the creation of the MDGP dataset we first need to gather note instances from the GuitarSet mic solos:
 ```
 cd data-manipulation-code
-python AuxDataPrep.py --action gather_notes 
+python AuxDataPrep.py --action gather_notes --all_solos [TODO: script needs fixing!]
 ```
 
 The command will create dir ```note_instances/data/```.
@@ -209,21 +209,20 @@ Runs with no pretraining:
 ```
 python train.py --dataset_dir ../datasets/datasep-mix/ --cuda --hdf_dir hdfs/hdf_guit-mix --checkpoint_dir checkpoints/waveunet_guit_mix --channels 1 --patience 200 
 python train.py --dataset_dir ../datasets/datasep-mic/ --cuda --hdf_dir hdfs/hdf_guit-mic --checkpoint_dir checkpoints/waveunet_guit_mic --channels 1 --patience 200 
-python train.py --dataset_dir ../datasets/datasep-gscustmic/ --cuda --hdf_dir hdfs/hdf_guit-gscustmic --checkpoint_dir checkpoints/waveunet_guit_gscustmic --channels 1 --patience 200 
-python train.py --dataset_dir ../datasets/datasep-mic-mdgp/ --cuda --hdf_dir hdfs/hdf_guit-mic-mdgp --checkpoint_dir checkpoints/waveunet_guit_mic_mdgp --channels 1 --patience 200 
-python train.py --dataset_dir ../datasets/datasep-gscustmic-mdgp/ --cuda --hdf_dir hdfs/hdf_guit-gscustmic-mdgp --checkpoint_dir checkpoints/waveunet_guit_gscustmic_mdgp --channels 1 --patience 200 
+python train.py --dataset_dir ../datasets/datasep-gscustmic/ --cuda --hdf_dir hdfs/hdf_guit-gscustmic --checkpoint_dir checkpoints/waveunet_guit_gscustmic --channels 1 --patience 200 --version pseudo
+python train.py --dataset_dir ../datasets/datasep-mic-mdgp/ --cuda --hdf_dir hdfs/hdf_guit-mic-mdgp --checkpoint_dir checkpoints/waveunet_guit_mic_mdgp --channels 1 --patience 200 # TODO check need of version pseudo
+python train.py --dataset_dir ../datasets/datasep-gscustmic-mdgp/ --cuda --hdf_dir hdfs/hdf_guit-gscustmic-mdgp --checkpoint_dir checkpoints/waveunet_guit_gscustmic_mdgp --channels 1 --patience 200  # TODO check need of version pseudo
 ```
 
 Runs with pre-training:
 ```
 python train.py --dataset_dir ../datasets/datasep-mic/ --cuda --hdf_dir hdfs/hdf_guit-mic --checkpoint_dir checkpoints/waveunet_guit_mic-pretOnHex --load_model checkpoints/waveunet_guit_hex/<best_checkpoint> --channels 1 --patience 200 
 python train.py --dataset_dir ../datasets/datasep-mic-mdgp/ --cuda --hdf_dir hdfs/hdf_guit-mic-mdgp --checkpoint_dir checkpoints/waveunet_guit_mic-mdgp-pretOnHex --load_model checkpoints/waveunet_guit_hex/<best_checkpoint> --channels 1 --patience 200 
-python train.py --dataset_dir ../datasets/datasep-gscustmic/ --cuda --hdf_dir hdfs/hdf_guit-gscustmic --checkpoint_dir checkpoints/waveunet_guit_gscustmic-pretOnMic --load_model checkpoints/waveunet_guit_mic/<best_checkpoint> --channels 1 --patience 200 
-python train.py --dataset_dir ../datasets/datasep-gscustmic/ --cuda --hdf_dir hdfs/hdf_guit-gscustmic --checkpoint_dir checkpoints/waveunet_guit_gscustmic-pretOnHex --load_model checkpoints/waveunet_guit_hex/<best_checkpoint> --channels 1 --patience 200 
+python train.py --dataset_dir ../datasets/datasep-gscustmic/ --cuda --hdf_dir hdfs/hdf_guit-gscustmic --checkpoint_dir checkpoints/waveunet_guit_gscustmic-pretOnMic --load_model checkpoints/waveunet_guit_mic/<best_checkpoint> --channels 1 --patience 200 --version pseudo
+python train.py --dataset_dir ../datasets/datasep-gscustmic/ --cuda --hdf_dir hdfs/hdf_guit-gscustmic --checkpoint_dir checkpoints/waveunet_guit_gscustmic-pretOnHex --load_model checkpoints/waveunet_guit_hex/<best_checkpoint> --channels 1 --patience 200 --version pseudo
 python train.py --dataset_dir ../datasets/datasep-gscustmic-mdgp/ --cuda --hdf_dir hdfs/hdf_guit-gscustmic-mdgp --checkpoint_dir checkpoints/waveunet_guit_gscustmic-mdgp-pretOnMic --load_model checkpoints/waveunet_guit_mic/<best_checkpoint> --channels 1 --patience 200
 python train.py --dataset_dir ../datasets/datasep-gscustmic-mdgp/ --cuda --hdf_dir hdfs/hdf_guit-gscustmic-mdgp --checkpoint_dir checkpoints/waveunet_guit_gscustmic-mdgp-pretOnHex --load_model checkpoints/waveunet_guit_hex/<best_checkpoint> --channels 1 --patience 200
 ```
-
 
 
 **Wave-U-Net-Tab**
@@ -241,15 +240,19 @@ python train.py --dataset_dir ../datasets/GuitarSet/datasep-mic/ --hdf_dir hdfs/
 
 **TabCNN**
 
+```
+cp -r datasep datasep_preds
+
 for file in ../datasets/GuitarSet/datasep-preds/train/*/mixture.wav; do python predict.py --load_model checkpoints/waveunet_guit/best_checkpoint_511525 --input "$file"; done
-for file in ../datasets/GuitarSet/datasep-preds/test/*/mixture.wav; do python predict.py --load_model checkpoints/waveunet_guit/best_checkpoint_511525 --input "$file"; done
+for file in ../datasets/datasep-preds/test/*/mixture.wav; do python predict.py --load_model checkpoints/waveunet_guit/best_checkpoint_511525 --input "$file"; done
 
-for file in ../datasets/GuitarSet/datasep-mic-preds/train/*/mixture.wav; do CUDA_VISIBLE_DEVICES=0 python predict.py --cuda --load_model checkpoints/waveunet_guit_mic/best_checkpoint_555000 --input "$file"; done
+for file in ../datasets/datasep-mic-preds/train/*/mixture.wav; do CUDA_VISIBLE_DEVICES=0 python predict.py --cuda --load_model checkpoints/waveunet_guit_mic/best_checkpoint_555000 --input "$file"; done
 
-for file in ../datasets/GuitarSet/datasep-mic-preds/test/*/mixture.wav; do CUDA_VISIBLE_DEVICES=1 python predict.py --cuda --load_model checkpoints/waveunet_guit_mic/best_checkpoint_555000 --input "$file"; done
+for file in ../datasets/datasep-mic-preds/test/*/mixture.wav; do CUDA_VISIBLE_DEVICES=1 python predict.py --cuda --load_model checkpoints/waveunet_guit_mic/best_checkpoint_555000 --input "$file"; done
 
 
-for file in ../datasets/GuitarSet/datasep-mix-preds/train/*/mixture.wav; do CUDA_VISIBLE_DEVICES=2 python predict.py --cuda --load_model checkpoints/waveunet_guit_monopickup/best_checkpoint_540200 --input "$file"; done
+for file in ../datasets/datasep-mix-preds/train/*/mixture.wav; do CUDA_VISIBLE_DEVICES=2 python predict.py --cuda --load_model checkpoints/waveunet_guit_monopickup/best_checkpoint_540200 --input "$file"; done
 
-for file in ../datasets/GuitarSet/datasep-mix-preds/train/*/mixture.wav; do python predict.py --load_model checkpoints/waveunet_guit_monopickup/best_checkpoint_540200 --input "$file"; done
+for file in ../datasets/datasep-mix-preds/train/*/mixture.wav; do python predict.py --load_model checkpoints/waveunet_guit_monopickup/best_checkpoint_540200 --input "$file"; done
+```
 

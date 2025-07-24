@@ -3,6 +3,7 @@ Baseline TabCNN
 
 mkdir data-orig/GuitarSet
 ln -s ~/separate-and-transcribe/datasets/GuitarSet/data/annos/ ~/separate-and-transcribe/TabCNN/data-orig/GuitarSet/annotation
+mkdir data-orig/audio
 
 
 cd data
