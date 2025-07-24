@@ -53,7 +53,7 @@ def GuitarSetProcessing(constants : Constants):
         printProgressBar(count,len(lines),decimals=0, length=50)
 
         tablature=None
-        audiofilepath = constants.track_path + name[:-5] + '_' + constants.dataset +'.wav' # TODO: set dataset to either mix or mic in constants.ini
+        audiofilepath = os.path.join(constants.track_path,constants.dataset,name[:-5] + '_' + constants.dataset +'.wav') # TODO: set dataset to either mix or mic in constants.ini
         annotations = demo_utils.read_tablature_from_GuitarSet(annosfilepath, constants)   
         annos_tab_list = annotations.tablature.tabList
 
@@ -81,10 +81,7 @@ def GuitarSetProcessing(constants : Constants):
         # Assuming 'audio' is already defined and you want to match its length
         len_audio = len(audio)  # Length of your audio signal
         hex_audio = np.random.normal(0, 0.00005, (6, len_audio))  # mean=0, std=0.00005          WHITE NOISE!!!
-        prev_string = -1
-        prev_start = 0
-        prev_end = 0
-        start_diff=0
+
         for i, (fret, string, onset, offset) in enumerate(zip(test_frets, test_strings, test_onsets, test_offsets)):
             start = int(round((onset)*(constants.sampling_rate)))
             end = int(round((offset)*(constants.sampling_rate)))
@@ -105,40 +102,30 @@ def GuitarSetProcessing(constants : Constants):
                             overlap = (test_onsets[idx] < test_offsets[i] and
                                     test_onsets[i]   < test_offsets[idx])
                             # if dt < 0.06 or overlap:
-                            if dt < 0.06 or overlap:
+                            if dt < 0.06:# or overlap:
                                 is_chord = True
                                 # you can log how far away the neighbor was:
-                                print(f'"chord" via neighbor {j}: dt={dt:.3f}, overlap={overlap}')
+                                # print(f'"chord" via neighbor {j}: dt={dt:.3f}, overlap={overlap}')
                                 break  # stop as soon as we find any chord‐like neighbor
+                            
+                            if overlap:
+                                    # compute the absolute time when the two notes start to overlap
+                                    overlap_start = max(onset, test_onsets[idx])
+                                    # how many seconds into *this* note that is
+                                    t_overlap = overlap_start - onset - 0.025
+                                    # convert to samples and trim the segment there
+                                    end = start + int(round(t_overlap * constants.sampling_rate))
+                                    # print(end)
+
 
             if is_chord:
                 count_omitted_note_events += 1
                 Strings_gt_total_count[string] += 1
-                prev_start = start
                 continue
-            # if (    args.all_solos and 
-            #         i>0 and 
-            #         i<len(test_onsets)-1 and 
-            #         (((string != test_strings[i+1]) and (test_onsets[i+1]-test_onsets[i]<0.06 or test_onsets[i+1]<test_offsets[i])) or
-            #         ((string != test_strings[i-1]) and  (test_onsets[i]-test_onsets[i-1]<0.06 or test_onsets[i]<test_offsets[i-1]))) 
-            #     ):  
-            #     print('"chord" occurrence!', test_onsets[i+1]-test_onsets[i], test_onsets[i]-test_onsets[i-1])
-            #     count_omitted_note_events+=1
-            #     Strings_gt_total_count[string]+=1
-            #     start_diff += start - prev_start
-            #     prev_start = start
-            #     continue
-            
-            # render the same-string melody in a continuum
-            # if string == prev_string:
-            #     # start = prev_start # TODO: fix this
-            #     start = prev_end 
+
             hex_audio[string, start:end] = audio[start:end]
 
-            prev_string=string
-            prev_start=start
-            prev_offset = offset
-            prev_end = end
+
 
 
 
