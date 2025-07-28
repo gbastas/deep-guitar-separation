@@ -3,18 +3,18 @@ import demo_utils
 import argparse
 import os
 import sys
-import crepe 
+# import crepe 
 
 sys.path.append('./src')
 from track_class import Tablature
 from helper import printProgressBar
 from constants_parser import Constants
 import soundfile as sf
-import utils
+# import utils
 import matplotlib.pyplot as plt
 import numpy as np
 import librosa
-import random
+# import random
 
 def print_tablature(tab_list, max_chars_per_line=180):
     # Initialize the tablature lines
@@ -78,24 +78,22 @@ def GuitarSetProcessing(constants : Constants):
     count_omitted_note_events = 0
     count_total_note_events = 0
     Strings_gt_total_count = [0]*6
-    print('Ongoing Pitch-Fret-String Estimation...') # __new__
+    print('Gathering Notes...') # __new__
     for count, name in enumerate(lines): # iterate over filenames
         
         name = name.replace('\n', '')         # e.g. '02_SS2-88-F_solo.jams'
         # print('testfile', name)
-        annosfilepath = os.path.join(constants.annos_path, name)
-
+        jam_annosfilepath = os.path.join(constants.annos_path, name)
         printProgressBar(count,len(lines),decimals=0, length=50)
 
-        tablature=None
-        audiofilepath = constants.track_path + name[:-5] + '_' + constants.dataset +'.wav' # TODO: set dataset to either mix or mic in constants.ini
-        annotations = demo_utils.read_tablature_from_GuitarSet(annosfilepath, constants)   
-        annos_tab_list = annotations.tablature.tabList
+        audiofilepath = os.path.join(constants.track_path, constants.dataset, name[:-5] + '_' + constants.dataset +'.wav') 
+
+        annotations = demo_utils.read_tablature_from_GuitarSet(jam_annosfilepath, constants)   
+        annos_tab_list = annotations.tabList
 
         annos_pitches = [instance.fundamental for instance in annos_tab_list]
 
         audio, _ = librosa.load(audiofilepath, sr=constants.sampling_rate) 
-
         test_onsets = [tab_element.onset for tab_element in annos_tab_list]
         test_offsets = [tab_element.offset for tab_element in annos_tab_list]
 
@@ -103,54 +101,87 @@ def GuitarSetProcessing(constants : Constants):
         test_strings = [tab_element.string for tab_element in annos_tab_list]
         test_frets = [tab_element.fret for tab_element in annos_tab_list]
 
+        # Exclude test songs!
+        datasep_mic_test_path_asref = "../datasets/GuitarSet/datasep-mic/test/" 
+        ref_dir = os.path.join(datasep_mic_test_path_asref, name[:-5])
+        if os.path.exists(ref_dir): # only if is not a test song gather sources
+            continue
 
-        # to get the note audio instances:
-        tablature = Tablature(test_onsets, test_offsets, audio, constants)
 
 
         if args.action == "gather_notes":
             # NOTE: To create note_instances dataset uncomment and in constants.ini set crop_win=3 and listoftracksfile = allsolos.txt
-            note_instances_dir = './note_instances/data/train/'+constants.dataset+'guitar'
-            onset_instances_dir = './note_instances/data/onsets/'+constants.dataset+'guitar'
+            note_instances_dir = './note_instances_' +constants.dataset+'/data/train/guitar'
+            onset_instances_dir = './note_instances_'+constants.dataset+'/data/onsets/guitar'
             # os.makedirs(note_instances_dir, exist_ok=True)            
-            for tabelement, annoselement in zip(tablature.tabList, annotations.tablature.tabList):
-                note_audio = tabelement.note_audio
-
-                # crepe_pitch
-                sr = constants.sampling_rate
-                (_, freqs, confs, _)  = crepe.predict(note_audio, sr=sr, viterbi=True)
-
-                id = np.argmax(confs)
-                confidence = confs[id]
-                frequency = freqs[id]
-                if confidence<0.8:
-                    print('LOW PITCH ESTIMATION CONFIDENCE!!')
-                    continue
-                if len(note_audio)/constants.sampling_rate<0.08: # not less than 0.5 seconds
-                    continue            
-
-                try:
-                    note = utils.hz_to_midi(frequency)
-                except TypeError as e:
-                    print('[MyWaring] freq:', frequency,  e)
+            # for tabelement in tablature.tabList:
+            for i, (fret, string, onset, offset) in enumerate(zip(test_frets, test_strings, test_onsets, test_offsets)):
+                start = int(round((onset)*(constants.sampling_rate)))
+                end = int(round((offset)*(constants.sampling_rate)))
+                count_total_note_events+=1                
+                
+                # avoid chords
+                is_chord = False
+                # check neighbors at distances -2, -1, +1, +2
+                for j in (-6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6):
+                    idx = i + j
+                    if 0 <= idx < len(test_onsets):
+                        # only consider if it's on a different string
+                        if string != test_strings[idx]:
+                            # timing difference
+                            dt = abs(test_onsets[idx] - test_onsets[i])
+                            # interval overlap?
+                            overlap = (test_onsets[idx] < test_offsets[i] and
+                                    test_onsets[i]   < test_offsets[idx])
+                            if dt < 0.06 or overlap:
+                                is_chord = True
+                                # print(f'"chord" via neighbor {j}: dt={dt:.3f}, overlap={overlap}')
+                                break  # stop as soon as we find any chord‐like neighbor 
+                                
+                if is_chord:
+                    count_omitted_note_events += 1
+                    Strings_gt_total_count[string] += 1
                     continue
                 
-                note = librosa.midi_to_note(note)
+                note_audio = audio[start:end]                                                                           
+                duration_in_seconds = len(note_audio) / constants.sampling_rate
+                # print(f"Duration of note_audio: {duration_in_seconds:.2f} seconds")
 
-                # Compare estimated note with annotated note (this is to gather only clean instances)
-                fret = annoselement.fret
-                string = annoselement.string
-                if note[:-1].replace('♯','#')!= Note[string, fret]:
-                    print('Notes', note[:-1].replace('♯','#'), Note[string, fret])
-                    print('String-fret', string, fret)  
-                    continue
+                # # crepe_pitch
+                # sr = constants.sampling_rate
+                # (_, freqs, confs, _)  = crepe.predict(note_audio, sr=sr, viterbi=True)
+
+                # id = np.argmax(confs)
+                # confidence = confs[id]
+                # frequency = freqs[id]
+                # if confidence<0.8:
+                #     print('LOW PITCH ESTIMATION CONFIDENCE!!')
+                #     continue
+                # if len(note_audio)/constants.sampling_rate<0.08: # not less than 0.5 seconds
+                #     continue            
+
+                # try:
+                #     note = utils.hz_to_midi(frequency)
+                # except TypeError as e:
+                #     print('[MyWaring] freq:', frequency,  e)
+                #     continue
+                
+                # note = librosa.midi_to_note(note)
+
+                # # Compare estimated note with annotated note (this is to gather only clean instances)
+                # # fret = tabelement.fret
+                # # string = tabelement.string
+                # if note[:-1].replace('♯','#')!= Note[string, fret]:
+                #     print('Notes', note[:-1].replace('♯','#'), Note[string, fret])
+                #     print('String-fret', string, fret)  
+                #     continue
 
                 Matrix[string,fret]+=1
                 if Matrix[string,fret]>100:
                     continue
 
                 # Store the note audio in the corresponding directory
-                note_audio = tabelement.note_audio
+                # note_audio = tabelement.note_audio
                 note_instances_stringdir = os.path.join(note_instances_dir+str(int(Matrix[string,fret])), 'string'+str(string+1))
                 os.makedirs(note_instances_stringdir, exist_ok=True)
                 dest_path = os.path.join(note_instances_stringdir, str(fret))+'.wav'

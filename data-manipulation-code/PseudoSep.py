@@ -26,6 +26,8 @@ def GuitarSetProcessing(constants : Constants):
     constants.crop_win=3
     if args.all_solos:
         constants.listoftracksfile = 'allsolos.txt'
+    elif args.all_tracks:
+        constants.listoftracksfile = 'alltracks.txt'                    
     else:
         constants.listoftracksfile = 'names.txt'
 
@@ -52,11 +54,10 @@ def GuitarSetProcessing(constants : Constants):
 
         printProgressBar(count,len(lines),decimals=0, length=50)
 
-        tablature=None
         audiofilepath = os.path.join(constants.track_path,constants.dataset,name[:-5] + '_' + constants.dataset +'.wav') # TODO: set dataset to either mix or mic in constants.ini
         annotations = demo_utils.read_tablature_from_GuitarSet(annosfilepath, constants)   
-        annos_tab_list = annotations.tablature.tabList
-
+        annos_tab_list = annotations.tabList
+# 
         annos_pitches = [instance.fundamental for instance in annos_tab_list]
 
         audio, _ = librosa.load(audiofilepath, sr=constants.sampling_rate) 
@@ -70,12 +71,14 @@ def GuitarSetProcessing(constants : Constants):
 
 
         # to get the note audio instances:
-        tablature = Tablature(test_onsets, test_offsets, audio, constants)
+        # tablature = Tablature(test_onsets, test_offsets, audio, constants)
 
 
         # if args.action == 'pseudo_sep':
         if args.all_solos:
             dest_path = './pseudo_sep_all_solos_'+constants.dataset+'_wn/'+name[:-5]+'_hex_'+constants.dataset+'/'
+        elif args.all_tracks:
+            dest_path = './pseudo_sep_all_tracks_'+constants.dataset+'_wn/'+name[:-5]+'_hex_'+constants.dataset+'/'
         else:
             dest_path = './pseudo_sep_few_solos_'+constants.dataset+'_wn/'+name[:-5]+'_hex_'+constants.dataset+'/'
         # Assuming 'audio' is already defined and you want to match its length
@@ -84,49 +87,50 @@ def GuitarSetProcessing(constants : Constants):
 
         for i, (fret, string, onset, offset) in enumerate(zip(test_frets, test_strings, test_onsets, test_offsets)):
             start = int(round((onset)*(constants.sampling_rate)))
-            end = int(round((offset)*(constants.sampling_rate)))
+            # end = int(round((offset)*(constants.sampling_rate)))
+            if i<len(test_onsets)-1:
+                endtime = min(offset, test_onsets[i+1])
+            else:
+                endtime = offset
+            end = int(round((endtime)*(constants.sampling_rate)))
 
-            count_total_note_events+=1
-            # avoid chords
-            is_chord = False
-            if args.all_solos:
-                # check neighbors at distances -2, -1, +1, +2
-                for j in (-6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6):
-                    idx = i + j
-                    if 0 <= idx < len(test_onsets):
-                        # only consider if it's on a different string
-                        if string != test_strings[idx]:
-                            # timing difference
-                            dt = abs(test_onsets[idx] - test_onsets[i])
-                            # interval overlap?
-                            overlap = (test_onsets[idx] < test_offsets[i] and
-                                    test_onsets[i]   < test_offsets[idx])
-                            # if dt < 0.06 or overlap:
-                            if dt < 0.06:# or overlap:
-                                is_chord = True
-                                # you can log how far away the neighbor was:
-                                # print(f'"chord" via neighbor {j}: dt={dt:.3f}, overlap={overlap}')
-                                break  # stop as soon as we find any chord‐like neighbor
+            # count_total_note_events+=1
+            # # avoid chords
+            # is_chord = False
+            # if args.all_solos:
+            #     # check neighbors at distances -2, -1, +1, +2
+            #     for j in (-6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6):
+            #         idx = i + j
+            #         if 0 <= idx < len(test_onsets):
+            #             # only consider if it's on a different string
+            #             if string != test_strings[idx]:
+            #                 dt = abs(test_onsets[idx] - test_onsets[i])
+            #                 # interval overlap?
+            #                 overlap = (test_onsets[idx] < test_offsets[i] and
+            #                         test_onsets[i]   < test_offsets[idx])
+            #                 # if dt < 0.06 or overlap:
+            #                 if dt < 0.06:# or overlap:
+            #                     is_chord = True
+            #                     # you can log how far away the neighbor was:
+            #                     # print(f'"chord" via neighbor {j}: dt={dt:.3f}, overlap={overlap}')
+            #                     break  # stop as soon as we find any chord‐like neighbor
                             
-                            if overlap:
-                                    # compute the absolute time when the two notes start to overlap
-                                    overlap_start = max(onset, test_onsets[idx])
-                                    # how many seconds into *this* note that is
-                                    t_overlap = overlap_start - onset - 0.025
-                                    # convert to samples and trim the segment there
-                                    end = start + int(round(t_overlap * constants.sampling_rate))
-                                    # print(end)
+            #                 # if overlap:
+            #                 #         overlap_start = max(onset, test_onsets[idx]-0.025)
+            #                 #         t_overlap = overlap_start - onset
+            #                 #         end = start + int(round(t_overlap * constants.sampling_rate))
 
 
-            if is_chord:
-                count_omitted_note_events += 1
-                Strings_gt_total_count[string] += 1
-                continue
+            # if is_chord:
+            #     count_omitted_note_events += 1
+            #     Strings_gt_total_count[string] += 1
+            #     continue
 
+            # print('len_audio', len(audio[start:end]))
+            # print('len_hex_audio', len(hex_audio[string, start:end]))
             hex_audio[string, start:end] = audio[start:end]
-
-
-
+            # print('len_hex_audio-next', len(hex_audio[string, start:end]))
+            # print()
 
 
         os.makedirs(dest_path, exist_ok=True)

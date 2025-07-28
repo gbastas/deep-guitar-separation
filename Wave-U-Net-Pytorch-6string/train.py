@@ -54,11 +54,11 @@ def main(args):
     train_data = SeparationDataset(musdb, "train", args.instruments, args.sr, args.channels, model.shapes, True, args.hdf_dir, audio_transform=augment_func, features=features) # NOTE: augmentation
     val_data = SeparationDataset(musdb, "val", args.instruments, args.sr, args.channels, model.shapes, False, args.hdf_dir, audio_transform=crop_func, features=features)
     if args.version=='pseudo':
-        # try:
+        try:
             val_comp_data = SeparationDataset(musdb, "val_comp", args.instruments, args.sr, args.channels, model.shapes, False, args.hdf_dir, audio_transform=crop_func, features=features)
             val_solo_data = SeparationDataset(musdb, "val_solo", args.instruments, args.sr, args.channels, model.shapes, False, args.hdf_dir, audio_transform=crop_func, features=features)
-        # except Exception as e:
-        #     print("warning couldn't load val_comp or val_solo")
+        except Exception as e:
+            print("warning couldn't load val_comp or val_solo")
     else:
         val_comp_loss=np.Inf
         val_solo_loss=np.Inf
@@ -152,20 +152,17 @@ def main(args):
 
         # VALIDATE
         val_loss = validate(args, model, criterion, val_data)
-        # try:
-        val_comp_loss = validate(args, model, criterion, val_comp_data)
-        val_solo_loss = validate(args, model, criterion, val_solo_data)
-        # except Exception as e:
-        #     print("warning couldn't load val_comp or val_solo")
+        try:
+            # val_comp_loss = validate(args, model, criterion, val_comp_data)
+            val_solo_loss = validate(args, model, criterion, val_solo_data)
+        except Exception as e:
+            print("warning couldn't load val_comp or val_solo")
 
-        # if args.version=='mic':
-        #     val_mic_loss = validate(args, model, criterion, val_mic_data)
-        #     val_mix_loss = validate(args, model, criterion, val_mix_data)
-        #     val_hex_cln_loss = validate(args, model, criterion, val_hex_cln_data)
+
             
         print("VALIDATION FINISHED: LOSS: " + str(val_loss))
         writer.add_scalar("val_loss", val_loss, state["step"])
-        writer.add_scalar("val_comp_loss", val_comp_loss, state["step"])
+        # writer.add_scalar("val_comp_loss", val_comp_loss, state["step"])
         writer.add_scalar("val_solo_loss", val_solo_loss, state["step"])
         # if args.version=='mic':
         #     writer.add_scalar("val_mix_loss", val_mix_loss, state["step"])
@@ -191,16 +188,16 @@ def main(args):
             model_utils.save_model(model, optimizer, state, checkpoint_best_path)
 
         
-        if val_comp_loss < state["best_comp_loss"]:
-            print("MODEL IMPROVED ON VALIDATION SET!")
-            checkpoint_comp_best_path = os.path.join(args.checkpoint_dir, "best_comp_checkpoint_" + str(state["step"]))
-            try:
-                os.remove(checkpoint_comp_best_path_prev)
-            except Exception as e:
-                print('Caught exception comp:', e)
-            print("Saving best comp model...")      
-            state["best_comp_loss"] = val_comp_loss
-            model_utils.save_model(model, optimizer, state, checkpoint_comp_best_path)
+        # if val_comp_loss < state["best_comp_loss"]:
+        #     print("MODEL IMPROVED ON VALIDATION SET!")
+        #     checkpoint_comp_best_path = os.path.join(args.checkpoint_dir, "best_comp_checkpoint_" + str(state["step"]))
+        #     try:
+        #         os.remove(checkpoint_comp_best_path_prev)
+        #     except Exception as e:
+        #         print('Caught exception comp:', e)
+        #     print("Saving best comp model...")      
+        #     state["best_comp_loss"] = val_comp_loss
+        #     model_utils.save_model(model, optimizer, state, checkpoint_comp_best_path)
     
         
         if val_solo_loss < state["best_solo_loss"]:

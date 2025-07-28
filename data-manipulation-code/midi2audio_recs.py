@@ -34,29 +34,32 @@ def get_audio_sample(args, dataset_no, string, fret):
 						 'string' + str(string + 1),  
 						 str(fret) + '.wav')
 
+	# print('path_to_track', path_to_track)
+
 	try:    
 		rec_audio, _ = librosa.load(path_to_track, sr=args.sampling_rate)
-		print("Found note evenet for: strig " + str(string) + ", fret " + str(fret) + ", dataset_no " + str(dataset_no))
+		# print("Found note evenet for: strig " + str(string) + ", fret " + str(fret) + ", dataset_no " + str(dataset_no))
 
 	except FileNotFoundError as e:
+		# print("Did not found note evenet for: strig " + str(string) + ", fret " + str(fret) + ", dataset_no " + str(dataset_no))
 		return None
 
-	path_to_onsettime = Path(args.note_instances + '/data/onsets/' +
-							 args.guitar + str(dataset_no) +
-							 '/string' + str(string + 1) + '/' + str(fret) + '.txt')
+	# path_to_onsettime = Path(args.note_instances + '/data/onsets/' +
+	# 						 args.guitar + str(dataset_no) +
+	# 						 '/string' + str(string + 1) + '/' + str(fret) + '.txt')
 
-	with open(path_to_onsettime, 'r') as f:
-		onsetsec = float(f.read())
-		onsetidx = int(onsetsec * args.sampling_rate)
-
-	scaling_factor = np.random.uniform(0.1, 1.0)
-	res_audio = rec_audio[onsetidx:]
+	# with open(path_to_onsettime, 'r') as f:
+	# 	onsetsec = float(f.read())
+	# 	onsetidx = int(onsetsec * args.sampling_rate)
+	# print('onsetidx', onsetidx)
+	# res_audio = rec_audio[onsetidx:]
 
 	# random scaling
-	scaling_factor = np.random.uniform(0.8, 1.0)
-	res_audio = res_audio * scaling_factor
+	# scaling_factor = np.random.uniform(0.5, 1.0)
+	# res_audio = res_audio * scaling_factor
 
-	return rec_audio[onsetidx:]
+	# return rec_audio[onsetidx:]
+	return rec_audio
 
 
 def parse_isolated_note_recordings(args):
@@ -76,7 +79,9 @@ def parse_isolated_note_recordings(args):
 				else:
 					# If it's not None, assign the result to the array
 					recs[string, fret, dataset_no] =  audio_sample
-
+	if np.all(recs == None):
+		print("The 'recs' array is full of None values. Didn't found any note samples to parse! Check path again.")
+		exit(0)
 	print(recs.shape)
 
 	return recs
@@ -108,7 +113,11 @@ def render_beat_to_audio(args, beat, dur_samples, recs):
 
 		rand = random.choice(range(c))
 		rec = recs[string][fret][rand]
-
+  
+		# NOTE: NEW!
+		scaling_factor = np.random.uniform(0.5, 1.0)
+		rec = rec * scaling_factor
+  
 		lim = min(len(rec), dur_samples)
 		pad = max(0, dur_samples - len(rec))
 
@@ -129,9 +138,9 @@ if __name__ == '__main__':
 	# parser.add_argument('config_path', type=str)
 	parser.add_argument('--note_instances', type=str)
 	parser.add_argument('--input_dir', type=str, default='gp_token_examples', help='gp_token_examples or DadaGP-v1.1')
-	parser.add_argument('--guitar', type=str, help= 'martin or firebrand')
+	parser.add_argument('--guitar', type=str, default='guitar', help= 'martin or firebrand')
 	parser.add_argument('--max_fret', type=int, default=18)
-	parser.add_argument('--n_samples', type=int, default=30)
+	parser.add_argument('--n_samples', type=int, default=100)
 	parser.add_argument('--sampling_rate', type=int, default=44100)
 	args = parser.parse_args()
 
@@ -145,9 +154,10 @@ if __name__ == '__main__':
 		print("Input dir" + args.input_dir + "does not exist.")
 		exit(1)
 	
+	print('Loading Note Instances...')
 	recs = parse_isolated_note_recordings(args)
 
-	print('recs', recs)
+	print('recs', recs.shape)
 
 
 	level_A_folders = os.listdir(main_folder)
@@ -209,9 +219,8 @@ if __name__ == '__main__':
 										try:
 											artif_multichannel_event = render_beat_to_audio(args, beat, dur_samples, recs)
 										except Exception as e:# TypeError IndexError: # if no not-instace (see, sample) exists then ingore!
-											print('[no sample found at all]', e)
+											# print('[no sample found at all]', e)
 											continue
-
 
 										artif_multichannel_track = np.append(artif_multichannel_track, artif_multichannel_event, axis=1)
 

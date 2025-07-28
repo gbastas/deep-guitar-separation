@@ -18,9 +18,11 @@ def get_musdbhq(database_path):
         print("Loading " + subset + " set...")
         tracks = glob.glob(os.path.join(database_path, subset, "*"))
         samples = list()
-
+        # print('database_path', database_path)
+        # print('BBBBBBBBBB', tracks)
         # Go through tracks
         for track_folder in sorted(tracks):
+            # print('CCCCCCCCC')
             # Skip track if mixture is already written, assuming this track is done already
             example = dict()
             for stem in ["mix", "E", "A", "D", "G", "B", "e"]: # __gbastas__
@@ -59,8 +61,9 @@ def get_musdbh_crossval(database_path):
 def get_musdb_folds(root_path, version="HQ", guitID=None):
     val_list_mic, val_list_mix, val_list_hex_cln = [], [], []
     val_list = []
+    validation_percentage = 0.1 
     
-    if version == "HQ" or version == "HQ-half" or version == "HQ-3quarters" or version == "HQ-quarter" or version == "HQ-eighth"  or version == "HQ-sixteenth" or  version == "HQ-comp" or version == "HQ-solo" or version == 'mic' or version == 'pseudo'  or version == 'fake':
+    if version == 'validation_split' or version == "HQ" or version == "HQ-half" or version == "HQ-3quarters" or version == "HQ-quarter" or version == "HQ-eighth"  or version == "HQ-sixteenth" or  version == "HQ-comp" or version == "HQ-solo" or version == 'mic' or version == 'pseudo'  or version == 'fake':
         dataset = get_musdbhq(root_path)
 
     elif version == "cross-val":
@@ -189,7 +192,38 @@ def get_musdb_folds(root_path, version="HQ", guitID=None):
             else:
                 train_list.append(track)
         
+    elif version == "validation_split":  # Add the new elif for 10% validation split
+        print("**********VALIDATION SPLIT***********")
+        # Flatten the dataset to a single list of tracks (train + validation)
+        train_val_list = dataset[0]
+        test_list = dataset[1]
+        # print('train_val_list', train_val_list)
+        # print('test_list', test_list)
 
+
+        # Shuffle the tracks to ensure randomness
+        np.random.seed(1337)  # Ensure reproducibility
+        np.random.shuffle(train_val_list)
+
+        # Calculate the validation size (10% of the total dataset)
+        val_size = int(len(train_val_list) * validation_percentage)
+
+        # Split the dataset into train and validation
+        val_list = train_val_list[:val_size]
+        train_list = train_val_list[val_size:]
+
+        test_list = dataset[1]  # Keep the test set as it is, from the dataset[1]
+
+        print(f"Training data: {len(train_list)} samples")
+        print(f"Validation data: {len(val_list)} samples")
+        print(f"Test data: {len(test_list)} samples")
+
+        # Return the split datasets
+        # return {
+        #     "train": train_list,
+        #     "val": val_list,
+        #     "test": test_list
+        # }
 
     # if val_list_mic: # if not empty
     #     val_list = val_list_mic

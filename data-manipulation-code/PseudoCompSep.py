@@ -59,21 +59,20 @@ def GuitarSetProcessing(constants : Constants):
 
         printProgressBar(count,len(lines),decimals=0, length=50)
 
-        tablature=None
-        audiofilepath = os.path.join(constants.track_path,constants.dataset,name[:-5] + '_' + constants.dataset +'.wav') 
+        audiofilepath = os.path.join(constants.track_path,constants.dataset,name[:-5] + '_' + constants.dataset +'.wav') # TODO: set dataset to either mix or mic in constants.ini
         annotations = demo_utils.read_tablature_from_GuitarSet(annosfilepath, constants)   
-        annos_tab_list = annotations.tablature.tabList
-
+        annos_tab_list = annotations.tabList
+# 
         annos_pitches = [instance.fundamental for instance in annos_tab_list]
 
         audio, _ = librosa.load(audiofilepath, sr=constants.sampling_rate) 
+
         test_onsets = [tab_element.onset for tab_element in annos_tab_list]
         test_offsets = [tab_element.offset for tab_element in annos_tab_list]
+
+
         test_strings = [tab_element.string for tab_element in annos_tab_list]
         test_frets = [tab_element.fret for tab_element in annos_tab_list]
-
-        # to get the note audio instances:
-        tablature = Tablature(test_onsets, test_offsets, audio, constants)
 
         if args.all_solos:
             dest_path = './pseudocomp_sep_all_solos_'+constants.dataset+'_wn/'+name[:-9]+'comp_shuffl_hex_' + constants.dataset + '/'
@@ -100,14 +99,14 @@ def GuitarSetProcessing(constants : Constants):
                             # interval overlap?
                             overlap = (test_onsets[idx] < test_offsets[i] and
                                     test_onsets[i]   < test_offsets[idx])
-                            if dt < 0.06:# or overlap:
+                            if dt < 0.06 or overlap:
                                 is_chord = True
                                 # print(f'"chord" via neighbor {j}: dt={dt:.3f}, overlap={overlap}')
                                 break  # stop as soon as we find any chord‐like neighbor
-                            if overlap:
-                                    overlap_start = max(onset, test_onsets[idx])
-                                    t_overlap = overlap_start - onset - 0.025
-                                    end = start + int(round(t_overlap * constants.sampling_rate))
+                            # if overlap:
+                            #         overlap_start = max(onset, test_onsets[idx]-0.25)
+                            #         t_overlap = overlap_start - onset
+                            #         end = start + int(round(t_overlap * constants.sampling_rate))
 
             if is_chord:
                 count_omitted_note_events += 1
@@ -156,13 +155,18 @@ def GuitarSetProcessing(constants : Constants):
             hex_audio[string, s:L+s] = np.array(aud[:L])
 
         # --- store channels for augmentation ---
-        for string in range(6):
-            length_in_sec = len(hex_audio_comp[string])/constants.sampling_rate
-            if length_in_sec > 1:
-                past_channels[string].append(np.array(hex_audio_comp[string]))
-                if string == 0:
-                    count_active0+=1 
-                    # print('string0', length_in_sec, 's')            
+        datasep_mic_test_path_asref = "../datasets/GuitarSet/datasep-mic/test/"
+        ref_dir = os.path.join(datasep_mic_test_path_asref, name[:-5])
+        if not os.path.exists(ref_dir): # only if is not a test song gather sources
+            for string in range(6):
+                length_in_sec = len(hex_audio_comp[string])/constants.sampling_rate
+                if length_in_sec > 1:
+                    past_channels[string].append(np.array(hex_audio_comp[string]))
+                    if string == 0:
+                        count_active0+=1 
+                        # print('string0', length_in_sec, 's')            
+        else:
+            print("Found a test song. So it's not included in overshuffl list.")
 
         os.makedirs(dest_path, exist_ok=True)
     
@@ -182,7 +186,8 @@ def GuitarSetProcessing(constants : Constants):
     print('Number of  saved examples:', len(past_channels[0]))
     
 
-    for i in range(500):
+    # for i in range(600):
+    for i in range(1500):
         
         # print(past_channels[0])
         # AAAAAAAAA
@@ -210,13 +215,19 @@ def GuitarSetProcessing(constants : Constants):
             dest_path = './pseudocomp_sep_few_solos_'+constants.dataset+'_wn/'+'comp_overshuffl_hex_' + str(i) + '_' + constants.dataset + '/'
         
         os.makedirs(dest_path, exist_ok=True)
-    
-        sf.write(dest_path+'E.wav', hex_audio[0,:], constants.sampling_rate)
-        sf.write(dest_path+'A.wav', hex_audio[1,:], constants.sampling_rate)
-        sf.write(dest_path+'D.wav', hex_audio[2,:], constants.sampling_rate)
-        sf.write(dest_path+'G.wav', hex_audio[3,:], constants.sampling_rate)
-        sf.write(dest_path+'B.wav', hex_audio[4,:], constants.sampling_rate)
-        sf.write(dest_path+'e.wav', hex_audio[5,:], constants.sampling_rate)					
+
+        scaling_factor = np.random.uniform(0.75, 1.0)
+        sf.write(dest_path+'E.wav', hex_audio[0,:]*scaling_factor, constants.sampling_rate)
+        scaling_factor = np.random.uniform(0.75, 1.0)
+        sf.write(dest_path+'A.wav', hex_audio[1,:]*scaling_factor, constants.sampling_rate)
+        scaling_factor = np.random.uniform(0.75, 1.0)
+        sf.write(dest_path+'D.wav', hex_audio[2,:]*scaling_factor, constants.sampling_rate)
+        scaling_factor = np.random.uniform(0.75, 1.0)
+        sf.write(dest_path+'G.wav', hex_audio[3,:]*scaling_factor, constants.sampling_rate)
+        scaling_factor = np.random.uniform(0.75, 1.0)
+        sf.write(dest_path+'B.wav', hex_audio[4,:]*scaling_factor, constants.sampling_rate)
+        scaling_factor = np.random.uniform(0.75, 1.0)
+        sf.write(dest_path+'e.wav', hex_audio[5,:]*scaling_factor, constants.sampling_rate)					
 
         hex_audio = np.sum(hex_audio, axis=0)
         sf.write(dest_path+'mixture.wav', hex_audio, constants.sampling_rate)

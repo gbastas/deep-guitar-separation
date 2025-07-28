@@ -2,17 +2,16 @@ from constants_parser import Constants
 import utils
 
 class Tablature():
-    def __init__(self, onsets, durations, audio, constants : Constants, strings = None, fundamentals = None, annotation = False):
+    def __init__(self, onsets, durations, audio, constants : Constants, strings = None, fundamentals = None):
         self.audio = audio
         self.sampling_rate = constants.sampling_rate
         self.constants = constants
         self.tabList = []
         note_audio=[]
         for i, onset in enumerate(onsets):
-            if annotation == False and i+1 < len(onsets):
+            if audio != [] and i+1 < len(onsets):
                 start = int(round((onset)*(constants.sampling_rate)))
-                endtime = onsets[i]+durations[i]
-                offset = endtime
+                endtime =  constants.crop_win if onsets[i+1] - onsets[i] > constants.crop_win else min(onsets[i+1] - onsets[i], constants.crop_win)
                 end = int(round((onset+endtime)*(constants.sampling_rate)))
                 note_audio = audio[start:end]
             if strings:
@@ -41,9 +40,9 @@ class TabElement():
             self.fret = utils.hz_to_midi(fundamental) - constants.tuning[self.string]
         self.note_audio = note_audio
 
-class Annotations():
-    def __init__(self, onsets, durations, fundamentals, strings, constants : Constants):
-        self.tablature = Tablature(onsets, durations, audio=[], constants=constants, strings=strings, fundamentals=fundamentals, annotation = True)
+# class Annotations():
+#     def __init__(self, onsets, durations, fundamentals, strings, constants : Constants):
+#         self.tablature = Tablature(onsets, durations, audio=[], constants=constants, strings=strings, fundamentals=fundamentals, annotation = True)
 
 
 

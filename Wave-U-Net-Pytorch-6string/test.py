@@ -10,6 +10,9 @@ from torchmetrics import ScaleInvariantSignalDistortionRatio
 import data.utils
 import model.utils as model_utils
 import utils
+import matplotlib.pyplot as plt
+import os
+
 
 def compute_model_output(model, inputs):
     '''
@@ -140,6 +143,68 @@ def predict_song(args, audio_path, model):
 
     return sources
 
+def plot_waveforms(ref, est, sr, out_dir, track_name, instr_name, sdr, si_sdr, hop_size_s = 1.5, win_size_s = 2):
+
+    os.makedirs(out_dir, exist_ok=True)
+
+    ref = np.asarray(ref).squeeze()   # (984505,1) → (984505,)
+    est = np.asarray(est).squeeze()
+
+    avg_sdr    = float(np.nanmean(sdr))
+
+
+    n = min(len(ref), len(est))
+    ref = ref[:n]
+    est = est[:n]
+    time = np.linspace(0, n / sr, num=n)
+    max_amp = max(np.max(np.abs(ref)), np.max(np.abs(est)))
+
+    fig, axs = plt.subplots(2, 1, figsize=(8, 4), sharex=True)
+
+    # Panel 1: overlay
+    axs[0].plot(time, ref,   alpha=0.6, label="Ref.")
+    axs[0].plot(time, est,   alpha=0.6, label="Est.")
+    axs[0].fill_between(time, ref, est,
+                        where=(ref > est), facecolor='blue', alpha=0.2)
+    axs[0].fill_between(time, ref, est,
+                        where=(ref < est), facecolor='red',  alpha=0.2)
+    axs[0].set_ylim(-max_amp, max_amp)
+    axs[0].set_xlabel("Time (s)", fontsize=14)
+    axs[0].set_ylabel("Amplitude", fontsize=14)
+    axs[0].legend(loc="upper right", fontsize=13, framealpha=0.3)
+
+    # Panel 2: frame SDR + SI‑SDR
+    fr = np.asarray(sdr).flatten()
+    frame_times = hop_size_s * np.arange(fr.shape[0]) + (win_size_s/2)
+    axs[1].plot(frame_times, fr, marker='o', linestyle='-',
+                color='green', markersize=5, alpha=0.8, label=r"$\mathrm{SDR}^r$")
+                # label="Windowed SDR")
+    axs[1].axhline(y=si_sdr, color='red', linestyle='--',
+                   linewidth=1.5, label="SI‑SDR")
+    axs[1].axhline(y=avg_sdr, color='green', linestyle='--',
+                   linewidth=1.5, label="SDR")    
+    axs[1].set_ylim(min(-0.5, np.nanmin(fr)) - 0.9,
+                    max(si_sdr, np.nanmax(fr)) + 0.9)
+    axs[1].set_xlabel("Time (s)", fontsize=14)
+    axs[1].set_ylabel("(SI‑)SDR (dB)", fontsize=14)
+    axs[1].legend(loc="upper right", fontsize=13, framealpha=0.3)
+
+
+    # Title and subtitle with metrics
+    fig.subplots_adjust(top=0.88)  # make room for subtitle
+    axs[0].set_title(f"avg-SDR: {avg_sdr:.2f} dB    |    SI-SDR: {si_sdr:.2f} dB",
+                     fontsize=12)
+
+
+    plt.tight_layout()
+    filename = f"{track_name}__{instr_name}.png"
+    outpath = os.path.join(out_dir, filename)
+    fig.savefig(outpath, dpi=150)
+    plt.close(fig)
+    print(f"  ▶ saved plot: {outpath}")
+
+
+
 def evaluate(args, dataset, model, instruments):
     '''
     Evaluates a given model on a given dataset
@@ -158,6 +223,7 @@ def evaluate(args, dataset, model, instruments):
         for example_num, example in enumerate(dataset):
             # if example_num > 1: #__gbastas_
             #     break                
+            track_name = example["mix"].split('/')[-2]            
             print("Evaluating " + example["mix"])
 
             # Load source references in their original sr and channel number
@@ -191,7 +257,22 @@ def evaluate(args, dataset, model, instruments):
             song = {}
             for idx, name in enumerate(instruments):
                 song[name] = {"SDR" : SDR[idx], "ISR" : ISR[idx], "SIR" : SIR[idx], "SAR" : SAR[idx], "SI-SDR": si_sdr_values[idx]}
-            perfs.append(song)
+                # plot with metrics
+                # plot_waveforms(
+                #     ref=target_sources[idx],
+                #     est=pred_sources[idx],
+                #     sr=args.sr,
+                #     out_dir="../img_insights",
+                #     track_name=track_name,
+                #     instr_name=name,
+                #     sdr=SDR[idx],
+                #     si_sdr=si_sdr_values[idx]
+                # )            
+
+            # song = {}
+            # for idx, name in enumerate(instruments):
+            #     song[name] = {"SDR" : SDR[idx], "ISR" : ISR[idx], "SIR" : SIR[idx], "SAR" : SAR[idx], "SI-SDR": si_sdr_values[idx]}
+            # perfs.append(song)
 
             if '_comp' in example['mix']:
                 # print('found comp')

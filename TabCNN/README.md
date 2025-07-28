@@ -3,7 +3,18 @@ Baseline TabCNN
 
 mkdir data-orig/GuitarSet
 ln -s ~/separate-and-transcribe/datasets/GuitarSet/data/annos/ ~/separate-and-transcribe/TabCNN/data-orig/GuitarSet/annotation
-mkdir data-orig/audio
+mkdir -p ~/separate-and-transcribe/TabCNN/data-orig//GuitarSet/audio/audio-mic
+mkdir -p ~/separate-and-transcribe/TabCNN/data-orig//GuitarSet/audio/audio_hex-pickup_debleeded
+ln -s ~/separate-and-transcribe/datasets/GuitarSet/data/mic ~/separate-and-transcribe/TabCNN/data-orig/GuitarSet/audio/audio_mic
+ln -s ~/separate-and-transcribe/datasets/GuitarSet/data/mix ~/separate-and-transcribe/TabCNN/data-orig/GuitarSet/audio_mix
+ln -s ~/separate-and-transcribe/datasets/GuitarSet/data/audio_hex-pickup_debleeded ~/separate-and-transcribe/TabCNN/data-orig/GuitarSet/audio/audio_hex-pickup_debleeded
+
+mkdir data_multisource/GuitarSet/
+ln -s ~/separate-and-transcribe/datasets/GuitarSet/data/annos/ ~/separate-and-transcribe/TabCNN/data_multisource/GuitarSet/annotation
+cp -r ../datasets/GuitarSet/data/annos/ ../data_multisource/GuitarSet/annotation
+
+
+![alt text](image.png)
 
 
 cd data

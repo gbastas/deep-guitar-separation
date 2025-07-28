@@ -4,7 +4,7 @@ import numpy as np
 import librosa
 
 sys.path.append('./src')
-from track_class import  Annotations #, TrackInstance
+from track_class import  Tablature #, Annotations #, TrackInstance
 
 import jams
 
@@ -12,7 +12,7 @@ import warnings
 warnings.filterwarnings("ignore") 
 
 
-def read_tablature_from_GuitarSet(jam_name, constants):
+def read_tablature_from_GuitarSet(jam_name, constants, audio=[]):
     """function to read a jam file and return the annotations needed"""
     string = 0
     try:
@@ -29,7 +29,6 @@ def read_tablature_from_GuitarSet(jam_name, constants):
     for string_tran in annos:
         for note in string_tran:
             # print('note', note)
-            # aaa
             onset = note[0]
             duration = note[1]
             midi_note = note[2]
@@ -39,5 +38,7 @@ def read_tablature_from_GuitarSet(jam_name, constants):
         string += 1
     tups.sort(key=lambda x: x[0]) # sort by onset time
     onsets, durations, fundamentals, strings = zip(*tups)
-    return Annotations(onsets, durations, fundamentals, strings, constants)
+    # return Annotations(onsets, durations, fundamentals, strings, constants)
+    return Tablature(onsets, durations, audio, constants=constants, strings=strings, fundamentals=fundamentals)
+    
 
