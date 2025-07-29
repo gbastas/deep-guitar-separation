@@ -252,8 +252,8 @@ class TabCNN:
                     verbose=1,
                     use_multiprocessing=True,
                     # use_multiprocessing=False, #  to avoid error
-                    workers=14)
-        
+                    workers=28)
+        # )
     def save_weights(self):
         self.model.save_weights(os.path.join(self.split_folder, "weights.h5"))
 

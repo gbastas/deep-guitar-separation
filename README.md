@@ -293,7 +293,7 @@ for file in ../datasets/datasep-mic-preds-gscustmic-mid-pretOnMic/train/*/mixtur
 
 for file in ../datasets/datasep-mic-preds-gscustmic-mid-pretOnMic/train/*/mixture.wav; do python predict.py --load_model checkpoints/waveunet_guit_gscustmic-mid-pretOnMic/best_checkpoint_749925 --cuda --input "$file"; done
 
- python Parallel_TabDataReprGenSep.py --input_path ../../datasets/datasep-mic-preds-gscustmic-mid-pretOnMic
+python Parallel_TabDataReprGenSep.py --input_path ../../datasets/datasep-mic-preds-gscustmic-mid-pretOnMic
 
 CUDA_VISIBLE_DEVICES=0 python TabCNN.py --partition senvaityte --n_stfts 7 --data_path ../data_multisource/spec_repr_datasep-mic-preds-gscustmic-mid-pretOnMic
 
@@ -308,6 +308,17 @@ CUDA_VISIBLE_DEVICES=3 python TabCNN.py --partition senvaityte --n_stfts 7 --dat
 for file in ../datasets/datasep-mic-preds-gscustmic-solo-pretOnMic/train/*/mixture.wav; do python predict.py --load_model checkpoints/waveunet_guit_gscustmic-solo-free-pretOnMic/best_checkpoint_ --cuda --input "$file"; done
 
 for file in ../datasets/datasep-mic-preds-gscustmic-solo-pretOnMic/train/*/mixture.wav; do python predict.py --load_model checkpoints/waveunet_guit_gscustmic-solo-free-pretOnMic/best_checkpoint_ --cuda --input "$file"; done
+
+
+
+------------------------------------------------------
+
+for file in ../datasets/datasep-mic-preds-gscustmic-solo-mdgp/train/*/mixture.wav; do python predict.py --load_model checkpoints/waveunet_guit_gscustmic-solo-mdgp-pretOnMic/best_checkpoint_688456 --cuda --input "$file"; done
+for file in ../datasets/datasep-mic-preds-gscustmic-solo-mdgp/test/*/mixture.wav; do python predict.py --load_model checkpoints/waveunet_guit_gscustmic-solo-mdgp-pretOnMic/best_checkpoint_688456 --cuda --input "$file"; done
+
+python Parallel_TabDataReprGenSep.py --input_path ../../datasets/datasep-mic-preds-gscustmic-solo-mdgp
+
+CUDA_VISIBLE_DEVICES=3 python TabCNN.py --partition senvaityte --n_stfts 7 --data_path ../data_multisource/spec_repr_datasep-mic-preds-gscustmic-solo-mdgp
 
 <!-- 
 ```

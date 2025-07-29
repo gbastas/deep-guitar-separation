@@ -22,21 +22,20 @@ def GuitarSetProcessing(constants : Constants):
     """ function that runs tests on the jams files mentioned in the given file 
     and plots the confusion matrixes for both the genetic and inharmonic results."""
 
+    seed = 42
+    random.seed(seed)
+    np.random.seed(seed)
 
     constants.crop_win=3
     if args.all_solos:
         constants.listoftracksfile = 'allsolos.txt'
-    elif args.all_tracks:
-        constants.listoftracksfile = 'alltracks.txt'                    
     else:
         constants.listoftracksfile = 'names.txt'
-
 
     if args.pickup:
         constants.dataset = 'mix'
     else:
         constants.dataset = 'mic'
-
 
     with open(os.path.join(constants.dataset_names_path, constants.listoftracksfile)) as n:
         lines = n.readlines()
@@ -45,9 +44,15 @@ def GuitarSetProcessing(constants : Constants):
     count_omitted_note_events = 0
     count_total_note_events = 0
     Strings_gt_total_count = [0]*6
+    count_active0 = 0
+    count_active5 = 0
+    count_active1 = 0 
+    duration_inner = 0.0
+    duration_inter = 0.0
+    past_channels = [[] for _ in range(6)]
     print('Ongoing Pitch-Fret-String Estimation...') # __new__
     for count, name in enumerate(lines): # iterate over filenames
-        # if count <
+        
         name = name.replace('\n', '')         # e.g. '02_SS2-88-F_solo.jams'
         # print('testfile', name)
         annosfilepath = os.path.join(constants.annos_path, name)
@@ -69,25 +74,16 @@ def GuitarSetProcessing(constants : Constants):
         test_strings = [tab_element.string for tab_element in annos_tab_list]
         test_frets = [tab_element.fret for tab_element in annos_tab_list]
 
-
-        # to get the note audio instances:
-        # tablature = Tablature(test_onsets, test_offsets, audio, constants)
-
-
-        # if args.action == 'pseudo_sep':
         if args.all_solos:
-            dest_path = './pseudo_sep_all_solos_'+constants.dataset+'_wn/'+name[:-5]+'_hex_'+constants.dataset+'/'
-        elif args.all_tracks:
-            dest_path = './pseudo_sep_all_tracks_'+constants.dataset+'_wn/'+name[:-5]+'_hex_'+constants.dataset+'/'
+            dest_path = './pseudocomp_sep_all_solos_'+constants.dataset+'_wn/'+name[:-9]+'comp_shuffl_hex_' + constants.dataset + '/'
         else:
-            dest_path = './pseudo_sep_few_solos_'+constants.dataset+'_wn/'+name[:-5]+'_hex_'+constants.dataset+'/'
-        # Assuming 'audio' is already defined and you want to match its length
-        len_audio = len(audio)  # Length of your audio signal
-        hex_audio = np.random.normal(0, 0.00005, (6, len_audio))  # mean=0, std=0.00005          WHITE NOISE!!!
+            dest_path = './pseudocomp_sep_few_solos_'+constants.dataset+'_wn/'+name[:-9]+'comp_shuffl_hex_' + constants.dataset + '/'
 
+        hex_audio_comp = [[0]]*6
+        hex_audio_uncut = np.random.normal(0, 0.00005, (6, len(audio)))  # mean=0, std=0.00005          WHITE NOISE!!!
+        
         for i, (fret, string, onset, offset) in enumerate(zip(test_frets, test_strings, test_onsets, test_offsets)):
             start = int(round((onset)*(constants.sampling_rate)))
-            # end = int(round((offset)*(constants.sampling_rate)))
             if i<len(test_onsets)-1:
                 endtime = min(offset, test_onsets[i+1])
             else:
@@ -98,41 +94,84 @@ def GuitarSetProcessing(constants : Constants):
             # avoid chords
             is_chord = False
             if args.all_solos:
-                # check neighbors at distances -2, -1, +1, +2
+                # check neighbor onsets at different distances 
                 for j in (-6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6):
                     idx = i + j
                     if 0 <= idx < len(test_onsets):
                         # only consider if it's on a different string
                         if string != test_strings[idx]:
+                            # timing difference
                             dt = abs(test_onsets[idx] - test_onsets[i])
-                            # interval overlap?
-                            overlap = (test_onsets[idx] < test_offsets[i] and
-                                    test_onsets[i]   < test_offsets[idx])
                             # if dt < 0.06 or overlap:
                             if dt < 0.06:# or overlap:
                                 is_chord = True
-                                # you can log how far away the neighbor was:
                                 # print(f'"chord" via neighbor {j}: dt={dt:.3f}, overlap={overlap}')
                                 break  # stop as soon as we find any chord‐like neighbor
-                            
-                            # if overlap:
-                            #         overlap_start = max(onset, test_onsets[idx]-0.025)
-                            #         t_overlap = overlap_start - onset
-                            #         end = start + int(round(t_overlap * constants.sampling_rate))
+
+            if is_chord:
+                count_omitted_note_events += 1
+                Strings_gt_total_count[string] += 1
+                continue            
+
+            ########################### note concat ###############################
+            hex_audio_comp[string] = hex_audio_comp[string] + list(audio[start:end])
+            ########################################################################
+            hex_audio_uncut[string, start:end] = audio[start:end]
 
 
-            # if is_chord:
-            #     count_omitted_note_events += 1
-            #     Strings_gt_total_count[string] += 1
-            #     continue
-
-            # print('len_audio', len(audio[start:end]))
-            # print('len_hex_audio', len(hex_audio[string, start:end]))
-            hex_audio[string, start:end] = audio[start:end]
-            # print('len_hex_audio-next', len(hex_audio[string, start:end]))
-            # print()
+        lengths = np.array([len(aud) for aud in hex_audio_comp])
 
 
+        # --- store channels for augmentation ---
+        datasep_mic_test_path_asref = "../datasets/GuitarSet/datasep-mic/test/"
+        ref_dir = os.path.join(datasep_mic_test_path_asref, name[:-5])
+        if not os.path.exists(ref_dir): # only if is not a test song gather sources
+            for string in range(6):
+                length_in_sec = len(hex_audio_comp[string])/constants.sampling_rate
+                if length_in_sec > 3:
+                    # past_channels[string].append(np.array(hex_audio_comp[string]))
+                    past_channels[string].append(np.array(hex_audio_uncut[string]))
+                    if string == 0:
+                        count_active0+=1 
+                        # print('string0', length_in_sec, 's')            
+        else:
+            print("Found a test song. So it's not included in overshuffl list.")
+
+        # os.makedirs(dest_path, exist_ok=True)
+    
+        
+    print('E and s5', count_active0, count_active1, count_active5)  
+    print('Ommited ' + str(count_omitted_note_events) + ' note events out of ' + str(count_total_note_events) +'.')
+    print('Number of  saved examples:', len(past_channels[0]))
+    
+
+    # for i in range(600):
+    # for i in range(1500):
+    for i in range(132):
+        
+        rand_channels = [random.choice(past_channels[i])*np.random.uniform(0.8, 1.0) for i in range(6)]
+        lengths = [len(aud) for aud in rand_channels]
+        longer = np.argsort(lengths)[-3]
+        # longer = np.argsort(lengths)[0]
+        
+        hex_audio = np.random.normal(0, 0.00005, (6, lengths[longer]))  # mean=0, std=0.00005     
+    
+    
+        # add silent start and end to all channels shorter than the 2nd longest and cut the actual longest to match the 2nd
+        for string, aud in enumerate(rand_channels):
+            if len(aud)<lengths[longer]:
+                s = random.randint(0, lengths[longer] - len(aud)-1)
+            else:
+                s = 0
+            L = min(len(aud), lengths[longer])
+            hex_audio[string, s:L+s] = np.array(aud[:L])
+        # print('BBBBBBBB', dest_path)
+
+        if args.all_solos:
+            dest_path = './pseudocomp_sep_all_solos_'+constants.dataset+'_wn/'+'comp_overshuffl_hex_' + str(i) + '_' + constants.dataset + '/'
+        else:
+            dest_path = './pseudocomp_sep_few_solos_'+constants.dataset+'_wn/'+'comp_overshuffl_hex_' + str(i) + '_' + constants.dataset + '/'
+        
         os.makedirs(dest_path, exist_ok=True)
 
         sf.write(dest_path+'E.wav', hex_audio[0,:], constants.sampling_rate)
@@ -144,8 +183,11 @@ def GuitarSetProcessing(constants : Constants):
 
         hex_audio = np.sum(hex_audio, axis=0)
         sf.write(dest_path+'mixture.wav', hex_audio, constants.sampling_rate)
-
-    print('Ommited ' + str(count_omitted_note_events) + ' note events out of ' + str(count_total_note_events) +'.')
+        duration_inter += len(hex_audio) / constants.sampling_rate
+        
+    print(f"Total inner-song mixture time: {duration_inner:.2f} seconds ({duration_inner / 60:.2f} minutes)")
+    print(f"Total inter-song mixture time (from shuffled past channels): {duration_inter:.2f} seconds ({duration_inter / 60:.2f} minutes)")
+    
     if args.plot:
         plot_note_hist(Strings_gt_total_count)
 
@@ -188,3 +230,6 @@ if __name__ == "__main__":
     constants.dataset_names_path = workspace_folder
 
     GuitarSetProcessing(constants)
+
+
+

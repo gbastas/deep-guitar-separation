@@ -1,7 +1,8 @@
 import numpy as np
 import keras
 
-from keras.utils.data_utils import Sequence
+# from keras.utils.data_utils import Sequence
+from tensorflow.keras.utils import Sequence
 import os 
 # class DataGenerator(keras.utils.all_utils.Sequence):
     
