@@ -25,6 +25,7 @@ def load_model(model, optimizer, path, cuda):
     except:
         # work-around for loading checkpoints where DataParallel was saved instead of inner module
         from collections import OrderedDict
+        
         model_state_dict_fixed = OrderedDict()
         prefix = 'module.'
         for k, v in checkpoint['model_state_dict'].items():

@@ -1,12 +1,13 @@
 import numpy as np
 import keras
-
-from keras.utils.data_utils import Sequence
+import tensorflow as tf
+# from keras.utils.data_utils import Sequence
+from tensorflow.keras.utils import Sequence
 import os 
 # class DataGenerator(keras.utils.all_utils.Sequence):
     
 class DataGenerator(Sequence):
-    def __init__(self, list_IDs, data_path="../data/spec_repr_target/", batch_size=128, shuffle=True, label_dim = (6,21), spec_repr="c", con_win_size=9, n_stfts=1):
+    def __init__(self, list_IDs, data_path="../data/spec_repr_target/", batch_size=128, shuffle=True, label_dim = (6,21), spec_repr="c", con_win_size=9, n_stfts=1, seed=42):
         
         self.list_IDs = list_IDs
         self.data_path = data_path
@@ -17,6 +18,7 @@ class DataGenerator(Sequence):
         self.con_win_size = con_win_size
         self.halfwin = con_win_size // 2
         self.n_stfts = n_stfts
+        self.seed = seed
         
         if self.spec_repr == "c":
             # print('n_stfts', n_stfts)
@@ -34,7 +36,18 @@ class DataGenerator(Sequence):
         self.y_dim = (self.batch_size, self.label_dim[0], self.label_dim[1])
         
         self.on_epoch_end()
+
         
+        # Set the seed for deterministic behavior in NumPy and TensorFlow
+        self.set_seed(self.seed)
+
+    def set_seed(self, seed):
+        """Set the seed for reproducibility."""
+        np.random.seed(seed)  # Set the seed for NumPy
+        tf.random.set_seed(seed)  # Set the seed for TensorFlow/Keras
+        os.environ['PYTHONHASHSEED'] = str(seed)  # Ensure hash consistency in Python
+    
+
     def __len__(self):
         # number of batches per epoch
         return int(np.floor(float(len(self.list_IDs)) / self.batch_size))

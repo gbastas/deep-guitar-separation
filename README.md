@@ -259,8 +259,8 @@ First, create the separated sources to be used by TabCNN:
 cd Wave-U-Net-Pytorch-6string
 cp -r ../datasets/datasep-{mix, mic} ../datasets/datasep-{mix, mic}-preds-{codename-of-waveunet}
 export CUDA_VISIBLE_DEVICES=#
-for file in ../datasets/datasep-{mix, mic}-preds-{codename-of-waveunet}/train/*/mixture.wav; do python predict.py --load_model checkpoints/waveunet_guit_{codename-of-waveunet}/best_checkpoint_# --cuda --input "$file"; done
-for file in ../datasets/datasep-{mix, mic}-preds-{codename-of-waveunet}/train/*/mixture.wav; do python predict.py --load_model checkpoints/waveunet_guit_{codename-of-waveunet}/best_checkpoint_# --cuda --input "$file"; done
+
+python multi-predict.py --load_model checkpoints/waveunet_guit_{codename-of-waveunet}/best_checkpoint_ --cuda --input_dir ../datasets/datasep-{mix, mic}-preds-{codename-of-waveunet}
 ```
 
 Then, extract CQTs for all mixtures, reference and estimated sources:
@@ -307,18 +307,12 @@ CUDA_VISIBLE_DEVICES=3 python TabCNN.py --partition senvaityte --n_stfts 7 --dat
 
 for file in ../datasets/datasep-mic-preds-gscustmic-solo-pretOnMic/train/*/mixture.wav; do python predict.py --load_model checkpoints/waveunet_guit_gscustmic-solo-free-pretOnMic/best_checkpoint_ --cuda --input "$file"; done
 
-for file in ../datasets/datasep-mic-preds-gscustmic-solo-pretOnMic/train/*/mixture.wav; do python predict.py --load_model checkpoints/waveunet_guit_gscustmic-solo-free-pretOnMic/best_checkpoint_ --cuda --input "$file"; done
+for file in ../datasets/datasep-mic-preds-gscustmic-solo-pretOnMic/test/*/mixture.wav; do python predict.py --load_model checkpoints/waveunet_guit_gscustmic-solo-free-pretOnMic/best_checkpoint_ --cuda --input "$file"; done
 
+python Parallel_TabDataReprGenSep.py --input_path ../../datasets/datasep-mic-preds-gscustmic-solo-pretOnMic
 
+CUDA_VISIBLE_DEVICES=1 python TabCNN.py --partition senvaityte --n_stfts 7 --data_path ../data_multisource/spec_repr_datasep-mic-preds-gscustmic-solo-pretOnMic
 
-------------------------------------------------------
-
-for file in ../datasets/datasep-mic-preds-gscustmic-solo-mdgp/train/*/mixture.wav; do python predict.py --load_model checkpoints/waveunet_guit_gscustmic-solo-mdgp-pretOnMic/best_checkpoint_688456 --cuda --input "$file"; done
-for file in ../datasets/datasep-mic-preds-gscustmic-solo-mdgp/test/*/mixture.wav; do python predict.py --load_model checkpoints/waveunet_guit_gscustmic-solo-mdgp-pretOnMic/best_checkpoint_688456 --cuda --input "$file"; done
-
-python Parallel_TabDataReprGenSep.py --input_path ../../datasets/datasep-mic-preds-gscustmic-solo-mdgp
-
-CUDA_VISIBLE_DEVICES=3 python TabCNN.py --partition senvaityte --n_stfts 7 --data_path ../data_multisource/spec_repr_datasep-mic-preds-gscustmic-solo-mdgp
 
 <!-- 
 ```

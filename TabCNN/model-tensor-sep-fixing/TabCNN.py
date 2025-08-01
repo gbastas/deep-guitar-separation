@@ -18,6 +18,21 @@ import tensorflow as tf
 import argparse
 import csv
 
+
+
+import random
+import os
+
+def set_seed(seed=42):
+    np.random.seed(seed)
+    random.seed(seed)
+    tf.random.set_seed(seed)
+    os.environ['PYTHONHASHSEED'] = str(seed)
+    # Disable GPU non-determinism
+    tf.config.experimental.enable_op_determinism()
+
+
+
 class TabCNN:
     
     def __init__(self, 
@@ -51,7 +66,6 @@ class TabCNN:
             self.save_folder = os.path.join(self.save_path, args.saved_exp)
         else:
             self.save_folder = os.path.join(self.save_path, self.spec_repr + " " + datetime.datetime.now().strftime("%Y-%m-%d %H%M%S"))
-            # self.save_folder = self.save_path + "c 2024-11-12 160033/"
 
         if not os.path.exists(self.save_folder):
             os.makedirs(self.save_folder)
@@ -86,10 +100,7 @@ class TabCNN:
         self.metrics["tdr_comp"] = []        
         
         if self.spec_repr == "c":
-            # self.input_shape = (192, self.con_win_size, 7)
             self.input_shape = (192, self.con_win_size, self.n_stfts)
-            # self.input_shape = (192, self.con_win_size, 6)
-            # self.input_shape = (1344, self.con_win_size, 1)
         elif self.spec_repr == "m":
             self.input_shape = (128, self.con_win_size, 1)
         elif self.spec_repr == "cm":
@@ -252,8 +263,8 @@ class TabCNN:
                     verbose=1,
                     use_multiprocessing=True,
                     # use_multiprocessing=False, #  to avoid error
-                    # workers=28)
-                    workers=14)
+                    workers=26)
+                    # workers=14)
         # )
     def save_weights(self):
         self.model.save_weights(os.path.join(self.split_folder, "weights.h5"))

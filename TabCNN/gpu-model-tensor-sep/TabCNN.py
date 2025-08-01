@@ -3,12 +3,17 @@
 '''
 
 from __future__ import print_function
-import keras
+# import keras
 import os
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Flatten, Reshape, Activation
-from keras.layers import Conv2D, MaxPooling2D, Conv1D, Lambda
-from keras import backend as K
+# from keras.models import Sequential
+# from keras.layers import Dense, Dropout, Flatten, Reshape, Activation
+# from keras.layers import Conv2D, MaxPooling2D, Conv1D, Lambda
+# from keras import backend as K
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout, Flatten, Reshape, Activation
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Conv1D, Lambda
+from tensorflow.keras import backend as K
+
 from DataGenerator import DataGenerator
 import pandas as pd
 import numpy as np
@@ -17,6 +22,21 @@ from Metrics import *
 import tensorflow as tf
 import argparse
 import csv
+
+
+
+import random
+import os
+
+def set_seed(seed=42):
+    np.random.seed(seed)
+    random.seed(seed)
+    tf.random.set_seed(seed)
+    os.environ['PYTHONHASHSEED'] = str(seed)
+    # Disable GPU non-determinism
+    tf.config.experimental.enable_op_determinism()
+
+
 
 class TabCNN:
     
@@ -51,7 +71,6 @@ class TabCNN:
             self.save_folder = os.path.join(self.save_path, args.saved_exp)
         else:
             self.save_folder = os.path.join(self.save_path, self.spec_repr + " " + datetime.datetime.now().strftime("%Y-%m-%d %H%M%S"))
-            # self.save_folder = self.save_path + "c 2024-11-12 160033/"
 
         if not os.path.exists(self.save_folder):
             os.makedirs(self.save_folder)
@@ -86,10 +105,7 @@ class TabCNN:
         self.metrics["tdr_comp"] = []        
         
         if self.spec_repr == "c":
-            # self.input_shape = (192, self.con_win_size, 7)
             self.input_shape = (192, self.con_win_size, self.n_stfts)
-            # self.input_shape = (192, self.con_win_size, 6)
-            # self.input_shape = (1344, self.con_win_size, 1)
         elif self.spec_repr == "m":
             self.input_shape = (128, self.con_win_size, 1)
         elif self.spec_repr == "cm":
@@ -246,15 +262,20 @@ class TabCNN:
         self.model = model
 
     def train(self):
-        self.model.fit_generator(generator=self.training_generator,
-                    validation_data=None,
-                    epochs=self.epochs,
-                    verbose=1,
-                    use_multiprocessing=True,
-                    # use_multiprocessing=False, #  to avoid error
-                    # workers=28)
-                    workers=14)
-        # )
+        # self.model.fit_generator(generator=self.training_generator,
+        #             validation_data=None,
+        #             epochs=self.epochs,
+        #             verbose=1,
+        #             use_multiprocessing=True,
+        #             # use_multiprocessing=False, #  to avoid error
+        #             workers=14)
+
+        self.model.fit(
+            self.training_generator,
+            validation_data=None,
+            epochs=self.epochs,
+        )
+
     def save_weights(self):
         self.model.save_weights(os.path.join(self.split_folder, "weights.h5"))
 
