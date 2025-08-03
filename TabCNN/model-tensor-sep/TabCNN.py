@@ -86,10 +86,7 @@ class TabCNN:
         self.metrics["tdr_comp"] = []        
         
         if self.spec_repr == "c":
-            # self.input_shape = (192, self.con_win_size, 7)
             self.input_shape = (192, self.con_win_size, self.n_stfts)
-            # self.input_shape = (192, self.con_win_size, 6)
-            # self.input_shape = (1344, self.con_win_size, 1)
         elif self.spec_repr == "m":
             self.input_shape = (128, self.con_win_size, 1)
         elif self.spec_repr == "cm":
@@ -250,10 +247,10 @@ class TabCNN:
                     validation_data=None,
                     epochs=self.epochs,
                     verbose=1,
-                    use_multiprocessing=True,
-                    # use_multiprocessing=False, #  to avoid error
+                    # use_multiprocessing=True,
+                    use_multiprocessing=False, #  to avoid error
                     # workers=28)
-                    workers=14)
+                    workers=24)
         # )
     def save_weights(self):
         self.model.save_weights(os.path.join(self.split_folder, "weights.h5"))
