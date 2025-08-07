@@ -153,7 +153,7 @@ def main(args):
         # VALIDATE
         val_loss = validate(args, model, criterion, val_data)
         try:
-            # val_comp_loss = validate(args, model, criterion, val_comp_data)
+            val_comp_loss = validate(args, model, criterion, val_comp_data)
             val_solo_loss = validate(args, model, criterion, val_solo_data)
         except Exception as e:
             print("warning couldn't load val_comp or val_solo")
@@ -162,7 +162,7 @@ def main(args):
             
         print("VALIDATION FINISHED: LOSS: " + str(val_loss))
         writer.add_scalar("val_loss", val_loss, state["step"])
-        # writer.add_scalar("val_comp_loss", val_comp_loss, state["step"])
+        writer.add_scalar("val_comp_loss", val_comp_loss, state["step"])
         writer.add_scalar("val_solo_loss", val_solo_loss, state["step"])
         # if args.version=='mic':
         #     writer.add_scalar("val_mix_loss", val_mix_loss, state["step"])
@@ -188,16 +188,16 @@ def main(args):
             model_utils.save_model(model, optimizer, state, checkpoint_best_path)
 
         
-        # if val_comp_loss < state["best_comp_loss"]:
-        #     print("MODEL IMPROVED ON VALIDATION SET!")
-        #     checkpoint_comp_best_path = os.path.join(args.checkpoint_dir, "best_comp_checkpoint_" + str(state["step"]))
-        #     try:
-        #         os.remove(checkpoint_comp_best_path_prev)
-        #     except Exception as e:
-        #         print('Caught exception comp:', e)
-        #     print("Saving best comp model...")      
-        #     state["best_comp_loss"] = val_comp_loss
-        #     model_utils.save_model(model, optimizer, state, checkpoint_comp_best_path)
+        if val_comp_loss < state["best_comp_loss"]:
+            print("MODEL IMPROVED ON VALIDATION SET!")
+            checkpoint_comp_best_path = os.path.join(args.checkpoint_dir, "best_comp_checkpoint_" + str(state["step"]))
+            try:
+                os.remove(checkpoint_comp_best_path_prev)
+            except Exception as e:
+                print('Caught exception comp:', e)
+            print("Saving best comp model...")      
+            state["best_comp_loss"] = val_comp_loss
+            model_utils.save_model(model, optimizer, state, checkpoint_comp_best_path)
     
         
         if val_solo_loss < state["best_solo_loss"]:
@@ -318,6 +318,11 @@ def main(args):
             resfile = open(args.checkpoint_dir+'/'+key+'_results_'+ args.load_model.split('_')[-1] +'.csv', 'w')
         csvwriter = csv.writer(resfile)
         csvwriter.writerow([" ","SDR", "SIR", "SAR", "SI-SDR"])
+
+        for inst in args.instruments:
+            csvwriter.writerow([inst, round(avg_SDRs[inst],3), round(avg_SIRs[inst],3), round(avg_SARs[inst],3), round(avg_SISDRs[inst],3)])
+        #     print(inst, round(avg_SDRs[inst],3), round(avg_SIRs[inst],3), round(avg_SARs[inst],3), round(avg_SISDRs[inst],3))
+
 
 
         overall_SDR = np.mean([v for v in avg_SDRs.values()])

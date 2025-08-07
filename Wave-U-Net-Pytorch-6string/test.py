@@ -187,12 +187,12 @@ def plot_waveforms(ref, est, sr, out_dir, track_name, instr_name, sdr, si_sdr, h
                     max(si_sdr, np.nanmax(fr)) + 0.9)
     axs[1].set_xlabel("Time (s)", fontsize=14)
     axs[1].set_ylabel("(SI‑)SDR (dB)", fontsize=14)
-    axs[1].legend(loc="upper right", fontsize=13, framealpha=0.3)
+    axs[1].legend(loc="upper right", fontsize=13, framealpha=0.9)
 
 
     # Title and subtitle with metrics
     fig.subplots_adjust(top=0.88)  # make room for subtitle
-    axs[0].set_title(f"avg-SDR: {avg_sdr:.2f} dB    |    SI-SDR: {si_sdr:.2f} dB",
+    axs[0].set_title(f"SDR: {avg_sdr:.2f} dB    |    SI-SDR: {si_sdr:.2f} dB",
                      fontsize=12)
 
 
@@ -229,9 +229,14 @@ def evaluate(args, dataset, model, instruments):
             # Load source references in their original sr and channel number
             target_sources = np.stack([data.utils.load(example[instrument], sr=None, mono=False)[0].T for instrument in instruments])
 
+
+
+
             # Predict using mixture
             pred_sources = predict_song(args, example["mix"], model)
             pred_sources = np.stack([pred_sources[key].T for key in instruments])
+
+
 
             ### ___________ ###
             n = min(pred_sources.shape[1], target_sources.shape[1])
@@ -241,7 +246,15 @@ def evaluate(args, dataset, model, instruments):
 
             # Evaluate
             SDR, ISR, SIR, SAR, _ = museval.metrics.bss_eval(target_sources, pred_sources)
-            
+
+
+            # # Convert target_sources to torch tensors and move them to GPU
+            # target_sources_tensor = torch.tensor(target_sources).float()
+            # pred_sources_tensor = torch.tensor(pred_sources).float()            
+            # if args.cuda:
+            #     target_sources_tensor = target_sources_tensor.cuda()
+            #     pred_sources_tensor = pred_sources_tensor.cuda()            
+                
             # Evaluate SI-SDR
             si_sdr_metric = ScaleInvariantSignalDistortionRatio()
 
@@ -258,21 +271,22 @@ def evaluate(args, dataset, model, instruments):
             for idx, name in enumerate(instruments):
                 song[name] = {"SDR" : SDR[idx], "ISR" : ISR[idx], "SIR" : SIR[idx], "SAR" : SAR[idx], "SI-SDR": si_sdr_values[idx]}
                 # plot with metrics
-                # plot_waveforms(
-                #     ref=target_sources[idx],
-                #     est=pred_sources[idx],
-                #     sr=args.sr,
-                #     out_dir="../img_insights",
-                #     track_name=track_name,
-                #     instr_name=name,
-                #     sdr=SDR[idx],
-                #     si_sdr=si_sdr_values[idx]
-                # )            
+                plot_waveforms(
+                    ref=target_sources[idx],
+                    est=pred_sources[idx],
+                    sr=args.sr,
+                    out_dir="../img_insights",
+                    track_name=track_name,
+                    instr_name=name,
+                    sdr=SDR[idx],
+                    si_sdr=si_sdr_values[idx]
+                )            
 
             # song = {}
             # for idx, name in enumerate(instruments):
             #     song[name] = {"SDR" : SDR[idx], "ISR" : ISR[idx], "SIR" : SIR[idx], "SAR" : SAR[idx], "SI-SDR": si_sdr_values[idx]}
-            # perfs.append(song)
+            perfs.append(song)
+            # print('song', song)
 
             if '_comp' in example['mix']:
                 # print('found comp')

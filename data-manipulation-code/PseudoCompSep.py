@@ -116,10 +116,6 @@ def GuitarSetProcessing(constants : Constants):
                                 is_chord = True
                                 # print(f'"chord" via neighbor {j}: dt={dt:.3f}, overlap={overlap}')
                                 break  # stop as soon as we find any chord‐like neighbor
-                            # if overlap:
-                            #         overlap_start = max(onset, test_onsets[idx]-0.25)
-                            #         t_overlap = overlap_start - onset
-                            #         end = start + int(round(t_overlap * constants.sampling_rate))
 
             if is_chord:
                 count_omitted_note_events += 1
@@ -155,19 +151,19 @@ def GuitarSetProcessing(constants : Constants):
             L = min(len(aud), lengths[second_longer])
             hex_audio[string, s:L+s] = np.array(aud[:L])
 
-        # --- store channels for augmentation ---
-        datasep_mic_test_path_asref = "../datasets/GuitarSet/datasep-mic/test/"
-        ref_dir = os.path.join(datasep_mic_test_path_asref, name[:-5])
-        if not os.path.exists(ref_dir): # only if is not a test song gather sources
-            for string in range(6):
-                length_in_sec = len(hex_audio_comp[string])/constants.sampling_rate
-                if length_in_sec > 1:
-                    past_channels[string].append(np.array(hex_audio_comp[string]))
-                    if string == 0:
-                        count_active0+=1 
-                        # print('string0', length_in_sec, 's')            
-        else:
-            print("Found a test song. So it's not included in overshuffl list.")
+        # # --- store channels for augmentation ---
+        # datasep_mic_test_path_asref = "../datasets/GuitarSet/datasep-mic/test/"
+        # ref_dir = os.path.join(datasep_mic_test_path_asref, name[:-5])
+        # if not os.path.exists(ref_dir): # only if is not a test song gather sources
+        #     for string in range(6):
+        #         length_in_sec = len(hex_audio_comp[string])/constants.sampling_rate
+        #         if length_in_sec > 1:
+        #             past_channels[string].append(np.array(hex_audio_comp[string]))
+        #             if string == 0:
+        #                 count_active0+=1 
+        #                 # print('string0', length_in_sec, 's')            
+        # else:
+        #     print("Found a test song. So it's not included in overshuffl list.")
 
         os.makedirs(dest_path, exist_ok=True)
     
@@ -187,88 +183,88 @@ def GuitarSetProcessing(constants : Constants):
     print('Number of  saved examples:', len(past_channels[0]))
     
 
-    for i in range(2):
-        # for i in range(1500``):
-        for i, name in enumerate(lines): # iterate over filenames
-            name = name.replace('\n', '')         # e.g. '02_SS2-88-F_solo.jams'
+    # for i in range(2):
+    #     # for i in range(1500``):
+    #     for i, name in enumerate(lines): # iterate over filenames
+    #         name = name.replace('\n', '')         # e.g. '02_SS2-88-F_solo.jams'
             
-            # print(past_channels[0])
-            # AAAAAAAAA
-            # pick random past channels excluding current
-            rand_channels = [random.choice(past_channels[i]) for i in range(6)]
-            lengths = [len(aud) for aud in rand_channels]
-            second_longer = np.argsort(lengths)[-2]
+    #         # print(past_channels[0])
+    #         # AAAAAAAAA
+    #         # pick random past channels excluding current
+    #         rand_channels = [random.choice(past_channels[i]) for i in range(6)]
+    #         lengths = [len(aud) for aud in rand_channels]
+    #         second_longer = np.argsort(lengths)[-2]
             
-            hex_audio_plus = np.random.normal(0, 0.00005, (6, lengths[second_longer]))  # mean=0, std=0.00005     
+    #         hex_audio_plus = np.random.normal(0, 0.00005, (6, lengths[second_longer]))  # mean=0, std=0.00005     
         
         
-            # add silent start and end to all channels shorter than the 2nd longest and cut the actual longest to match the 2nd
-            for string, aud in enumerate(rand_channels):
-                if len(aud)<lengths[second_longer]:
-                    s = random.randint(0, lengths[second_longer] - len(aud)-1)
-                else:
-                    s = 0
-                L = min(len(aud), lengths[second_longer])
-                hex_audio_plus[string, s:L+s] = np.array(aud[:L])
+    #         # add silent start and end to all channels shorter than the 2nd longest and cut the actual longest to match the 2nd
+    #         for string, aud in enumerate(rand_channels):
+    #             if len(aud)<lengths[second_longer]:
+    #                 s = random.randint(0, lengths[second_longer] - len(aud)-1)
+    #             else:
+    #                 s = 0
+    #             L = min(len(aud), lengths[second_longer])
+    #             hex_audio_plus[string, s:L+s] = np.array(aud[:L])
 
 
-            if args.all_solos:
-                dest_path = './pseudocomp_sep_all_solos_'+constants.dataset+'_wn/'+name[:-9]+'comp_shuffl_hex_' + constants.dataset + '/'
-            else:
-                dest_path = './pseudocomp_sep_few_solos_'+constants.dataset+'_wn/'+name[:-9]+'comp_shuffl_hex_' + constants.dataset + '/'
+    #         if args.all_solos:
+    #             dest_path = './pseudocomp_sep_all_solos_'+constants.dataset+'_wn/'+name[:-9]+'comp_shuffl_hex_' + constants.dataset + '/'
+    #         else:
+    #             dest_path = './pseudocomp_sep_few_solos_'+constants.dataset+'_wn/'+name[:-9]+'comp_shuffl_hex_' + constants.dataset + '/'
                 
-            string_names = ['E', 'A', 'D', 'G', 'B', 'e']
-            for j, string_name in enumerate(string_names):
-                file_path = os.path.join(dest_path, f"{string_name}.wav")
+    #         string_names = ['E', 'A', 'D', 'G', 'B', 'e']
+    #         for j, string_name in enumerate(string_names):
+    #             file_path = os.path.join(dest_path, f"{string_name}.wav")
 
-                # Read existing file if exists, else start fresh
-                if os.path.exists(file_path):
-                    existing_audio, sr = sf.read(file_path)
-                    assert sr == constants.sampling_rate
-                    concatenated = np.concatenate((existing_audio, hex_audio_plus[j]))
-                else:
-                    concatenated = hex_audio_plus[j]
+    #             # Read existing file if exists, else start fresh
+    #             if os.path.exists(file_path):
+    #                 existing_audio, sr = sf.read(file_path)
+    #                 assert sr == constants.sampling_rate
+    #                 concatenated = np.concatenate((existing_audio, hex_audio_plus[j]))
+    #             else:
+    #                 concatenated = hex_audio_plus[j]
 
-                # Write back the concatenated audio
-                sf.write(file_path, concatenated, constants.sampling_rate)
+    #             # Write back the concatenated audio
+    #             sf.write(file_path, concatenated, constants.sampling_rate)
 
-            # Do the same for the mixture
-            mix_path = os.path.join(dest_path, "mixture.wav")
-            hex_audio_mix = np.sum(hex_audio_plus, axis=0)
+    #         # Do the same for the mixture
+    #         mix_path = os.path.join(dest_path, "mixture.wav")
+    #         hex_audio_mix = np.sum(hex_audio_plus, axis=0)
 
-            if os.path.exists(mix_path):
-                existing_mix, sr = sf.read(mix_path)
-                assert sr == constants.sampling_rate
-                hex_audio_mix = np.concatenate((existing_mix, hex_audio_mix))
+    #         if os.path.exists(mix_path):
+    #             existing_mix, sr = sf.read(mix_path)
+    #             assert sr == constants.sampling_rate
+    #             hex_audio_mix = np.concatenate((existing_mix, hex_audio_mix))
 
-            sf.write(mix_path, hex_audio_mix, constants.sampling_rate)            
-            # print('BBBBBBBB', dest_path)
+    #         sf.write(mix_path, hex_audio_mix, constants.sampling_rate)            
+    #         # print('BBBBBBBB', dest_path)
 
-            # TODO concatenate hex_audio
+    #         # TODO concatenate hex_audio
 
-            # if args.all_solos:
-            #     dest_path = './pseudocomp_sep_all_solos_'+constants.dataset+'_wn/'+'comp_overshuffl_hex_' + str(i) + '_' + constants.dataset + '/'
-            # else:
-            #     dest_path = './pseudocomp_sep_few_solos_'+constants.dataset+'_wn/'+'comp_overshuffl_hex_' + str(i) + '_' + constants.dataset + '/'
+    #         if args.all_solos:
+    #             dest_path = './pseudocomp_sep_all_solos_'+constants.dataset+'_wn/'+'comp_overshuffl_hex_' + str(i) + '_' + constants.dataset + '/'
+    #         else:
+    #             dest_path = './pseudocomp_sep_few_solos_'+constants.dataset+'_wn/'+'comp_overshuffl_hex_' + str(i) + '_' + constants.dataset + '/'
             
-            # os.makedirs(dest_path, exist_ok=True)
+    #         os.makedirs(dest_path, exist_ok=True)
 
-            # sf.write(dest_path+'E.wav', hex_audio[0,:], constants.sampling_rate)
-            # sf.write(dest_path+'A.wav', hex_audio[1,:], constants.sampling_rate)
-            # sf.write(dest_path+'D.wav', hex_audio[2,:], constants.sampling_rate)
-            # sf.write(dest_path+'G.wav', hex_audio[3,:], constants.sampling_rate)
-            # sf.write(dest_path+'B.wav', hex_audio[4,:], constants.sampling_rate)
-            # sf.write(dest_path+'e.wav', hex_audio[5,:], constants.sampling_rate)					
+    #         sf.write(dest_path+'E.wav', hex_audio[0,:], constants.sampling_rate)
+    #         sf.write(dest_path+'A.wav', hex_audio[1,:], constants.sampling_rate)
+    #         sf.write(dest_path+'D.wav', hex_audio[2,:], constants.sampling_rate)
+    #         sf.write(dest_path+'G.wav', hex_audio[3,:], constants.sampling_rate)
+    #         sf.write(dest_path+'B.wav', hex_audio[4,:], constants.sampling_rate)
+    #         sf.write(dest_path+'e.wav', hex_audio[5,:], constants.sampling_rate)					
 
-            # hex_audio = np.sum(hex_audio, axis=0)
-            # sf.write(dest_path+'mixture.wav', hex_audio, constants.sampling_rate)
-            # duration_inter += len(hex_audio) / constants.sampling_rate
+    #         hex_audio = np.sum(hex_audio, axis=0)
+    #         sf.write(dest_path+'mixture.wav', hex_audio, constants.sampling_rate)
+    #         duration_inter += len(hex_audio) / constants.sampling_rate
             
-    print(f"Total inner-song mixture time: {duration_inner:.2f} seconds ({duration_inner / 60:.2f} minutes)")
-    print(f"Total inter-song mixture time (from shuffled past channels): {duration_inter:.2f} seconds ({duration_inter / 60:.2f} minutes)")
+    # print(f"Total inner-song mixture time: {duration_inner:.2f} seconds ({duration_inner / 60:.2f} minutes)")
+    # print(f"Total inter-song mixture time (from shuffled past channels): {duration_inter:.2f} seconds ({duration_inter / 60:.2f} minutes)")
     
-    if args.plot:
-        plot_note_hist(Strings_gt_total_count)
+    # if args.plot:
+    #     plot_note_hist(Strings_gt_total_count)
 
 def plot_note_hist(Strings_gt_total_count):
     plt.figure(figsize=(30,10))

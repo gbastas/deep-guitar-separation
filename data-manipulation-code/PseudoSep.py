@@ -95,36 +95,30 @@ def GuitarSetProcessing(constants : Constants):
             end = int(round((endtime)*(constants.sampling_rate)))
 
             count_total_note_events+=1
-            # # avoid chords
-            # is_chord = False
-            # if args.all_solos:
-            #     # check neighbors at distances -2, -1, +1, +2
-            #     for j in (-6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6):
-            #         idx = i + j
-            #         if 0 <= idx < len(test_onsets):
-            #             # only consider if it's on a different string
-            #             if string != test_strings[idx]:
-            #                 dt = abs(test_onsets[idx] - test_onsets[i])
-            #                 # interval overlap?
-            #                 overlap = (test_onsets[idx] < test_offsets[i] and
-            #                         test_onsets[i]   < test_offsets[idx])
-            #                 # if dt < 0.06 or overlap:
-            #                 if dt < 0.06:# or overlap:
-            #                     is_chord = True
-            #                     # you can log how far away the neighbor was:
-            #                     # print(f'"chord" via neighbor {j}: dt={dt:.3f}, overlap={overlap}')
-            #                     break  # stop as soon as we find any chord‐like neighbor
-                            
-            #                 # if overlap:
-            #                 #         overlap_start = max(onset, test_onsets[idx]-0.025)
-            #                 #         t_overlap = overlap_start - onset
-            #                 #         end = start + int(round(t_overlap * constants.sampling_rate))
+            # avoid chords
+            is_chord = False
+            if args.all_solos:
+                # check neighbors at distances -2, -1, +1, +2
+                for j in (-6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6):
+                    idx = i + j
+                    if 0 <= idx < len(test_onsets):
+                        # only consider if it's on a different string
+                        if string != test_strings[idx]:
+                            dt = abs(test_onsets[idx] - test_onsets[i])
+                            # interval overlap?
+                            overlap = (test_onsets[idx] < test_offsets[i] and
+                                    test_onsets[i]   < test_offsets[idx])
+                            # if dt < 0.06 or overlap:
+                            if dt < 0.06:# or overlap:
+                                is_chord = True
+                                # you can log how far away the neighbor was:
+                                # print(f'"chord" via neighbor {j}: dt={dt:.3f}, overlap={overlap}')
+                                break  # stop as soon as we find any chord‐like neighbor                           
 
-
-            # if is_chord:
-            #     count_omitted_note_events += 1
-            #     Strings_gt_total_count[string] += 1
-            #     continue
+            if is_chord:
+                count_omitted_note_events += 1
+                Strings_gt_total_count[string] += 1
+                continue
 
             # print('len_audio', len(audio[start:end]))
             # print('len_hex_audio', len(hex_audio[string, start:end]))

@@ -74,12 +74,12 @@ Hence, our dataset for separation is ready:
 - **`datasep-gscustmic/`** - to train and test our data on our custom auxiliary **GSCustomMic** dataset
 
 
-Act similarly to create GSCustomPckp by running:
+<!-- Act similarly to create GSCustomPckp by running:
 ```
 python PseudoCompSep.py -all_solos --pickup
 python PseudoSep.py  --all_solos --pickup
 etc.
-```
+``` -->
 
 
 **MDGP: Preparing the Dataset**
@@ -268,7 +268,7 @@ Then, extract CQTs for all mixtures, reference and estimated sources:
 cd ../TabCNN/data_multisource
 cp -r ../../datasets/GuitarSet/data/annos/ ../data_multisource/GuitarSet/annotation
 python Parallel_TabDataReprGenSep.py --input_path ../../datasets/datasep-{mix, mic}-preds-{codename-of-waveunet} 
-cp ../data_multisource/ ../data_multisource/spec_repr_gscustmic-mid-pretOnMic/id.csv
+cp ../data_multisource/id.csv ../data_multisource/spec_repr_gscustmic-mid-pretOnMic/id.csv
 
 ```
 
