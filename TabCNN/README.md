@@ -1,3 +1,41 @@
+**TabCNN**
+
+conda create -n tab-cnn python==3.9
+conda activate tab-cnn
+pip install -r requirements.txt
+
+First, create the separated sources to be used by TabCNN:
+```
+cd Wave-U-Net-Pytorch-6string
+cp -r ../datasets/datasep-{mix, mic} ../datasets/datasep-{mix, mic}-preds-{codename-of-waveunet}
+python multi-predict.py --load_model checkpoints/waveunet_guit_{codename-of-waveunet}/best_checkpoint_ --cuda --input_dir ../datasets/datasep-{mix, mic}-preds-{codename-of-waveunet}
+```
+
+Then, extract CQTs for all mixtures, reference and estimated sources:
+```
+cd ../TabCNN/data_multisource
+cp -r ../../datasets/GuitarSet/data/annos/ ../data_multisource/GuitarSet/annotation
+python Parallel_TabDataReprGenSep.py --input_path ../../datasets/datasep-{mix, mic}-preds-{codename-of-waveunet} 
+cp ../data_multisource/id.csv ../data_multisource/spec_repr_gscustmic-mid-pretOnMic/id.csv
+
+```
+
+Now, let's train the model
+```
+cd ../model-tensor-sep
+python TabCNN.py --partition senvaityte --n_stfts 7 --data_path ../data_multisource/spec_repr_{codename-f-waveunet} 
+```
+
+e.g.
+cd Wave-U-Net-Pytorch-6string
+python multi-predict.py --load_model checkpoints/waveunet_guit_gscustmix-pretOnHex/best_checkpoint_549211 --input_dir ../datasets/datasep-mix-preds-gscustmix-pretOnHex --cuda
+cd ../TabCNN/data_multisource
+python Parallel_TabDataReprGenSep.py --input_path ../../datasets/datasep-mic-preds-gscustmic-overcomp-alt-pretOnMic
+python TabCNN.py --partition senvaityte --data_path ../data_multisource/spec_repr_datasep-mic-preds-gscustmic-overcomp-alt-pretOnMic --n_stfts 7
+
+
+
+<!-- 
 Baseline TabCNN
 
 
@@ -74,7 +112,7 @@ tdr [0.947159041930296]
 - save all epochs
 - retrain from specific epoch
 - run for more epochs
-- check results for solo/comp separately
+- check results for solo/comp separately -->
 
 
 
