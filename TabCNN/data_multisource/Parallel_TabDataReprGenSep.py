@@ -38,7 +38,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     preprocess_input_dir(args.input_path)
-
+    args.input_path = args.input_path.rstrip("/")
     # input_dirs = [args.input_path.split('/')[-1]] * len(filename_indices)
     input_dirs = [args.input_path] * len(filename_indices)
     # combined_args = zip(filename_indices, mode_list, itertools.repeat(args.input_dir))

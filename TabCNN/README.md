@@ -4,6 +4,9 @@ conda create -n tab-cnn python==3.9
 conda activate tab-cnn
 pip install -r requirements.txt
 
+
+TODO: fix directories/paths
+
 First, create the separated sources to be used by TabCNN:
 ```
 cd Wave-U-Net-Pytorch-6string
