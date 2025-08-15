@@ -1,0 +1,8 @@
+metric,mean,std
+low_80_200_db,4.692,3.962
+lowmid_200_800_db,-3.706,1.32
+mid_0p8_3k_db,1.173,0.548
+high_3_8k_db,6.909,1.239
+tilt_db_per_decade,8.261,1.83
+rms_delta_db,8.305,1.038
+lag_ms,6.573,9.393

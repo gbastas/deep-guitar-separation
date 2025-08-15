@@ -24,224 +24,250 @@ import numpy as np
 import random
 import soundfile as sf
 import warnings
+import matplotlib.pyplot as plt
+
 warnings.simplefilter("ignore")
 
 n_empty = 0
 
 def get_audio_sample(args, dataset_no, string, fret):	
-	path_to_track = os.path.join(args.note_instances, 'data', 'train',
-						 args.guitar + str(dataset_no),
-						 'string' + str(string + 1),  
-						 str(fret) + '.wav')
+    path_to_track = os.path.join(args.note_instances, 'data', 'train',
+                         args.guitar + str(dataset_no),
+                         'string' + str(string + 1),  
+                         str(fret) + '.wav')
 
-	# print('path_to_track', path_to_track)
+    # print('path_to_track', path_to_track)
 
-	try:    
-		rec_audio, _ = librosa.load(path_to_track, sr=args.sampling_rate)
-		# print("Found note evenet for: strig " + str(string) + ", fret " + str(fret) + ", dataset_no " + str(dataset_no))
+    try:    
+        rec_audio, _ = librosa.load(path_to_track, sr=args.sampling_rate)
+        # print("Found note evenet for: strig " + str(string) + ", fret " + str(fret) + ", dataset_no " + str(dataset_no))
 
-	except FileNotFoundError as e:
-		# print("Did not found note evenet for: strig " + str(string) + ", fret " + str(fret) + ", dataset_no " + str(dataset_no))
-		return None
+    except FileNotFoundError as e:
+        # print("Did not found note evenet for: strig " + str(string) + ", fret " + str(fret) + ", dataset_no " + str(dataset_no))
+        return None
 
-	# path_to_onsettime = Path(args.note_instances + '/data/onsets/' +
-	# 						 args.guitar + str(dataset_no) +
-	# 						 '/string' + str(string + 1) + '/' + str(fret) + '.txt')
+    # path_to_onsettime = Path(args.note_instances + '/data/onsets/' +
+    # 						 args.guitar + str(dataset_no) +
+    # 						 '/string' + str(string + 1) + '/' + str(fret) + '.txt')
 
-	# with open(path_to_onsettime, 'r') as f:
-	# 	onsetsec = float(f.read())
-	# 	onsetidx = int(onsetsec * args.sampling_rate)
-	# print('onsetidx', onsetidx)
-	# res_audio = rec_audio[onsetidx:]
+    # with open(path_to_onsettime, 'r') as f:
+    # 	onsetsec = float(f.read())
+    # 	onsetidx = int(onsetsec * args.sampling_rate)
+    # print('onsetidx', onsetidx)
+    # res_audio = rec_audio[onsetidx:]
 
-	# random scaling
-	# scaling_factor = np.random.uniform(0.5, 1.0)
-	# res_audio = res_audio * scaling_factor
+    # random scaling
+    # scaling_factor = np.random.uniform(0.5, 1.0)
+    # res_audio = res_audio * scaling_factor
 
-	# return rec_audio[onsetidx:]
-	return rec_audio
+    # return rec_audio[onsetidx:]
+    return rec_audio
 
 
 def parse_isolated_note_recordings(args):
-	recs = []
-	# fretboard_init = np.array([ [None]*args.max_fret ] * 6)
+    recs = []
+    # fretboard_init = np.array([ [None]*args.max_fret ] * 6)
 
-	recs = np.empty((6, args.max_fret, args.n_samples), dtype=object)
+    recs = np.empty((6, args.max_fret, args.n_samples), dtype=object)
 
-	for string in range(6):
-		for fret in range(args.max_fret):
-			for dataset_no in range(args.n_samples):
-				# Replace 'None' with your actual array/signal generation logic
-				audio_sample = get_audio_sample(args, dataset_no+1, string, fret)
-				# Check if the result is None, and if so, assign None to the array
-				if audio_sample is None:
-					recs[string, fret, dataset_no] = None
-				else:
-					# If it's not None, assign the result to the array
-					recs[string, fret, dataset_no] =  audio_sample
-	if np.all(recs == None):
-		print("The 'recs' array is full of None values. Didn't found any note samples to parse! Check path again.")
-		exit(0)
-	print(recs.shape)
+    for string in range(6):
+        for fret in range(args.max_fret):
+            for dataset_no in range(args.n_samples):
+                # Replace 'None' with your actual array/signal generation logic
+                audio_sample = get_audio_sample(args, dataset_no+1, string, fret)
+                # Check if the result is None, and if so, assign None to the array
+                if audio_sample is None:
+                    recs[string, fret, dataset_no] = None
+                else:
+                    # If it's not None, assign the result to the array
+                    recs[string, fret, dataset_no] =  audio_sample
+    if np.all(recs == None):
+        print("The 'recs' array is full of None values. Didn't found any note samples to parse! Check path again.")
+        exit(0)
+    print(recs.shape)
 
-	return recs
+    return recs
 
 def render_beat_to_audio(args, beat, dur_samples, recs):
-	artif_multichannel_event= np.zeros([6,dur_samples])
-	global n_empty
-	
-	for n in beat.notes: # up to 6 different 'n's
-		# if n.type.value == 1:
-		n_empty=0
-		string = 6 - n.string
-		fret = n.value	
+    artif_multichannel_event= np.zeros([6,dur_samples])
+    global n_empty
 
-		if fret > args.max_fret:
-			pad = dur_samples
-			artif_instance = np.zeros(pad)
-			artif_multichannel_event[string,:] = artif_instance
-			continue
+    string_counters = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0}  # E, A, D, G, B, e
+    
+    for n in beat.notes: # up to 6 different 'n's
+        # if n.type.value == 1:
+        n_empty=0
+        string = 6 - n.string
+        fret = n.value	
 
-		c=0
-		for element in recs[string,fret,:]:
-			if element is None:
-				if c!=0:
-					print('No. samples ', c)
+        if fret > args.max_fret:
+            pad = dur_samples
+            artif_instance = np.zeros(pad)
+            artif_multichannel_event[string,:] = artif_instance
+            continue
 
-				break
-			c+=1
+        c=0
+        for element in recs[string,fret,:]:
+            if element is None:
+                if c!=0:
+                    print('No. samples ', c)
 
-		rand = random.choice(range(c))
-		rec = recs[string][fret][rand]
+                break
+            c+=1
+
+        rand = random.choice(range(c))
+        rec = recs[string][fret][rand]
   
-		# NOTE: NEW!
-		scaling_factor = np.random.uniform(0.5, 1.0)
-		rec = rec * scaling_factor
+        # NOTE: NEW!
+        scaling_factor = np.random.uniform(0.5, 1.0)
+        rec = rec * scaling_factor
   
-		lim = min(len(rec), dur_samples)
-		pad = max(0, dur_samples - len(rec))
+        lim = min(len(rec), dur_samples)
+        pad = max(0, dur_samples - len(rec))
 
-		artif_instance = np.append( rec[:lim] , np.zeros(pad) ) # midi duration might be longer that note instance recording
-		artif_multichannel_event[string,:] = artif_instance
+        artif_instance = np.append( rec[:lim] , np.zeros(pad) ) # midi duration might be longer that note instance recording
+        artif_multichannel_event[string,:] = artif_instance
+  
+    string_counters[string] += 1
 
-	if (artif_multichannel_event == np.zeros([6,dur_samples])).all():
-		n_empty+=1
-		if n_empty > random.choice([0,0,1,1,2,3]): # (with slight randomness in length) chopp out long empty sections
-			artif_multichannel_event = np.empty([6,0])
+    if (artif_multichannel_event == np.zeros([6,dur_samples])).all():
+        n_empty+=1
+        if n_empty > random.choice([0,0,1,1,2,3]): # (with slight randomness in length) chopp out long empty sections
+            artif_multichannel_event = np.empty([6,0])
 
-	return artif_multichannel_event
+    return artif_multichannel_event, string_counters
+
+
+def plot_note_hist(Strings_gt_total_count):
+    plt.figure(figsize=(30,10))
+    plt.rc('font', size=38)
+    plt.rc('axes', titlesize=50)
+    
+    plt.yticks(rotation=30)
+    plt.xlabel('Guitar Strings', fontsize=44, fontweight='bold')
+    plt.ylabel('No. of note instances', fontsize=44, fontweight='bold')
+
+    plt.bar(['E', 'A', 'D', 'G', 'B', 'e'], Strings_gt_total_count, color='maroon', width=0.7)
+    plt.bar(['E', 'A', 'D', 'G', 'B', 'e'], Strings_gt_total_count, width=0.7)
+    current_values = plt.gca().get_yticks()
+    plt.gca().set_yticklabels(['{:,.0f}'.format(x) for x in current_values])
+    plt.savefig('bar_total.png', bbox_inches='tight')     
 
 if __name__ == '__main__':
 
 
-	parser = argparse.ArgumentParser()
-	# parser.add_argument('config_path', type=str)
-	parser.add_argument('--note_instances', type=str)
-	parser.add_argument('--input_dir', type=str, default='gp_token_examples', help='gp_token_examples or DadaGP-v1.1')
-	parser.add_argument('--guitar', type=str, default='guitar', help= 'martin or firebrand')
-	parser.add_argument('--max_fret', type=int, default=18)
-	parser.add_argument('--n_samples', type=int, default=100)
-	parser.add_argument('--sampling_rate', type=int, default=44100)
-	args = parser.parse_args()
+    parser = argparse.ArgumentParser()
+    # parser.add_argument('config_path', type=str)
+    parser.add_argument('--note_instances', type=str)
+    parser.add_argument('--input_dir', type=str, default='gp_token_examples', help='gp_token_examples or DadaGP-v1.1')
+    parser.add_argument('--guitar', type=str, default='guitar', help= 'martin or firebrand')
+    parser.add_argument('--max_fret', type=int, default=18)
+    parser.add_argument('--n_samples', type=int, default=100)
+    parser.add_argument('--sampling_rate', type=int, default=44100)
+    args = parser.parse_args()
 
-	np.random.seed(0) 
-	data_percentage=0.03
-
-
-	# prepare
-	main_folder = args.input_dir
-	if not os.path.isdir(main_folder):
-		print("Input dir" + args.input_dir + "does not exist.")
-		exit(1)
-	
-	print('Loading Note Instances...')
-	recs = parse_isolated_note_recordings(args)
-
-	print('recs', recs.shape)
+    np.random.seed(0) 
+    data_percentage=0.03
 
 
-	level_A_folders = os.listdir(main_folder)
+    # prepare
+    main_folder = args.input_dir
+    if not os.path.isdir(main_folder):
+        print("Input dir" + args.input_dir + "does not exist.")
+        exit(1)
+    
+    print('Loading Note Instances...')
+    recs = parse_isolated_note_recordings(args)
 
-	max_pitch = -1
-	min_pitch = 1000
+    print('recs', recs.shape)
 
-	for level_A_folder in level_A_folders:	# 1/,2/ .., A/, B/ ...
-		level_A_path = os.path.join(main_folder, level_A_folder)
-		if os.path.isdir( level_A_path ):
-			pieces_events = []
-			level_B_folders = os.listdir( level_A_path )
-			for level_B_folder in level_B_folders:	# artist/
-				level_B_path = os.path.join( level_A_path, level_B_folder )
-				for file in os.listdir( level_B_path ):	# *.gp3 and *.gp3.tokens.txt
-					artif_multichannel_track = np.empty([6,0]) #[None]*6
-					# print(file)
-					if file[-4:-1] == '.gp':
-						
-						if args.input_dir=="DadaGP-v1.1" and np.random.rand() > data_percentage:
-							continue
 
-						# if not 'Hold Me Thrill' in file:
-						# 	break
-						# print(file)
-						try:	
-							song = gp.parse(os.path.join(level_B_path,file))
-						except:
-							continue
-							
-						tempo_bps = song.tempo / 60
+    level_A_folders = os.listdir(main_folder)
 
-						beat_ticks=960
-						for t_id, track in enumerate(song.tracks):
-							measures = track.measures
-							strings = track.strings
-							# check if proper guitar tunning
-							proper_guitar = True
-							proper_tunning = [64, 59, 55, 50, 45, 40] # make static
-							for i, s in enumerate(strings):
-								if i >= len(proper_tunning) or s.value != proper_tunning[i]:
-									proper_guitar = False
-									aborted = True
-									break
-							# print('track_'+str(t_id)+', proper_guitar:', proper_guitar)
-							if not proper_guitar:
-								continue
-							if t_id!=0:
-								continue
-							for m, measure in enumerate(measures):
-								printProgressBar(m+1,len(measures),decimals=0, length=50)
-								voices = measure.voices
-								for voice in voices:
-									beats = voice.beats
-									for b, beat in enumerate(beats): 
-										duration = beat.duration.time
-										dur_sec = duration / (tempo_bps * beat_ticks)
-										dur_samples = int(args.sampling_rate * dur_sec)
-										try:
-											artif_multichannel_event = render_beat_to_audio(args, beat, dur_samples, recs)
-										except Exception as e:# TypeError IndexError: # if no not-instace (see, sample) exists then ingore!
-											# print('[no sample found at all]', e)
-											continue
+    max_pitch = -1
+    min_pitch = 1000
 
-										artif_multichannel_track = np.append(artif_multichannel_track, artif_multichannel_event, axis=1)
 
-							try:
-								os.makedirs('mdgp/'+file[:-4]+'_track'+str(t_id)+'/')
-							except:
-								continue
+    string_occurrences = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
 
-							try: 
-								artif_mono_track = librosa.to_mono(artif_multichannel_track)
-								artif_mono_track = librosa.util.normalize(artif_mono_track)	
-							except:
-								continue
-							
-							sf.write('mdgp/'+file[:-4]+'_track'+str(t_id)+'/'+'E.wav', artif_multichannel_track[0,:], args.sampling_rate, 'PCM_16')
-							sf.write('mdgp/'+file[:-4]+'_track'+str(t_id)+'/'+'A.wav', artif_multichannel_track[1,:], args.sampling_rate, 'PCM_16')
-							sf.write('mdgp/'+file[:-4]+'_track'+str(t_id)+'/'+'D.wav', artif_multichannel_track[2,:], args.sampling_rate, 'PCM_16')
-							sf.write('mdgp/'+file[:-4]+'_track'+str(t_id)+'/'+'G.wav', artif_multichannel_track[3,:], args.sampling_rate, 'PCM_16')
-							sf.write('mdgp/'+file[:-4]+'_track'+str(t_id)+'/'+'B.wav', artif_multichannel_track[4,:], args.sampling_rate, 'PCM_16')
-							sf.write('mdgp/'+file[:-4]+'_track'+str(t_id)+'/'+'e.wav', artif_multichannel_track[5,:], args.sampling_rate, 'PCM_16')					
-							sf.write('mdgp/'+file[:-4]+'_track'+str(t_id)+'/'+'mixture.wav', artif_mono_track.T, args.sampling_rate, 'PCM_16')
+    for level_A_folder in level_A_folders:	# 1/,2/ .., A/, B/ ...
+        level_A_path = os.path.join(main_folder, level_A_folder)
+        if os.path.isdir( level_A_path ):
+            pieces_events = []
+            level_B_folders = os.listdir( level_A_path )
+            for level_B_folder in level_B_folders:	# artist/
+                level_B_path = os.path.join( level_A_path, level_B_folder )
+                for file in os.listdir( level_B_path ):	# *.gp3 and *.gp3.tokens.txt
+                    artif_multichannel_track = np.empty([6,0]) #[None]*6
+                    # print(file)
+                    if file[-4:-1] == '.gp':
+                        
+                        if args.input_dir=="DadaGP-v1.1" and np.random.rand() > data_percentage:
+                            continue
 
-							artif_multichannel_track = np.empty([6,0]) # initialization, see [None]*6
+                        try:	
+                            song = gp.parse(os.path.join(level_B_path,file))
+                        except:
+                            continue
+                            
+                        tempo_bps = song.tempo / 60
 
+                        beat_ticks=960
+                        for t_id, track in enumerate(song.tracks):
+                            measures = track.measures
+                            strings = track.strings
+                            # check if proper guitar tunning
+                            proper_guitar = True
+                            proper_tunning = [64, 59, 55, 50, 45, 40] # make static
+                            for i, s in enumerate(strings):
+                                if i >= len(proper_tunning) or s.value != proper_tunning[i]:
+                                    proper_guitar = False
+                                    aborted = True
+                                    break
+                            # print('track_'+str(t_id)+', proper_guitar:', proper_guitar)
+                            if not proper_guitar:
+                                continue
+                            if t_id!=0:
+                                continue
+                            for m, measure in enumerate(measures):
+                                printProgressBar(m+1,len(measures),decimals=0, length=50)
+                                voices = measure.voices
+                                for voice in voices:
+                                    beats = voice.beats
+                                    for b, beat in enumerate(beats): 
+                                        duration = beat.duration.time
+                                        dur_sec = duration / (tempo_bps * beat_ticks)
+                                        dur_samples = int(args.sampling_rate * dur_sec)
+                                        try:
+                                            # artif_multichannel_event = render_beat_to_audio(args, beat, dur_samples, recs)
+                                            artif_multichannel_event, string_counters  = render_beat_to_audio(args, beat, dur_samples, recs)
+                                            for string, count in string_counters.items():
+                                                string_occurrences[string] += count                                            
+                                        except Exception as e:# TypeError IndexError: # if no not-instace (see, sample) exists then ingore!
+                                            # print('[no sample found at all]', e)
+                                            continue
+
+                                        artif_multichannel_track = np.append(artif_multichannel_track, artif_multichannel_event, axis=1)
+
+                            try:
+                                os.makedirs('mdgp/'+file[:-4]+'_track'+str(t_id)+'/')
+                            except:
+                                continue
+
+                            try: 
+                                artif_mono_track = librosa.to_mono(artif_multichannel_track)
+                                artif_mono_track = librosa.util.normalize(artif_mono_track)	
+                            except:
+                                continue
+                            
+                            sf.write('mdgp/'+file[:-4]+'_track'+str(t_id)+'/'+'E.wav', artif_multichannel_track[0,:], args.sampling_rate, 'PCM_16')
+                            sf.write('mdgp/'+file[:-4]+'_track'+str(t_id)+'/'+'A.wav', artif_multichannel_track[1,:], args.sampling_rate, 'PCM_16')
+                            sf.write('mdgp/'+file[:-4]+'_track'+str(t_id)+'/'+'D.wav', artif_multichannel_track[2,:], args.sampling_rate, 'PCM_16')
+                            sf.write('mdgp/'+file[:-4]+'_track'+str(t_id)+'/'+'G.wav', artif_multichannel_track[3,:], args.sampling_rate, 'PCM_16')
+                            sf.write('mdgp/'+file[:-4]+'_track'+str(t_id)+'/'+'B.wav', artif_multichannel_track[4,:], args.sampling_rate, 'PCM_16')
+                            sf.write('mdgp/'+file[:-4]+'_track'+str(t_id)+'/'+'e.wav', artif_multichannel_track[5,:], args.sampling_rate, 'PCM_16')					
+                            sf.write('mdgp/'+file[:-4]+'_track'+str(t_id)+'/'+'mixture.wav', artif_mono_track.T, args.sampling_rate, 'PCM_16')
+
+                            artif_multichannel_track = np.empty([6,0]) # initialization, see [None]*6
+
+    plot_note_hist(list(string_occurrences.values()))

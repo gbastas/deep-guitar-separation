@@ -248,12 +248,12 @@ def evaluate(args, dataset, model, instruments):
             SDR, ISR, SIR, SAR, _ = museval.metrics.bss_eval(target_sources, pred_sources)
 
 
-            # # Convert target_sources to torch tensors and move them to GPU
-            # target_sources_tensor = torch.tensor(target_sources).float()
-            # pred_sources_tensor = torch.tensor(pred_sources).float()            
-            # if args.cuda:
-            #     target_sources_tensor = target_sources_tensor.cuda()
-            #     pred_sources_tensor = pred_sources_tensor.cuda()            
+            # Convert target_sources to torch tensors and move them to GPU
+            target_sources_tensor = torch.tensor(target_sources).float()
+            pred_sources_tensor = torch.tensor(pred_sources).float()            
+            if args.cuda:
+                target_sources_tensor = target_sources_tensor.cuda()
+                pred_sources_tensor = pred_sources_tensor.cuda()            
                 
             # Evaluate SI-SDR
             si_sdr_metric = ScaleInvariantSignalDistortionRatio()
@@ -271,16 +271,16 @@ def evaluate(args, dataset, model, instruments):
             for idx, name in enumerate(instruments):
                 song[name] = {"SDR" : SDR[idx], "ISR" : ISR[idx], "SIR" : SIR[idx], "SAR" : SAR[idx], "SI-SDR": si_sdr_values[idx]}
                 # plot with metrics
-                plot_waveforms(
-                    ref=target_sources[idx],
-                    est=pred_sources[idx],
-                    sr=args.sr,
-                    out_dir="../img_insights",
-                    track_name=track_name,
-                    instr_name=name,
-                    sdr=SDR[idx],
-                    si_sdr=si_sdr_values[idx]
-                )            
+                # plot_waveforms(
+                #     ref=target_sources[idx],
+                #     est=pred_sources[idx],
+                #     sr=args.sr,
+                #     out_dir="../img_insights",
+                #     track_name=track_name,
+                #     instr_name=name,
+                #     sdr=SDR[idx],
+                #     si_sdr=si_sdr_values[idx]
+                # )            
 
             # song = {}
             # for idx, name in enumerate(instruments):

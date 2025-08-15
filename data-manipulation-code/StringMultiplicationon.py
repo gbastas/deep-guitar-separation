@@ -36,47 +36,40 @@ def augment_data(isolated_channels, num_samples_to_generate=100):
     augmented_data=[]
     # print(isolated_channels[0])
     notes_per_string_count_songwise_aug = [0]*6    
-    for i in range(1,102):
-# notes_per_string_count_songwise_aug [3618, 6541, 3934, 4086, 3371, 4417]        
-        EΑe_prominent_song = [None, None, None, None, None, None]
+    for i in range(1,35):
+        E_prominent_song = [None, None, None, None, None, None]
         E_notes, E_sample = isolated_channels[0][-i]
         print('E_notes', E_notes)
         notes_per_string_count_songwise_aug[0] += E_notes
-        EΑe_prominent_song[0] = E_sample
-        # A_prominent_song = [None, None, None, None, None, None]
-        A_notes, A_sample = isolated_channels[1][-i]
-        notes_per_string_count_songwise_aug[1] += A_notes
-        EΑe_prominent_song[1] = A_sample
-        e_notes, e_sample = isolated_channels[5][-i]
-        notes_per_string_count_songwise_aug[5] += e_notes
-        EΑe_prominent_song[5] = e_sample        
-        for string in (2,3,4):
+        E_prominent_song[0] = E_sample
+        for string in (1,2,3,4,5):
             idx = random.choice(range(0,L))
             # print('idx', idx)
-            n_notes, EΑe_prominent_song[string] = isolated_channels[string][idx]
+            # print('is',isolated_channels[string][idx])
+            n_notes, E_prominent_song[string] = isolated_channels[string][idx]
             notes_per_string_count_songwise_aug[string] += n_notes
             
-        # A_prominent_song = [None, None, None, None, None, None]
-        # A_notes, A_sample = isolated_channels[1][-i]
-        # notes_per_string_count_songwise_aug[1] += A_notes
-        # A_prominent_song[1] = A_sample
-        # for string in (0,2,3,4,5):
-        #     idx = random.choice(range(0,L))
-        #     n_notes, A_prominent_song[string] = isolated_channels[string][idx]
-        #     notes_per_string_count_songwise_aug[string] += n_notes
+        A_prominent_song = [None, None, None, None, None, None]
+        A_notes, A_sample = isolated_channels[1][-i]
+        notes_per_string_count_songwise_aug[1] += A_notes
+        A_prominent_song[1] = A_sample
+        for string in (0,2,3,4,5):
+            idx = random.choice(range(0,L))
+            n_notes, A_prominent_song[string] = isolated_channels[string][idx]
+            notes_per_string_count_songwise_aug[string] += n_notes
         
-        # e_prominent_song = [None, None, None, None, None, None]
-        # e_notes, e_sample = isolated_channels[5][-i]
-        # notes_per_string_count_songwise_aug[5] += e_notes
-        # e_prominent_song[5] = e_sample
-        # for string in (0,1,2,3,4):
-        #     idx = random.choice(range(0,L))
-        #     n_notes, e_prominent_song[string] = isolated_channels[string][idx]
-        #     notes_per_string_count_songwise_aug[string] += n_notes
+        e_prominent_song = [None, None, None, None, None, None]
+        e_notes, e_sample = isolated_channels[5][-i]
+        notes_per_string_count_songwise_aug[5] += e_notes
+        e_prominent_song[5] = e_sample
+        for string in (0,1,2,3,4):
+            idx = random.choice(range(0,L))
+            n_notes, e_prominent_song[string] = isolated_channels[string][idx]
+            notes_per_string_count_songwise_aug[string] += n_notes
 
-        augmented_data.append(EΑe_prominent_song)
-        # augmented_data.append(A_prominent_song)
-        # augmented_data.append(e_prominent_song)  
+        augmented_data.append(E_prominent_song)
+        augmented_data.append(A_prominent_song)
+        augmented_data.append(e_prominent_song)  
     
     print('notes_per_string_count_songwise_aug', notes_per_string_count_songwise_aug)
     plot_note_hist(notes_per_string_count_songwise_aug)    

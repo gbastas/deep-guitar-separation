@@ -159,9 +159,7 @@ def GuitarSetProcessing(constants : Constants):
         #         length_in_sec = len(hex_audio_comp[string])/constants.sampling_rate
         #         if length_in_sec > 1:
         #             past_channels[string].append(np.array(hex_audio_comp[string]))
-        #             if string == 0:
-        #                 count_active0+=1 
-        #                 # print('string0', length_in_sec, 's')            
+
         # else:
         #     print("Found a test song. So it's not included in overshuffl list.")
 
