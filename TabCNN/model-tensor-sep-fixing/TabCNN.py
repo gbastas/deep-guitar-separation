@@ -263,7 +263,7 @@ class TabCNN:
                     verbose=1,
                     use_multiprocessing=True,
                     # use_multiprocessing=False, #  to avoid error
-                    workers=26)
+                    workers=32)
                     # workers=14)
         # )
     def save_weights(self):

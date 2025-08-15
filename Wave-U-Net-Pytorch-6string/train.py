@@ -4,6 +4,8 @@ import time
 from functools import partial
 
 import torch
+# torch.backends.cudnn.benchmark = True #NEW
+
 import pickle
 import numpy as np
 
@@ -21,6 +23,58 @@ from test import evaluate, validate
 from model.waveunet import Waveunet
 import csv
 import glob
+# torch.backends.cudnn.benchmark = True
+
+import csv
+import numpy as np
+
+def _fmt_pm(mean, lo, hi, dec=2):
+    if not (np.isfinite(mean) and np.isfinite(lo) and np.isfinite(hi)):
+        return "--"
+    return f"{mean:.{dec}f} \\pm {((hi - lo) / 2):.{dec}f}"
+
+
+def _collect_track_values(perfs, instruments, metric_name):
+    """
+    perfs: list of per-song dicts like perfs[...] you already build
+    instruments: list like ["E","A","D","G","B","e"]
+    metric_name: "SDR" | "SIR" | "SAR" | "SI-SDR"
+    returns: dict inst->list_of_track_values, plus key 'overall' (avg across inst per track)
+    """
+    vals = {inst: [] for inst in instruments}
+    overall = []
+    for song in perfs:
+        per_song = []
+        for inst in instruments:
+            v = song[inst][metric_name]
+            if isinstance(v, (list, tuple, np.ndarray)):
+                per_track = float(np.nanmean(np.asarray(v)))
+            else:
+                per_track = float(v)
+            vals[inst].append(per_track)
+            per_song.append(per_track)
+        if len(per_song) > 0:
+            overall.append(float(np.mean(per_song)))
+    vals["overall"] = overall
+    return vals
+
+def _bootstrap_mean_ci(values, B=2000, alpha=0.05, seed=1337):
+    """
+    Classic nonparametric bootstrap for the mean.
+    Returns (mean, ci_lo, ci_hi).
+    """
+    x = np.asarray(values, dtype=np.float64)
+    x = x[np.isfinite(x)]
+    n = x.size
+    if n == 0:
+        return (np.nan, np.nan, np.nan)
+    mean = float(np.mean(x))
+    rng = np.random.default_rng(seed)
+    idx = rng.integers(0, n, size=(B, n))
+    boots = np.mean(x[idx], axis=1)
+    lo, hi = np.percentile(boots, [100*alpha/2, 100*(1 - alpha/2)])
+    return (mean, float(lo), float(hi))
+
 
 def main(args):
 
@@ -53,24 +107,6 @@ def main(args):
     augment_func = partial(random_amplify, shapes=model.shapes, min=0.7, max=1.0)
     train_data = SeparationDataset(musdb, "train", args.instruments, args.sr, args.channels, model.shapes, True, args.hdf_dir, audio_transform=augment_func, features=features) # NOTE: augmentation
     val_data = SeparationDataset(musdb, "val", args.instruments, args.sr, args.channels, model.shapes, False, args.hdf_dir, audio_transform=crop_func, features=features)
-    if args.version=='pseudo':
-        try:
-            val_comp_data = SeparationDataset(musdb, "val_comp", args.instruments, args.sr, args.channels, model.shapes, False, args.hdf_dir, audio_transform=crop_func, features=features)
-            val_solo_data = SeparationDataset(musdb, "val_solo", args.instruments, args.sr, args.channels, model.shapes, False, args.hdf_dir, audio_transform=crop_func, features=features)
-        except Exception as e:
-            print("warning couldn't load val_comp or val_solo")
-    else:
-        val_comp_loss=np.Inf
-        val_solo_loss=np.Inf
-
-    # if args.version=='mic':
-    #     val_mic_data = SeparationDataset(musdb, "val_mic", args.instruments, args.sr, args.channels, model.shapes, False, args.hdf_dir, audio_transform=crop_func, features=features)
-    #     val_mix_data = SeparationDataset(musdb, "val_mix", args.instruments, args.sr, args.channels, model.shapes, False, args.hdf_dir, audio_transform=crop_func, features=features)
-    #     val_hex_cln_data = SeparationDataset(musdb, "val_hex_cln", args.instruments, args.sr, args.channels, model.shapes, False, args.hdf_dir, audio_transform=crop_func, features=features)
-    # else:
-    #     val_mix_loss=np.Inf
-    #     val_hex_cln_loss=np.Inf
-    #     val_mic_loss=np.Inf
 
         
     print('No comp/solo distinct val scores will be considered')
@@ -152,21 +188,12 @@ def main(args):
 
         # VALIDATE
         val_loss = validate(args, model, criterion, val_data)
-        try:
-            val_comp_loss = validate(args, model, criterion, val_comp_data)
-            val_solo_loss = validate(args, model, criterion, val_solo_data)
-        except Exception as e:
-            print("warning couldn't load val_comp or val_solo")
 
 
             
         print("VALIDATION FINISHED: LOSS: " + str(val_loss))
         writer.add_scalar("val_loss", val_loss, state["step"])
-        writer.add_scalar("val_comp_loss", val_comp_loss, state["step"])
-        writer.add_scalar("val_solo_loss", val_solo_loss, state["step"])
-        # if args.version=='mic':
-        #     writer.add_scalar("val_mix_loss", val_mix_loss, state["step"])
-        #     writer.add_scalar("val_hex_cln_loss", val_hex_cln_loss, state["step"])
+
 
         # EARLY STOPPING CHECK
         checkpoint_path = os.path.join(args.checkpoint_dir, "checkpoint_" + str(state["step"]))
@@ -187,65 +214,6 @@ def main(args):
             state["best_checkpoint"] = checkpoint_best_path
             model_utils.save_model(model, optimizer, state, checkpoint_best_path)
 
-        
-        if val_comp_loss < state["best_comp_loss"]:
-            print("MODEL IMPROVED ON VALIDATION SET!")
-            checkpoint_comp_best_path = os.path.join(args.checkpoint_dir, "best_comp_checkpoint_" + str(state["step"]))
-            try:
-                os.remove(checkpoint_comp_best_path_prev)
-            except Exception as e:
-                print('Caught exception comp:', e)
-            print("Saving best comp model...")      
-            state["best_comp_loss"] = val_comp_loss
-            model_utils.save_model(model, optimizer, state, checkpoint_comp_best_path)
-    
-        
-        if val_solo_loss < state["best_solo_loss"]:
-            print("MODEL IMPROVED ON SOLO VALIDATION SET!")
-            checkpoint_solo_best_path = os.path.join(args.checkpoint_dir, "best_solo_checkpoint_" + str(state["step"]))
-            try:
-                os.remove(checkpoint_solo_best_path_prev)
-            except Exception as e:
-                print('Caught exception solo:', e)
-            print("Saving best solo model...")           
-            state["best_solo_loss"] = val_solo_loss
-            model_utils.save_model(model, optimizer, state, checkpoint_solo_best_path)
-
-        
-        # if val_hex_cln_loss < state["best_hex_cln_loss"] and args.version=='mic':
-        #     print("MODEL IMPROVED ON hex_cln VALIDATION SET!")
-        #     checkpoint_hex_cln_best_path = os.path.join(args.checkpoint_dir, "best_hex_cln_checkpoint_" + str(state["step"]))
-        #     try:
-        #         os.remove(checkpoint_hex_cln_best_path_prev)
-        #     except Exception as e:
-        #         print('Caught exception solo:', e)
-        #     print("Saving best solo model...")           
-        #     state["best_hex_cln_loss"] = val_hex_cln_loss
-        #     model_utils.save_model(model, optimizer, state, checkpoint_hex_cln_best_path)
-
-        # if val_mic_loss < state["best_mic_loss"] and args.version=='mic':
-        #     print("MODEL IMPROVED ON mic VALIDATION SET!")
-        #     checkpoint_mic_best_path = os.path.join(args.checkpoint_dir, "best_mic_checkpoint_" + str(state["step"]))
-        #     try:
-        #         os.remove(checkpoint_mic_best_path_prev)
-        #     except Exception as e:
-        #         print('Caught exception solo:', e)
-        #     print("Saving best solo model...")           
-        #     state["best_mic_loss"] = val_mic_loss
-        #     model_utils.save_model(model, optimizer, state, checkpoint_mic_best_path)
-
-        
-        # if val_mix_loss < state["best_mix_loss"] and args.version=='mic':
-        #     print("MODEL IMPROVED ON mix VALIDATION SET!")
-        #     checkpoint_mix_best_path = os.path.join(args.checkpoint_dir, "best_mix_checkpoint_" + str(state["step"]))
-        #     try:
-        #         os.remove(checkpoint_mix_best_path_prev)
-        #     except Exception as e:
-        #         print('Caught exception solo:', e)
-        #     print("Saving best solo model...")           
-        #     state["best_mix_loss"] = val_mix_loss
-        #     model_utils.save_model(model, optimizer, state, checkpoint_mix_best_path)
-
 
         # CHECKPOINT
         print("Saving model...")
@@ -260,16 +228,6 @@ def main(args):
         except Exception as e:
             print("MyException", e)
 
-        try:               
-            checkpoint_comp_best_path_prev = checkpoint_comp_best_path
-            checkpoint_solo_best_path_prev = checkpoint_solo_best_path
-        except Exception as e:
-            print("MyException", e)
-            
-        # if args.version == 'mic':
-        #     checkpoint_hex_cln_best_path_prev = checkpoint_hex_cln_best_path
-        #     checkpoint_mix_best_path_prev = checkpoint_mix_best_path
-        #     checkpoint_mic_best_path_prev = checkpoint_mic_best_path
 
         state["epochs"] += 1
 
@@ -299,19 +257,111 @@ def main(args):
     # Mir_eval metrics
     test_metrics['total'], test_metrics['comp'], test_metrics['solo'] = evaluate(args, musdb["test"], model, args.instruments) 
 
+    latex_cache = {"total": {}, "comp": {}, "solo": {}}
+
     # Dump all metrics results into pickle file for later analysis if needed
     with open(os.path.join(args.checkpoint_dir, "results.pkl"), "wb") as f:
         pickle.dump(test_metrics['total'], f)
 
-    for key,test_metrics in reversed(test_metrics.items()):
+    for key,metrics in reversed(test_metrics.items()):
         print()
         print('!!Evaluating on '+ key + ' test set!!')
 
+
+        # -------- Bootstrap CIs (across tracks) --------
+        BOOTSTRAP = True
+        B          = 10000      # e.g., 2k resamples
+        ALPHA      = 0.05
+        SEED_BASE  = 1337
+
+        if BOOTSTRAP:
+            metrics_to_do = ["SDR", "SIR", "SAR", "SI-SDR"]
+            # collect per-track arrays, then bootstrap per metric/instrument + overall
+            collected = {
+                m: _collect_track_values(metrics, args.instruments, m) for m in metrics_to_do
+            }
+
+
+            # Cache overall means/CIs for LaTeX row
+            for m in ["SDR", "SIR", "SAR", "SI-SDR"]:
+                mean, lo, hi = _bootstrap_mean_ci(
+                    collected[m]["overall"],
+                    B=B, alpha=ALPHA,
+                    seed=SEED_BASE + hash((key, m, "overall")) % 10_000_000
+                )
+                latex_cache[key][m] = (mean, lo, hi)
+
+            # write a new CSV with CIs (one row per instrument, plus 'overall')
+            if args.patience > 0:
+                ci_csv_path = os.path.join(
+                    args.checkpoint_dir, f"{key}_bootstrap_CI_{state['best_checkpoint'].split('_')[-1]}.csv"
+                )
+            else:
+                ci_csv_path = os.path.join(
+                    args.checkpoint_dir, f"{key}_bootstrap_CI_{args.load_model.split('_')[-1]}.csv"
+                )
+
+            with open(ci_csv_path, "w", newline="") as fci:
+                w = csv.writer(fci)
+                # header: Instrument, then mean/CI for each metric
+                header = ["Instrument"]
+                for m in metrics_to_do:
+                    header += [f"{m}_mean", f"{m}_ci95_lo", f"{m}_ci95_hi"]
+                w.writerow(header)
+
+
+
+                # Pretty print (paper-ready) for TOTAL split: Overall SDR with 95% CI
+                if key.lower() == "total":
+                    sdr_overall_vals = collected["SDR"]["overall"]
+                    m, lo, hi = _bootstrap_mean_ci(
+                        sdr_overall_vals, B=B, alpha=ALPHA, seed=SEED_BASE
+                    )
+                    half = (hi - lo) / 2.0
+                    print()
+                    print(f"[total] Overall SDR (95% CI): {m:.2f} dB [{lo:.2f}, {hi:.2f}]")
+                    print(f"[total] i.e., {m:.2f} ± {half:.2f} dB")
+                    # (Optional LaTeX-friendly line)
+                    # print(f"SDR = {m:.2f}\\,dB\\;[{lo:.2f},\\,{hi:.2f}]\\;\\text{{(95\\% CI)}}")
+                    print("\nLaTeX row (mean \\pm half 95\\% CI):")
+                    latex_line = " & ".join([
+                        _fmt_pm(*latex_cache.get("total", {}).get("SDR", (np.nan, np.nan, np.nan))),
+                        _fmt_pm(*latex_cache.get("total", {}).get("SIR", (np.nan, np.nan, np.nan))),
+                        _fmt_pm(*latex_cache.get("total", {}).get("SAR", (np.nan, np.nan, np.nan))),
+                        _fmt_pm(*latex_cache.get("total", {}).get("SI-SDR", (np.nan, np.nan, np.nan))),
+                        _fmt_pm(*latex_cache.get("solo",  {}).get("SDR", (np.nan, np.nan, np.nan))),
+                        _fmt_pm(*latex_cache.get("comp",  {}).get("SDR", (np.nan, np.nan, np.nan))),
+                        _fmt_pm(*latex_cache.get("solo",  {}).get("SI-SDR", (np.nan, np.nan, np.nan))),
+                        _fmt_pm(*latex_cache.get("comp",  {}).get("SI-SDR", (np.nan, np.nan, np.nan))),
+                    ]) + r" \\"
+                    print(latex_line)
+                    print()
+
+
+
+                # instruments + overall
+                for inst in list(args.instruments) + ["overall"]:
+                    row = [inst]
+                    for j, m in enumerate(metrics_to_do):
+                        mean, lo, hi = _bootstrap_mean_ci(
+                            collected[m][inst],
+                            B=B,
+                            alpha=ALPHA,
+                            seed=SEED_BASE + hash((key, inst, m)) % 10_000_000
+                        )
+                        row += [round(mean, 3), round(lo, 3), round(hi, 3)]
+                    w.writerow(row)
+
+            print(f"[bootstrap] wrote 95% CIs -> {ci_csv_path}")
+
+
+
+
         # Write most important metrics into Tensorboard log
-        avg_SDRs = {inst : np.mean([np.nanmean(song[inst]["SDR"]) for song in test_metrics]) for inst in args.instruments}
-        avg_SIRs = {inst : np.mean([np.nanmean(song[inst]["SIR"]) for song in test_metrics]) for inst in args.instruments}
-        avg_SARs = {inst : np.mean([np.nanmean(song[inst]["SAR"]) for song in test_metrics]) for inst in args.instruments}
-        avg_SISDRs = {inst : np.mean([np.nanmean(song[inst]["SI-SDR"]) for song in test_metrics]) for inst in args.instruments}
+        avg_SDRs = {inst : np.mean([np.nanmean(song[inst]["SDR"]) for song in metrics]) for inst in args.instruments}
+        avg_SIRs = {inst : np.mean([np.nanmean(song[inst]["SIR"]) for song in metrics]) for inst in args.instruments}
+        avg_SARs = {inst : np.mean([np.nanmean(song[inst]["SAR"]) for song in metrics]) for inst in args.instruments}
+        avg_SISDRs = {inst : np.mean([np.nanmean(song[inst]["SI-SDR"]) for song in metrics]) for inst in args.instruments}
         if args.patience > 0: # = right after train is complete
             resfile = open(args.checkpoint_dir+'/'+key+'_results_'+ state["best_checkpoint"].split('_')[-1] +'.csv', 'w')
         else:
