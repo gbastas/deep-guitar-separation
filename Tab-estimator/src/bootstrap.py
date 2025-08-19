@@ -1,27 +1,27 @@
 
 # mic multi-W-U-Net Mic 
 # python src/bootstrap.py 202407032134_senv_mic_7pred 192 --bootstrap 10000 
-#PP & PR & PF & TP & TR & TF & TDR & PFSolo & TFSolo & PFComp & TFComp 
-# 0.856 ± 0.013 & 0.844 ± 0.018 & 0.850 ± 0.013 & 0.775 ± 0.028 & 0.769 ± 0.034 & 0.772 ± 0.031 & 0.914 ± 0.028 & 0.893 ± 0.013 & 0.821 ± 0.027 & 0.835 ± 0.018 & 0.755 ± 0.040 
-# 0.836 ± 0.015 & 0.841 ± 0.017 & 0.838 ± 0.013 & 0.749 ± 0.030 & 0.757 ± 0.035 & 0.753 ± 0.031 & 0.902 ± 0.032 & 0.883 ± 0.013 & 0.814 ± 0.028 & 0.822 ± 0.018 & 0.730 ± 0.042 
+# PP & PR & PF & TP & TR & TF & TDR & PFSolo & TFSolo & PFComp & TFComp 
+# 0.855 ± 0.013 & 0.844 ± 0.017 & 0.850 ± 0.013 & 0.775 ± 0.028 & 0.769 ± 0.034 & 0.772 ± 0.031 & 0.914 ± 0.028 & 0.893 ± 0.012 & 0.821 ± 0.027 & 0.835 ± 0.018 & 0.754 ± 0.040 
+# 0.845 ± 0.014 & 0.855 ± 0.015 & 0.846 ± 0.013 & 0.763 ± 0.025 & 0.781 ± 0.026 & 0.769 ± 0.024 & 0.911 ± 0.024 & 0.880 ± 0.014 & 0.817 ± 0.025 & 0.813 ± 0.021 & 0.722 ± 0.040 
 
 # mic Ground-Truth ✗
 # python src/bootstrap.py 202407042101_senv_mic_7target  192 --bootstrap 10000
 # PP & PR & PF & TP & TR & TF & TDR & PFSolo & TFSolo & PFComp & TFComp 
-# 0.855 ± 0.013 & 0.872 ± 0.018 & 0.863 ± 0.013 & 0.828 ± 0.015 & 0.848 ± 0.022 & 0.838 ± 0.017 & 0.976 ± 0.009 & 0.894 ± 0.012 & 0.866 ± 0.017 & 0.852 ± 0.018 & 0.828 ± 0.023 
-# 0.838 ± 0.014 & 0.861 ± 0.018 & 0.849 ± 0.014 & 0.814 ± 0.017 & 0.840 ± 0.023 & 0.827 ± 0.018 & 0.978 ± 0.010 & 0.883 ± 0.015 & 0.859 ± 0.018 & 0.837 ± 0.019 & 0.815 ± 0.025 
+# 0.877 ± 0.013 & 0.910 ± 0.013 & 0.893 ± 0.012 & 0.876 ± 0.012 & 0.908 ± 0.013 & 0.892 ± 0.012 & 1.001 ± 0.001 & 0.913 ± 0.011 & 0.909 ± 0.012 & 0.886 ± 0.016 & 0.885 ± 0.016 
+# 0.857 ± 0.014 & 0.905 ± 0.013 & 0.878 ± 0.013 & 0.856 ± 0.014 & 0.902 ± 0.013 & 0.876 ± 0.014 & 1.000 ± 0.000 & 0.891 ± 0.015 & 0.888 ± 0.015 & 0.865 ± 0.022 & 0.865 ± 0.022 
 
 # mic ✗ ✗
 # python src/bootstrap.py 202407041716_senv_mic_standard 192 --bootstrap 10000
 # PP & PR & PF & TP & TR & TF & TDR & PFSolo & TFSolo & PFComp & TFComp 
 # 0.855 ± 0.013 & 0.872 ± 0.018 & 0.863 ± 0.013 & 0.828 ± 0.015 & 0.848 ± 0.022 & 0.838 ± 0.017 & 0.976 ± 0.009 & 0.894 ± 0.012 & 0.866 ± 0.017 & 0.852 ± 0.018 & 0.828 ± 0.023 
-# 0.838 ± 0.014 & 0.861 ± 0.018 & 0.849 ± 0.014 & 0.814 ± 0.017 & 0.840 ± 0.023 & 0.827 ± 0.018 & 0.978 ± 0.010 & 0.883 ± 0.015 & 0.859 ± 0.018 & 0.837 ± 0.019 & 0.815 ± 0.025 
+# 0.843 ± 0.014 & 0.872 ± 0.016 & 0.854 ± 0.013 & 0.816 ± 0.017 & 0.850 ± 0.018 & 0.829 ± 0.016 & 0.973 ± 0.010 & 0.879 ± 0.016 & 0.856 ± 0.018 & 0.828 ± 0.022 & 0.803 ± 0.028
 
 # pickup ✗ ✗ 
 # python src/bootstrap.py 202407042127_senv_mix_standard 192 --bootstrap 10000
 # PP & PR & PF & TP & TR & TF & TDR & PFSolo & TFSolo & PFComp & TFComp 
-# 0.876 ± 0.013 & 0.868 ± 0.015 & 0.872 ± 0.012 & 0.864 ± 0.013 & 0.857 ± 0.017 & 0.861 ± 0.013 & 0.990 ± 0.005 & 0.907 ± 0.011 & 0.897 ± 0.016 & 0.859 ± 0.016 & 0.848 ± 0.018 
-# 0.858 ± 0.015 & 0.864 ± 0.016 & 0.861 ± 0.013 & 0.848 ± 0.015 & 0.853 ± 0.018 & 0.850 ± 0.015 & 0.990 ± 0.006 & 0.895 ± 0.012 & 0.885 ± 0.016 & 0.848 ± 0.018 & 0.837 ± 0.020
+# 0.876 ± 0.013 & 0.868 ± 0.015 & 0.872 ± 0.012 & 0.864 ± 0.013 & 0.857 ± 0.017 & 0.861 ± 0.013 & 0.990 ± 0.005 & 0.908 ± 0.011 & 0.897 ± 0.016 & 0.859 ± 0.016 & 0.848 ± 0.018 
+# 0.862 ± 0.014 & 0.874 ± 0.015 & 0.865 ± 0.012 & 0.851 ± 0.015 & 0.864 ± 0.015 & 0.854 ± 0.014 & 0.990 ± 0.006 & 0.890 ± 0.014 & 0.880 ± 0.016 & 0.839 ± 0.021 & 0.828 ± 0.022 
 
 # pickup multi-W-U-Net Pckp 
 # python src/bootstrap.py 202407042308_senv_mix_7pred 192 --bootstrap 10000
@@ -31,9 +31,8 @@
 
 # python src/bootstrap.py 202407051618_senv_mix_7target 192 --bootstrap 10000
 # PP & PR & PF & TP & TR & TF & TDR & PFSolo & TFSolo & PFComp & TFComp 
-# 0.883 ± 0.012 & 0.912 ± 0.013 & 0.897 ± 0.012 & 0.882 ± 0.012 & 0.909 ± 0.013 & 0.896 ± 0.011 & 1.001 ± 0.001 & 0.914 ± 0.011 & 0.912 ± 0.011 & 0.891 ± 0.015 & 0.890 ± 0.015 
-# 0.858 ± 0.015 & 0.899 ± 0.015 & 0.878 ± 0.014 & 0.858 ± 0.015 & 0.898 ± 0.015 & 0.877 ± 0.014 & 1.000 ± 0.000 & 0.898 ± 0.012 & 0.896 ± 0.012 & 0.871 ± 0.019 & 0.870 ± 0.019 
-
+# 0.883 ± 0.012 & 0.912 ± 0.013 & 0.897 ± 0.011 & 0.882 ± 0.012 & 0.909 ± 0.013 & 0.896 ± 0.011 & 1.001 ± 0.001 & 0.914 ± 0.011 & 0.912 ± 0.011 & 0.891 ± 0.015 & 0.890 ± 0.015 
+# 0.857 ± 0.014 & 0.905 ± 0.013 & 0.878 ± 0.013 & 0.856 ± 0.014 & 0.903 ± 0.013 & 0.877 ± 0.013 & 1.001 ± 0.001 & 0.893 ± 0.013 & 0.891 ± 0.013 & 0.864 ± 0.022 & 0.863 ± 0.022 
 
 # python src/bootstrap.py 202407051631_senv_pseudomic_7pred 192 --bootstrap 10000
 
@@ -51,8 +50,18 @@ from network import TabEstimator
 import argparse
 from sklearn.metrics import precision_recall_fscore_support
 
+
+
 import csv
 from typing import Dict, List
+
+
+from sklearn.metrics import precision_recall_fscore_support
+
+def _bin_prf(y_pred_bin: np.ndarray, y_true_bin: np.ndarray):
+    p, r, f1, _ = precision_recall_fscore_support(
+        y_true_bin, y_pred_bin, average="binary", zero_division=0)
+    return float(p), float(r), float(f1)
 
 # ---------- utils (micro only) ----------
 
@@ -152,10 +161,34 @@ def bootstrap_micro(perfile: pd.DataFrame, n_boot: int = 1000, seed: int = 1337,
                 rows.append(dict(subset=subset, metric=f'{prefix}_{name}',
                                  mean=mean, std=std, ci95_lo=lo, ci95_hi=hi))
 
+        # def one_macro_metric(cols, prefix):
+        #     for name in cols:
+        #         vals = []
+        #         for _ in range(n_boot):
+        #             samp = resample_df()
+        #             vals.append(float(samp[name].mean()))
+        #         mean, std, lo, hi = summarize(vals)
+        #         rows.append(dict(subset=subset, metric=f'{prefix}_{name[-1]}',
+        #                         mean=mean, std=std, ci95_lo=lo, ci95_hi=hi))
+
         one_metric('frame_tp',  'frame_fp',  'frame_fn',  'frame')
-        one_metric('note_tp',   'note_fp',   'note_fn',   'note')
         one_metric('frameF0_tp','frameF0_fp','frameF0_fn','frameF0')
-        one_metric('noteF0_tp', 'noteF0_fp', 'noteF0_fn', 'noteF0')
+        # one_macro_metric(['note_p','note_r','note_f1'], 'note')
+        # one_macro_metric(['noteF0_p','noteF0_r','noteF0_f1'], 'noteF0')
+
+        def one_metric_macro(col_name):
+            vals = []
+            for _ in range(n_boot):
+                samp = resample_df()
+                vals.append(float(samp[col_name].mean()))  # macro mean in this resample
+            mean, std, lo, hi = summarize(vals)
+            rows.append(dict(subset=subset, metric=col_name, mean=round(mean,3), std=round(std,3),
+                            ci95_lo=round(lo,3), ci95_hi=round(hi,3)))
+
+
+        for m in ['note_p','note_r','note_f1','noteF0_p','noteF0_r','noteF0_f1','note_tdr']:
+            if m in df.columns:
+                one_metric_macro(m)
 
         # ---- micro TDR from pooled numerators/denominators ----
         def one_tdr(num_col, den_col, name):
@@ -228,12 +261,17 @@ def calc_score(args, test_num, trained_model, use_model_epoch, config_path,
     per_file_rows: List[Dict] = []
 
     # global (micro) counters (overall + subsets)
+    # totals = dict(
+    #     frame_tp=0, frame_fp=0, frame_fn=0,
+    #     note_tp=0,  note_fp=0,  note_fn=0,
+    #     frameF0_tp=0, frameF0_fp=0, frameF0_fn=0,
+    #     noteF0_tp=0,  noteF0_fp=0,  noteF0_fn=0
+    # )
     totals = dict(
         frame_tp=0, frame_fp=0, frame_fn=0,
-        note_tp=0,  note_fp=0,  note_fn=0,
-        frameF0_tp=0, frameF0_fp=0, frameF0_fn=0,
-        noteF0_tp=0,  noteF0_fp=0,  noteF0_fn=0
+        frameF0_tp=0, frameF0_fp=0, frameF0_fn=0
     )
+
     totals_solo = totals.copy()
     totals_comp = totals.copy()
 
@@ -291,6 +329,9 @@ def calc_score(args, test_num, trained_model, use_model_epoch, config_path,
         note_pred_b  = note_pred[:,  :, :-1].flatten()
         note_gt_b    = note_gt[:,    :, :-1].flatten()
 
+        note_p, note_r, note_f1 = _bin_prf(note_pred_b, note_gt_b)
+
+
         frameF0_pred_b = frame_F0_from_tab_pred.flatten()
         frameF0_gt_b   = frame_F0_gt.flatten()
         noteF0_pred_b  = note_F0_from_tab_pred.flatten()
@@ -298,19 +339,22 @@ def calc_score(args, test_num, trained_model, use_model_epoch, config_path,
 
 
 
-        # --- NEW ---
+        # --- NEW --- # NOTE
         frame_TP_tab = float(np.multiply(frame_gt[:, :, :-1], frame_pred[:, :, :-1]).sum())
         frame_TP_F0  = float(np.multiply(frame_F0_gt, tab2pitch(frame_pred)).sum())
 
-        note_TP_tab = float(np.multiply(note_gt[:, :, :-1], note_pred[:, :, :-1]).sum())
-        note_TP_F0  = float(np.multiply(note_F0_gt, tab2pitch(note_pred)).sum())
 
+
+        # note TDR (per file)
+        note_TP_tab = float(np.multiply(note_gt[:, :, :-1], note_pred[:, :, :-1]).sum())
+        note_TP_F0  = float(np.multiply(note_F0_gt, note_F0_from_tab_pred).sum())
+        note_tdr = (note_TP_tab / note_TP_F0) if note_TP_F0 > 0 else 0.0
 
         # counts (file)
         fr_tp, fr_fp, fr_fn, _   = confusion_counts(frame_pred_b, frame_gt_b)
-        no_tp, no_fp, no_fn, _   = confusion_counts(note_pred_b,  note_gt_b)
+        note_p, note_r, note_f1 = _bin_prf(note_pred_b, note_gt_b)
         frF0_tp, frF0_fp, frF0_fn, _ = confusion_counts(frameF0_pred_b, frameF0_gt_b)
-        noF0_tp, noF0_fp, noF0_fn, _ = confusion_counts(noteF0_pred_b,  noteF0_gt_b)
+        noteF0_p, noteF0_r, noteF0_f1 = _bin_prf(noteF0_pred_b, noteF0_gt_b)
 
         subset = 'solo' if "_solo_" in npz_filename else ('comp' if "_comp_" in npz_filename else 'all')
 
@@ -321,27 +365,30 @@ def calc_score(args, test_num, trained_model, use_model_epoch, config_path,
         #     note_tp=no_tp,  note_fp=no_fp,  note_fn=no_fn,
         #     frameF0_tp=frF0_tp, frameF0_fp=frF0_fp, frameF0_fn=frF0_fn,
         #     noteF0_tp=noF0_tp,  noteF0_fp=noF0_fp,  noteF0_fn=noF0_fn,
-        #     frame_tdr=float(frame_tdr),
-        #     note_tdr=float(note_tdr),  
-        # ))
-
+        #     frame_tdr_num=frame_TP_tab, frame_tdr_den=frame_TP_F0, # NOTE
+        #     note_tdr=note_tdr,  # note_tdr_den=note_TP_F0,
+        # ))        
 
         per_file_rows.append(dict(
             file=os.path.basename(npz_filename),
             subset=subset,
+            # ---- frame (micro counts stay as-is) ----
             frame_tp=fr_tp, frame_fp=fr_fp, frame_fn=fr_fn,
-            note_tp=no_tp,  note_fp=no_fp,  note_fn=no_fn,
             frameF0_tp=frF0_tp, frameF0_fp=frF0_fp, frameF0_fn=frF0_fn,
-            noteF0_tp=noF0_tp,  noteF0_fp=noF0_fp,  noteF0_fn=noF0_fn,
             frame_tdr_num=frame_TP_tab, frame_tdr_den=frame_TP_F0,
-            note_tdr_num=note_TP_tab,   note_tdr_den=note_TP_F0,
-        ))        
+            # ---- NOTE (macro per-file scores) ----
+            note_p=note_p, note_r=note_r, note_f1=note_f1,
+            noteF0_p=noteF0_p, noteF0_r=noteF0_r, noteF0_f1=noteF0_f1,
+            note_tdr=note_tdr,
+        ))
+
 
         # accumulate totals (overall)
         for k, v in dict(frame_tp=fr_tp, frame_fp=fr_fp, frame_fn=fr_fn,
-                         note_tp=no_tp,  note_fp=no_fp,  note_fn=no_fn,
+                        #  note_tp=no_tp,  note_fp=no_fp,  note_fn=no_fn,
                          frameF0_tp=frF0_tp, frameF0_fp=frF0_fp, frameF0_fn=frF0_fn,
-                         noteF0_tp=noF0_tp,  noteF0_fp=noF0_fp,  noteF0_fn=noF0_fn).items():
+                        #  noteF0_tp=noF0_tp,  noteF0_fp=noF0_fp,  noteF0_fn=noF0_fn
+                         ).items():
             totals[k] += v
             if subset == 'solo':
                 totals_solo[k] += v
@@ -350,33 +397,73 @@ def calc_score(args, test_num, trained_model, use_model_epoch, config_path,
 
     # overall micro metrics
     frame_p, frame_r, frame_f1 = prf_from_counts(totals['frame_tp'], totals['frame_fp'], totals['frame_fn'])
-    note_p,  note_r,  note_f1  = prf_from_counts(totals['note_tp'],  totals['note_fp'],  totals['note_fn'])
+    # note_p,  note_r,  note_f1  = prf_from_counts(totals['note_tp'],  totals['note_fp'],  totals['note_fn'])
     frameF0_p, frameF0_r, frameF0_f1 = prf_from_counts(totals['frameF0_tp'], totals['frameF0_fp'], totals['frameF0_fn'])
-    noteF0_p,  noteF0_r,  noteF0_f1  = prf_from_counts(totals['noteF0_tp'],  totals['noteF0_fp'],  totals['noteF0_fn'])
+    # noteF0_p,  noteF0_r,  noteF0_f1  = prf_from_counts(totals['noteF0_tp'],  totals['noteF0_fp'],  totals['noteF0_fn'])
 
-    # subset micro metrics (solo/comp) if present
+    # ---- note (MACRO over files) ----
+    per_file_df = pd.DataFrame(per_file_rows)
+    note_p  = float(per_file_df['note_p'].mean())   if len(per_file_df) else 0.0
+    note_r  = float(per_file_df['note_r'].mean())   if len(per_file_df) else 0.0
+    note_f1 = float(per_file_df['note_f1'].mean())  if len(per_file_df) else 0.0
+    noteF0_p  = float(per_file_df['noteF0_p'].mean())   if len(per_file_df) else 0.0
+    noteF0_r  = float(per_file_df['noteF0_r'].mean())   if len(per_file_df) else 0.0
+    noteF0_f1 = float(per_file_df['noteF0_f1'].mean())  if len(per_file_df) else 0.0
+    # For subsets (solo/comp) F1s as macro:
+    if 'subset' in per_file_df.columns:
+        s_note_f1    = float(per_file_df[per_file_df['subset']=='solo']['note_f1'].mean())    if (per_file_df['subset']=='solo').any() else 0.0
+        c_note_f1    = float(per_file_df[per_file_df['subset']=='comp']['note_f1'].mean())    if (per_file_df['subset']=='comp').any() else 0.0
+        s_noteF0_f1  = float(per_file_df[per_file_df['subset']=='solo']['noteF0_f1'].mean())  if (per_file_df['subset']=='solo').any() else 0.0
+        c_noteF0_f1  = float(per_file_df[per_file_df['subset']=='comp']['noteF0_f1'].mean())  if (per_file_df['subset']=='comp').any() else 0.0
+    else:
+        s_note_f1 = c_note_f1 = s_noteF0_f1 = c_noteF0_f1 = 0.0
+    # If you want macro TDR in the summary row too (optional):
+    note_tdr_macro = float(per_file_df['note_tdr'].mean()) if len(per_file_df) else 0.0
+
+
+
+    # # subset micro metrics (solo/comp) if present
+    # def safe_prf(t):
+    #     return prf_from_counts(t['frame_tp'], t['frame_fp'], t['frame_fn']), \
+    #            prf_from_counts(t['note_tp'],  t['note_fp'],  t['note_fn']), \
+    #            prf_from_counts(t['frameF0_tp'], t['frameF0_fp'], t['frameF0_fn']), \
+    #            prf_from_counts(t['noteF0_tp'],  t['noteF0_fp'],  t['noteF0_fn'])
+
     def safe_prf(t):
-        return prf_from_counts(t['frame_tp'], t['frame_fp'], t['frame_fn']), \
-               prf_from_counts(t['note_tp'],  t['note_fp'],  t['note_fn']), \
-               prf_from_counts(t['frameF0_tp'], t['frameF0_fp'], t['frameF0_fn']), \
-               prf_from_counts(t['noteF0_tp'],  t['noteF0_fp'],  t['noteF0_fn'])
+        return (
+            prf_from_counts(t['frame_tp'], t['frame_fp'], t['frame_fn']),
+            prf_from_counts(t['frameF0_tp'], t['frameF0_fp'], t['frameF0_fn'])
+        )
 
     solo_present = any(r['subset']=='solo' for r in per_file_rows)
     comp_present = any(r['subset']=='comp' for r in per_file_rows)
 
     if solo_present:
-        (s_frame_p, s_frame_r, s_frame_f1), (s_note_p, s_note_r, s_note_f1), \
-        (s_frameF0_p, s_frameF0_r, s_frameF0_f1), (s_noteF0_p, s_noteF0_r, s_noteF0_f1) = safe_prf(totals_solo)
+        (s_frame_p, s_frame_r, s_frame_f1), (s_frameF0_p, s_frameF0_r, s_frameF0_f1) = safe_prf(totals_solo)
     else:
-        s_frame_p=s_frame_r=s_frame_f1=s_note_p=s_note_r=s_note_f1= \
-        s_frameF0_p=s_frameF0_r=s_frameF0_f1=s_noteF0_p=s_noteF0_r=s_noteF0_f1 = 0.0
+        s_frame_p = s_frame_r = s_frame_f1 = 0.0
+        s_frameF0_p = s_frameF0_r = s_frameF0_f1 = 0.0
 
     if comp_present:
-        (c_frame_p, c_frame_r, c_frame_f1), (c_note_p, c_note_r, c_note_f1), \
-        (c_frameF0_p, c_frameF0_r, c_frameF0_f1), (c_noteF0_p, c_noteF0_r, c_noteF0_f1) = safe_prf(totals_comp)
+        (c_frame_p, c_frame_r, c_frame_f1), (c_frameF0_p, c_frameF0_r, c_frameF0_f1) = safe_prf(totals_comp)
     else:
-        c_frame_p=c_frame_r=c_frame_f1=c_note_p=c_note_r=c_note_f1= \
-        c_frameF0_p=c_frameF0_r=c_frameF0_f1=c_noteF0_p=c_noteF0_r=c_noteF0_f1 = 0.0
+        c_frame_p = c_frame_r = c_frame_f1 = 0.0
+        c_frameF0_p = c_frameF0_r = c_frameF0_f1 = 0.0
+
+
+    # if solo_present:
+    #     (s_frame_p, s_frame_r, s_frame_f1), (s_note_p, s_note_r, s_note_f1), \
+    #     (s_frameF0_p, s_frameF0_r, s_frameF0_f1), (s_noteF0_p, s_noteF0_r, s_noteF0_f1) = safe_prf(totals_solo)
+    # else:
+    #     s_frame_p=s_frame_r=s_frame_f1=s_note_p=s_note_r=s_note_f1= \
+    #     s_frameF0_p=s_frameF0_r=s_frameF0_f1=s_noteF0_p=s_noteF0_r=s_noteF0_f1 = 0.0
+
+    # if comp_present:
+    #     (c_frame_p, c_frame_r, c_frame_f1), (c_note_p, c_note_r, c_note_f1), \
+    #     (c_frameF0_p, c_frameF0_r, c_frameF0_f1), (c_noteF0_p, c_noteF0_r, c_noteF0_f1) = safe_prf(totals_comp)
+    # else:
+    #     c_frame_p=c_frame_r=c_frame_f1=c_note_p=c_note_r=c_note_f1= \
+    #     c_frameF0_p=c_frameF0_r=c_frameF0_f1=c_noteF0_p=c_noteF0_r=c_noteF0_f1 = 0.0
 
     # pack results (MICRO ONLY)
     result = pd.DataFrame([[
@@ -543,24 +630,6 @@ def print_bootstrap_summary(boot_df: pd.DataFrame):
         fmt((n_PFc, n_PFc_hw)), fmt((n_TFc, n_TFc_hw)),
     ))
 
-    # # Header (bold, with subscripts, and \midrule)
-    # print(r"PP & PR & PF & "
-    #       r"TP & TR & TF & TDR & "
-    #       r"PFSolo & TFSolo & "
-    #       r"PFComp & TFComp ")
-
-    # # format "mean \pm hw" or an em dash if missing
-    # def fmt(val_hw):
-    #     m, hw = val_hw
-    #     return r"{:.3f} ± {:.3f}".format(m, hw) if (m is not None and hw is not None) else r"—"
-
-    # print("{} & {} & {} & {} & {} & {} & {} & {} & {} & {} & {} ".format(
-    #     fmt((PP_m, PP_hw)), fmt((PR_m, PR_hw)), fmt((PF_m, PF_hw)),
-    #     fmt((TP_m, TP_hw)), fmt((TR_m, TR_hw)), fmt((TF_m, TF_hw)),
-    #     fmt((TDR_m, TDR_hw)),
-    #     fmt((PFs_m, PFs_hw)), fmt((TFs_m, TFs_hw)),
-    #     fmt((PFc_m, PFc_hw)), fmt((TFc_m, TFc_hw)),
-    # ))
 
 
     
