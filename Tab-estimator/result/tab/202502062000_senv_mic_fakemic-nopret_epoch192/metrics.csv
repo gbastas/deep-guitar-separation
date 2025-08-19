@@ -1,0 +1,4 @@
+,frame_segment_avg_tab_p,frame_segment_avg_tab_r,frame_segment_avg_tab_f,frame_frame_avg_tab_p,frame_frame_avg_tab_r,frame_frame_avg_tab_f,note_avg_tab_p,note_avg_tab_r,note_avg_tab_f,frame_avg_F0_from_tab_p,frame_avg_F0_from_tab_r,frame_avg_F0_from_tab_f,note_avg_F0_from_tab_p,note_avg_F0_from_tab_r,note_avg_F0_from_tab_f,frame_avg_tdr,note_avg_tdr,frame_avg_F0_from_tab_f_solo,frame_avg_tab_f_solo,frame_avg_F0_from_tab_f_comp,frame_avg_tab_f_comp,note_avg_F0_from_tab_f_solo,note_avg_tab_f_solo,note_avg_F0_from_tab_f_comp,note_avg_tab_f_comp
+No00,0.791,0.790,0.788,0.783,0.777,0.780,0.774,0.793,0.780,0.867,0.851,0.856,0.845,0.854,0.846,0.926,0.927,0.894,0.841,0.817,0.734,0.880,0.812,0.831,0.730
+mean,0.791,0.790,0.788,0.783,0.777,0.780,0.774,0.793,0.780,0.867,0.851,0.856,0.845,0.854,0.846,0.926,0.927,0.894,0.841,0.817,0.734,0.880,0.812,0.831,0.730
+std,,,,,,,,,,,,,,,,,,,,,,,,,
