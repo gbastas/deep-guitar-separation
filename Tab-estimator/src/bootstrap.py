@@ -1,9 +1,34 @@
-
-# mic multi-W-U-Net Mic 
-# python src/bootstrap.py 202407032134_senv_mic_7pred 192 --bootstrap 10000 
+# pickup Ground-Truth GS-Aux-Pckp 
+# python src/bootstrap.py 202407051618_senv_mix_7target 192 --bootstrap 10000
 # PP & PR & PF & TP & TR & TF & TDR & PFSolo & TFSolo & PFComp & TFComp 
-# 0.855 ± 0.013 & 0.844 ± 0.017 & 0.850 ± 0.013 & 0.775 ± 0.028 & 0.769 ± 0.034 & 0.772 ± 0.031 & 0.914 ± 0.028 & 0.893 ± 0.012 & 0.821 ± 0.027 & 0.835 ± 0.018 & 0.754 ± 0.040 
-# 0.845 ± 0.014 & 0.855 ± 0.015 & 0.846 ± 0.013 & 0.763 ± 0.025 & 0.781 ± 0.026 & 0.769 ± 0.024 & 0.911 ± 0.024 & 0.880 ± 0.014 & 0.817 ± 0.025 & 0.813 ± 0.021 & 0.722 ± 0.040 
+# 0.883 ± 0.012 & 0.912 ± 0.013 & 0.897 ± 0.011 & 0.882 ± 0.012 & 0.909 ± 0.013 & 0.896 ± 0.011 & 1.001 ± 0.001 & 0.914 ± 0.011 & 0.912 ± 0.011 & 0.891 ± 0.015 & 0.890 ± 0.015 
+# 0.857 ± 0.014 & 0.905 ± 0.013 & 0.878 ± 0.013 & 0.856 ± 0.014 & 0.903 ± 0.013 & 0.877 ± 0.013 & 1.001 ± 0.001 & 0.893 ± 0.013 & 0.891 ± 0.013 & 0.864 ± 0.022 & 0.863 ± 0.022 
+
+# pickup ✗ ✗ 
+# python src/bootstrap.py 202407042127_senv_mix_standard 192 --bootstrap 10000
+# PP & PR & PF & TP & TR & TF & TDR & PFSolo & TFSolo & PFComp & TFComp 
+# 0.876 ± 0.013 & 0.868 ± 0.015 & 0.872 ± 0.012 & 0.864 ± 0.013 & 0.857 ± 0.017 & 0.861 ± 0.013 & 0.990 ± 0.005 & 0.908 ± 0.011 & 0.897 ± 0.016 & 0.859 ± 0.016 & 0.848 ± 0.018 
+# 0.862 ± 0.014 & 0.874 ± 0.015 & 0.865 ± 0.012 & 0.851 ± 0.015 & 0.864 ± 0.015 & 0.854 ± 0.014 & 0.990 ± 0.006 & 0.890 ± 0.014 & 0.880 ± 0.016 & 0.839 ± 0.021 & 0.828 ± 0.022 
+
+# python src/bootstrap.py 202508201829_senv_mix-preds_7-pred 192 --bootstrap 10000
+
+# pickup multi-W-U-Net Pckp 
+# python src/bootstrap.py 202407042308_senv_mix_7pred 192 --bootstrap 10000
+# PP & PR & PF & TP & TR & TF & TDR & PFSolo & TFSolo & PFComp & TFComp 
+# 0.866 ± 0.013 & 0.891 ± 0.015 & 0.878 ± 0.012 & 0.858 ± 0.014 & 0.882 ± 0.017 & 0.870 ± 0.014 & 0.993 ± 0.006 & 0.909 ± 0.011 & 0.895 ± 0.018 & 0.867 ± 0.017 & 0.861 ± 0.018 
+# 0.847 ± 0.015 & 0.882 ± 0.016 & 0.865 ± 0.013 & 0.839 ± 0.016 & 0.873 ± 0.018 & 0.856 ± 0.015 & 0.993 ± 0.006 & 0.899 ± 0.012 & 0.886 ± 0.019 & 0.851 ± 0.019 & 0.844 ± 0.020 
+
+# pickup multi-W-U-Net GS-Aux-Pckp 
+# # python src/bootstrap.py 202508142123_senv_mix-preds-by-gscustmix_7-pred 192 --bootstrap 10000
+# 0.870 ± 0.013 & 0.868 ± 0.017 & 0.869 ± 0.013 & 0.858 ± 0.014 & 0.855 ± 0.018 & 0.856 ± 0.014 & 0.988 ± 0.006 & 0.907 ± 0.012 & 0.893 ± 0.020 & 0.855 ± 0.018 & 0.843 ± 0.019 
+# 0.858 ± 0.014 & 0.875 ± 0.014 & 0.864 ± 0.013 & 0.846 ± 0.016 & 0.863 ± 0.016 & 0.851 ± 0.016 & 0.987 ± 0.009 & 0.890 ± 0.015 & 0.879 ± 0.020 & 0.837 ± 0.021 & 0.824 ± 0.023 
+
+# pickup multi-W-U-Net GS-Aux-Pckp+ADGP-Pckp
+# python src/bootstrap.py 202508191636_senv_mix-preds-by-gscustmix-pdgp_7-pred 192 --bootstrap 10000
+# 0.869 ± 0.013 & 0.882 ± 0.016 & 0.875 ± 0.013 & 0.860 ± 0.014 & 0.871 ± 0.017 & 0.865 ± 0.013 & 0.991 ± 0.005 & 0.910 ± 0.010 & 0.895 ± 0.015 & 0.863 ± 0.017 & 0.855 ± 0.018 
+# 0.854 ± 0.014 & 0.884 ± 0.013 & 0.866 ± 0.013 & 0.845 ± 0.015 & 0.872 ± 0.014 & 0.856 ± 0.014 & 0.990 ± 0.006 & 0.894 ± 0.013 & 0.882 ± 0.016 & 0.839 ± 0.021 & 0.830 ± 0.022 
+
+# ------------------------------------------------------------------
 
 # mic Ground-Truth ✗
 # python src/bootstrap.py 202407042101_senv_mic_7target  192 --bootstrap 10000
@@ -17,27 +42,29 @@
 # 0.855 ± 0.013 & 0.872 ± 0.018 & 0.863 ± 0.013 & 0.828 ± 0.015 & 0.848 ± 0.022 & 0.838 ± 0.017 & 0.976 ± 0.009 & 0.894 ± 0.012 & 0.866 ± 0.017 & 0.852 ± 0.018 & 0.828 ± 0.023 
 # 0.843 ± 0.014 & 0.872 ± 0.016 & 0.854 ± 0.013 & 0.816 ± 0.017 & 0.850 ± 0.018 & 0.829 ± 0.016 & 0.973 ± 0.010 & 0.879 ± 0.016 & 0.856 ± 0.018 & 0.828 ± 0.022 & 0.803 ± 0.028
 
-# pickup ✗ ✗ 
-# python src/bootstrap.py 202407042127_senv_mix_standard 192 --bootstrap 10000
+# mic multi-W-U-Net Mic 
+# python src/bootstrap.py 202407032134_senv_mic_7pred 192 --bootstrap 10000 
 # PP & PR & PF & TP & TR & TF & TDR & PFSolo & TFSolo & PFComp & TFComp 
-# 0.876 ± 0.013 & 0.868 ± 0.015 & 0.872 ± 0.012 & 0.864 ± 0.013 & 0.857 ± 0.017 & 0.861 ± 0.013 & 0.990 ± 0.005 & 0.908 ± 0.011 & 0.897 ± 0.016 & 0.859 ± 0.016 & 0.848 ± 0.018 
-# 0.862 ± 0.014 & 0.874 ± 0.015 & 0.865 ± 0.012 & 0.851 ± 0.015 & 0.864 ± 0.015 & 0.854 ± 0.014 & 0.990 ± 0.006 & 0.890 ± 0.014 & 0.880 ± 0.016 & 0.839 ± 0.021 & 0.828 ± 0.022 
+# 0.855 ± 0.013 & 0.844 ± 0.017 & 0.850 ± 0.013 & 0.775 ± 0.028 & 0.769 ± 0.034 & 0.772 ± 0.031 & 0.914 ± 0.028 & 0.893 ± 0.012 & 0.821 ± 0.027 & 0.835 ± 0.018 & 0.754 ± 0.040 
+# 0.845 ± 0.014 & 0.855 ± 0.015 & 0.846 ± 0.013 & 0.763 ± 0.025 & 0.781 ± 0.026 & 0.769 ± 0.024 & 0.911 ± 0.024 & 0.880 ± 0.014 & 0.817 ± 0.025 & 0.813 ± 0.021 & 0.722 ± 0.040 
 
-# pickup multi-W-U-Net Pckp 
-# python src/bootstrap.py 202407042308_senv_mix_7pred 192 --bootstrap 10000
-# PP & PR & PF & TP & TR & TF & TDR & PFSolo & TFSolo & PFComp & TFComp 
-# 0.866 ± 0.013 & 0.891 ± 0.015 & 0.878 ± 0.012 & 0.858 ± 0.014 & 0.882 ± 0.017 & 0.870 ± 0.014 & 0.993 ± 0.006 & 0.909 ± 0.011 & 0.895 ± 0.018 & 0.867 ± 0.017 & 0.861 ± 0.018 
-# 0.847 ± 0.015 & 0.882 ± 0.016 & 0.864 ± 0.013 & 0.839 ± 0.016 & 0.873 ± 0.018 & 0.856 ± 0.015 & 0.993 ± 0.006 & 0.899 ± 0.012 & 0.886 ± 0.019 & 0.851 ± 0.019 & 0.844 ± 0.020 
-
-# python src/bootstrap.py 202407051618_senv_mix_7target 192 --bootstrap 10000
-# PP & PR & PF & TP & TR & TF & TDR & PFSolo & TFSolo & PFComp & TFComp 
-# 0.883 ± 0.012 & 0.912 ± 0.013 & 0.897 ± 0.011 & 0.882 ± 0.012 & 0.909 ± 0.013 & 0.896 ± 0.011 & 1.001 ± 0.001 & 0.914 ± 0.011 & 0.912 ± 0.011 & 0.891 ± 0.015 & 0.890 ± 0.015 
-# 0.857 ± 0.014 & 0.905 ± 0.013 & 0.878 ± 0.013 & 0.856 ± 0.014 & 0.903 ± 0.013 & 0.877 ± 0.013 & 1.001 ± 0.001 & 0.893 ± 0.013 & 0.891 ± 0.013 & 0.864 ± 0.022 & 0.863 ± 0.022 
-
-# python src/bootstrap.py 202407051631_senv_pseudomic_7pred 192 --bootstrap 10000
-
+# mic multi-W-U-Net Mic+ADGP-Mic
 # python src/bootstrap.py 202502062000_senv_mic_fakemic-nopret 192 --bootstrap 10000
+# 0.855 ± 0.014 & 0.842 ± 0.018 & 0.848 ± 0.014 & 0.783 ± 0.024 & 0.777 ± 0.031 & 0.780 ± 0.027 & 0.926 ± 0.024 & 0.895 ± 0.011 & 0.839 ± 0.024 & 0.832 ± 0.019 & 0.758 ± 0.036 
+# 0.845 ± 0.014 & 0.854 ± 0.015 & 0.846 ± 0.013 & 0.774 ± 0.023 & 0.793 ± 0.024 & 0.780 ± 0.023 & 0.927 ± 0.022 & 0.880 ± 0.014 & 0.831 ± 0.023 & 0.812 ± 0.021 & 0.730 ± 0.039 
 
+
+# mic multi-W-U-Net GS-Aux-Mic
+# python src/bootstrap.py 202407051631_senv_pseudomic_7pred 192 --bootstrap 10000
+# PP & PR & PF & TP & TR & TF & TDR & PFSolo & TFSolo & PFComp & TFComp 
+# 0.861 ± 0.013 & 0.849 ± 0.019 & 0.855 ± 0.013 & 0.812 ± 0.019 & 0.803 ± 0.028 & 0.807 ± 0.023 & 0.949 ± 0.018 & 0.898 ± 0.012 & 0.847 ± 0.022 & 0.839 ± 0.018 & 0.793 ± 0.030 
+# 0.849 ± 0.014 & 0.851 ± 0.015 & 0.846 ± 0.013 & 0.795 ± 0.020 & 0.805 ± 0.021 & 0.796 ± 0.020 & 0.943 ± 0.018 & 0.879 ± 0.015 & 0.837 ± 0.020 & 0.812 ± 0.021 & 0.757 ± 0.035
+ 
+# mic multi-W-U-Net GS-Aux-Mic+ADGP-Mic
+# python src/bootstrap.py 202502062033_senv_mic_preds_by_guit_pseudoboth_sep_all_solos_fake_7-pred 192 --bootstrap 10000
+# PP & PR & PF & TP & TR & TF & TDR & PFSolo & TFSolo & PFComp & TFComp 
+# 0.854 ± 0.013 & 0.859 ± 0.019 & 0.857 ± 0.013 & 0.798 ± 0.021 & 0.806 ± 0.030 & 0.802 ± 0.024 & 0.941 ± 0.020 & 0.896 ± 0.011 & 0.843 ± 0.026 & 0.843 ± 0.019 & 0.787 ± 0.033 
+# 0.846 ± 0.014 & 0.862 ± 0.015 & 0.850 ± 0.013 & 0.789 ± 0.021 & 0.810 ± 0.024 & 0.796 ± 0.022 & 0.937 ± 0.021 & 0.881 ± 0.014 & 0.838 ± 0.024 & 0.819 ± 0.021 & 0.754 ± 0.037
 
 import glob
 import numpy as np
@@ -98,7 +125,7 @@ def tab2pitch(tab):
     return pitch
 
 # micro-only bootstrap over per-file counts
-def bootstrap_micro(perfile: pd.DataFrame, n_boot: int = 1000, seed: int = 1337,
+def bootstrap_micro(perfile: pd.DataFrame, n_boot: int = 10000, seed: int = 1337,
                     stratified: bool = True) -> pd.DataFrame:
     """
     Bootstrap over files. For each resample, pool counts across sampled files and compute:
@@ -638,7 +665,7 @@ if __name__ == "__main__":
     parser.add_argument("model", type=str)
     parser.add_argument("epoch", type=int)
     parser.add_argument("-v","--verbose", action="store_true", default=False)
-    parser.add_argument("--bootstrap", type=int, default=0, help="Number of bootstrap resamples (0 = disable).")
+    parser.add_argument("--bootstrap", type=int, default=10000, help="Number of bootstrap resamples (0 = disable).")
     parser.add_argument("--seed", type=int, default=1337, help="RNG seed for bootstrap.")
     parser.add_argument("--no-stratify", action="store_true", help="Disable stratified bootstrap (solo/comp preserved).")
     args = parser.parse_args()

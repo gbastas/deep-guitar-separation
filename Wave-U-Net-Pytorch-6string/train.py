@@ -1,3 +1,33 @@
+# CUDA_VISIBLE_DEVICES=0 python train.py --dataset_dir ../datasets/datasep-mic/ --cuda --hdf_dir hdfs/hdf_guit-mic --checkpoint_dir mycheckpoints/waveunet_guit_mic-mdgp/ --channels 1 --patience -1 --version pseudo
+# 1.19 \pm 0.38 & 9.59 \pm 1.34 & 0.34 \pm 0.41 & 9.52 \pm 1.28 & 1.27 \pm 0.52 & 1.10 \pm 0.56 & 5.01 \pm 0.42 & 14.03 \pm 1.36 \\
+
+# CUDA_VISIBLE_DEVICES=0 python train.py --dataset_dir ../datasets/datasep-mic/ --cuda --hdf_dir hdfs/hdf_guit-mic --checkpoint_dir mycheckpoints/waveunet_guit_mic/ --channels 1 --patience -1 --version pseudo
+# 0.90 \pm 0.43 & 8.40 \pm 1.36 & 0.29 \pm 0.38 & 9.59 \pm 1.30 & 0.92 \pm 0.64 & 0.89 \pm 0.58 & 5.05 \pm 0.42 & 14.13 \pm 1.31 \\
+
+# CUDA_VISIBLE_DEVICES=0 python train.py --dataset_dir ../datasets/datasep-mic/ --cuda --hdf_dir hdfs/hdf_guit-mic/ --checkpoint_dir mycheckpoints/waveunet_guit_gscustmic/ --channels 1 --patience -1 --version pseudo
+# -2.33 \pm 0.33 & 0.45 \pm 1.18 & -1.51 \pm 0.33 & 8.14 \pm 0.99 & -2.66 \pm 0.42 & -2.00 \pm 0.51 & 5.19 \pm 0.44 & 11.09 \pm 1.30 \\
+
+# CUDA_VISIBLE_DEVICES=0 python train.py --dataset_dir ../datasets/datasep-mic/ --cuda --hdf_dir hdfs/hdf_guit-mic/ --checkpoint_dir mycheckpoints/waveunet_guit_gscustmic_mdgp/ --channels 1 --patience -1 --version pseudo
+# -2.25 \pm 0.30 & 1.97 \pm 0.98 & -1.28 \pm 0.40 & 8.42 \pm 0.99 & -2.47 \pm 0.40 & -2.02 \pm 0.43 & 5.30 \pm 0.42 & 11.54 \pm 1.24 \\
+    
+#  CUDA_VISIBLE_DEVICES=0 python train.py --dataset_dir ../datasets/datasep-hex/ --cuda --hdf_dir hdfs/hdf_guit-hex/ --checkpoint_dir mycheckpoints/waveunet_guit_hex/ --channels 1 --patience -1 --version pseudo  
+# 7.40 \pm 0.74 & 16.61 \pm 1.29 & 8.09 \pm 0.69 & 12.17 \pm 1.53 & 8.69 \pm 1.16 & 6.12 \pm 0.72 & 6.99 \pm 0.58 & 17.35 \pm 1.58 \\
+    
+# CUDA_VISIBLE_DEVICES=0 python train.py --dataset_dir ../datasets/datasep-mix/ --cuda --hdf_dir hdfs/hdf_guit-mix --checkpoint_dir mycheckpoints/waveunet_guit_mix/ --channels 1 --patience -1 --version pseudo
+# 5.75 \pm 0.71 & 15.99 \pm 1.28 & 6.70 \pm 0.61 & 11.87 \pm 1.49 & 6.56 \pm 1.01 & 4.94 \pm 0.91 & 6.79 \pm 0.54 & 16.95 \pm 1.57 \\
+    
+# CUDA_VISIBLE_DEVICES=0 python train.py --dataset_dir ../datasets/datasep-mix/ --cuda --hdf_dir hdfs/hdf_guit-mix --checkpoint_dir mycheckpoints/waveunet_guit_mix_pdgp/ --channels 1 --patience -1 --version pseudo
+# 5.89 \pm 0.68 & 16.66 \pm 1.19 & 6.72 \pm 0.59 & 11.77 \pm 1.48 & 6.66 \pm 0.97 & 5.11 \pm 0.90 & 6.72 \pm 0.52 & 16.82 \pm 1.56 \\
+
+# CUDA_VISIBLE_DEVICES=0 python train.py --dataset_dir ../datasets/datasep-mix/ --cuda --hdf_dir hdfs/hdf_guit-mix/ --checkpoint_dir checkpoints/waveunet_guit_gscustmix-pdgp/ --channels 1 --patience -1 --version pseudo
+#     0.74 \pm 0.41 & 3.13 \pm 1.17 & 2.19 \pm 0.42 & 6.05 \pm 0.67 & 0.66 \pm 0.66 & 0.81 \pm 0.43 & 3.98 \pm 0.38 & 8.11 \pm 0.79 \\
+    
+# CUDA_VISIBLE_DEVICES=0 python train.py --dataset_dir ../datasets/datasep-mix/ --cuda --hdf_dir hdfs/hdf_guit-mix/ --checkpoint_dir checkpoints/waveunet_guit_gscustmix/ --channels 1 --patience -1 --version pseudo    
+# 1.79 \pm 0.47 & 5.14 \pm 1.15 & 1.52 \pm 0.40 & 8.45 \pm 1.04 & 2.55 \pm 0.66 & 1.03 \pm 0.57 & 5.45 \pm 0.40 & 11.45 \pm 1.43 \\
+    
+# CUDA_VISIBLE_DEVICES=0 python train.py --dataset_dir ../datasets/datasep-mix/ --cuda --hdf_dir hdfs/hdf_guit-mix/ --checkpoint_dir checkpoints/waveunet_guit_gscustmix-pdgp/ --channels 1 --patience -1 --version pseudo
+# 2.46 \pm 0.45 & 8.63 \pm 1.27 & 2.47 \pm 0.44 & 8.62 \pm 1.00 & 2.77 \pm 0.61 & 2.15 \pm 0.63 & 5.40 \pm 0.36 & 11.84 \pm 1.15 \\
+
 import argparse
 import os
 import time

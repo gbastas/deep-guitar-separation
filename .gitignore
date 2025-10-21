@@ -5,6 +5,7 @@ __pycache__/
 *npz
 *.zip*
 *.txt
+*.model
 GuitarSet/data*/
 Wave-U-Net-Pytorch-6string*/datasets/GuitarSep/
 Wave-U-Net-Pytorch-6string*/hdf*/

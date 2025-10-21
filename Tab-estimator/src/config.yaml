@@ -8,6 +8,7 @@ n_cores: 12
 
 train_ratio: 0.9
 epoch: 192
+# epoch: 260
 lr: 0.005
 seed_: 0
 d_model: 512
@@ -23,4 +24,4 @@ use_galoss: True
 
 partition_mode: "senvaityte"      # "6-fold" or "senvaityte"
 feat_mode: "7-pred"               # "original" or "7-pred" or "7-target"
-npz_path: "npz_datasep-mix-preds-by-gscustmix-pdgp"
+npz_path: "npz_datasep-mix-preds"

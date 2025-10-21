@@ -1,6 +1,6 @@
 # Separate and Transcribe
 
-This repository contains the code and experiments from the paper: *Separate and Transcribe: Deep Guitar Separation and its Application for Tablature Enhancement.* It provides implementations and dataset manipulation and preparation code used for training, evaluation, and analysis.
+This repository contains the code and experiments from the paper: *Separate and Transcribe: Deep Guitar Separation and its Application for Tablature Enhancement.* It provides implementations, dataset manipulation and preparation code require for training, evaluation, and further analysis of the results.
 
 
 ## Data Preparation
@@ -8,28 +8,24 @@ This repository contains the code and experiments from the paper: *Separate and 
 
 **GuitarSet**
 
-Download and put in ordet the GuitarSet dataset (https://zenodo.org/record/3371780).
-
-Use the unix commands below:
+Download and put in order the GuitarSet dataset (https://zenodo.org/record/3371780) by using the unix commands below:
 
 ```
 mkdir -p ./datasets/GuitarSet/data/{audio,mic,mix,hex_cln}
-
 wget -P ./datasets/GuitarSet/ https://zenodo.org/record/3371780/files/{audio_mono-mic.zip,audio_mono-pickup_mix.zip,audio_hex-pickup_debleeded.zip}
-
 unzip -j ./datasets/GuitarSet/audio_mono-mic.zip '*.wav' -d ./datasets/GuitarSet/data/mic && \
 unzip -j ./datasets/GuitarSet/audio_mono-pickup_mix.zip '*.wav' -d ./datasets/GuitarSet/data/mix && \
 unzip -j ./datasets/GuitarSet/audio_hex-pickup_debleeded.zip '*.wav' -d ./datasets/GuitarSet/data/hex_cln
 
 ```
 
-To get the dataset ready for training, we follow the *Senvaitytite train-test split* presented in [this repository](https://github.com/daliasen/GuitarStringSeparation-MF-NMF-NMFD):
+We follow the *Senvaitytite train-test split* presented in [this repository](https://github.com/daliasen/GuitarStringSeparation-MF-NMF-NMFD). The filenames use for tetsing are stored in ```datasets/NMFtestSet.csv```. To get the dataset ready for training Wave-U-Net as string separator, first run:
 
 ```
 cd datasets/
-python prepare_source_sep_data.py # this create dir datasep/
-python prepare_source_sep_data-mic.py # this create dir datasep-mic/
-python prepare_source_sep_datamono-pickup.py # this create dir datasep-mix/
+python prepare_source_sep_data.py # this creates dir datasep/
+python prepare_source_sep_data-mic.py # this creates dir datasep-mic/
+python prepare_source_sep_datamono-pickup.py # this creates dir datasep-mix/
 cd -
 ```
 
@@ -40,15 +36,49 @@ After running these scripts, the following directories will be created:
 - **`datasep-mix/`** – for pickup-mix separation data
 
 
+**GS-Aux: Preparing the Dataset**
 
-**GSCustomMic: Preparing the Dataset**
 
-Run the following commands to process and extract data:
+### Algorithm 1 — Custom Audio Data for GS-Aux
+
+**Input:**
+- Audio mixture **x ∈ ℝᵀ** from GuitarSet solos  
+- Onset & string annotation pairs **{(oᵢ, sᵢ)}₍ᵢ₌₁₎ᴺ**
+
+**Output:**
+- 6-channel string-wise diarized signal **x′ ∈ ℝ⁶ˣᵀ**  
+- 6-channel overlaid-melodies signal **x″ ∈ ℝ⁶ˣᵀ″**
+
+---
+
+1. Initialize  
+   - `x'_s[t] ~ N(0, 0.00005)` for all strings `s = 1..6` and timesteps `t = 0..T`  
+   - `x''_s ← {}` for all strings `s = 1..6`  
+
+2. For each note `i`:  
+   - If there exists another note `j` such that  
+     `|oᵢ − oⱼ| < 60 ms` **and** `sᵢ ≠ sⱼ`:  
+     → **continue**  *(skip chord notes)*  
+   - Else:  
+     - `x'_{sᵢ}[oᵢ : oᵢ₊₁] ← x[oᵢ : oᵢ₊₁]` *(render cropped segment)*  
+     - `x''_{sᵢ} ← concat(x''_{sᵢ}, x[oᵢ : oᵢ₊₁])` *(non-silent melodies)*  
+
+3. Compute  
+   - `T″ ← second_longest( { ||x''_s|| } for s = 1..6 )`  
+
+4. Normalize durations  
+   - `x''_s ← crop_or_pad(x''_s, T″)` for all `s ∈ {1..6}`  
+
+---
+
+
+Run the following commands to run the algorithm above and extract data **x′** and **x′′**:
 ```
 cd data-manipulation-code/
-python PseudoCompSep.py -all_solos
-python PseudoSep.py  --all_solos
+python create_gs-aux-solo.py --all_solos
+python create_gs-aux-comp.py --all_solos
 ```
+
 
 Copy Processed Data into GSCustomMic:
 ```
@@ -268,8 +298,6 @@ Then, extract CQTs for all mixtures, reference and estimated sources:
 cd ../TabCNN/data_multisource
 cp -r ../../datasets/GuitarSet/data/annos/ ../data_multisource/GuitarSet/annotation
 python Parallel_TabDataReprGenSep.py --input_path ../../datasets/datasep-{mix, mic}-preds-{codename-of-waveunet} 
-cp ../data_multisource/id.csv ../data_multisource/spec_repr_gscustmic-mid-pretOnMic/id.csv
-
 ```
 
 Now, let's train the model
@@ -277,59 +305,5 @@ Now, let's train the model
 cd ../model-tensor-sep
 python TabCNN.py --partition senvaityte --n_stfts 7 --data_path ../data_multisource/spec_repr_{codename-f-waveunet} 
 ```
-
-e.g.
-cd Wave-U-Net-Pytorch-6string
-for file in ../datasets/datasep-mic-predst-gscustmic-overcomp-alt-pretOnMic/train/*/mixture.wav; do python predict.py --load_model checkpoints/waveunet_guit_gscustmic-overcomp-alt-pretOnMic/best_checkpoint_675879 --cuda --input "$file"; done
-for file in ../datasets/datasep-mic-predst-gscustmic-overcomp-alt-pretOnMic/test/*/mixture.wav; do python predict.py --load_model checkpoints/waveunet_guit_gscustmic-overcomp-alt-pretOnMic/best_checkpoint_675879 --cuda --input "$file"; done
-
-cd ../TabCNN/data_multisource
-python Parallel_TabDataReprGenSep.py --input_path ../../datasets/datasep-mic-preds-gscustmic-overcomp-alt-pretOnMic
-
-CUDA_VISIBLE_DEVICES=0 python TabCNN.py --partition senvaityte --data_path ../data_multisource/spec_repr_datasep-mic-preds-gscustmic-overcomp-alt-pretOnMic --n_stfts 7
-
-
-for file in ../datasets/datasep-mic-preds-gscustmic-mid-pretOnMic/train/*/mixture.wav; do python predict.py --load_model checkpoints/waveunet_guit_gscustmic-mid-pretOnMic/best_checkpoint_749925 --cuda --input "$file"; done
-
-for file in ../datasets/datasep-mic-preds-gscustmic-mid-pretOnMic/train/*/mixture.wav; do python predict.py --load_model checkpoints/waveunet_guit_gscustmic-mid-pretOnMic/best_checkpoint_749925 --cuda --input "$file"; done
-
-python Parallel_TabDataReprGenSep.py --input_path ../../datasets/datasep-mic-preds-gscustmic-mid-pretOnMic
-
-CUDA_VISIBLE_DEVICES=0 python TabCNN.py --partition senvaityte --n_stfts 7 --data_path ../data_multisource/spec_repr_datasep-mic-preds-gscustmic-mid-pretOnMic
-
----------------------------------------------
-for file in ../datasets/datasep-mic-preds-gscustmic-solo-free-pretOnMic/train/*/mixture.wav; do python predict.py --load_model checkpoints/waveunet_guit_gscustmic-solo-free-pretOnMic/best_checkpoint_ --cuda --input "$file"; done
-
-for file in ../datasets/datasep-mic-preds-gscustmic-solo-free-pretOnMic/test/*/mixture.wav; do python predict.py --load_model checkpoints/waveunet_guit_gscustmic-solo-free-pretOnMic/best_checkpoint_ --cuda --input "$file"; done
-
-CUDA_VISIBLE_DEVICES=3 python TabCNN.py --partition senvaityte --n_stfts 7 --data_path ../data_multisource/spec_repr_datasep-mic-preds-gscustmic-solo-free-pretOnMic
--------------------------------------------
-
-for file in ../datasets/datasep-mic-preds-gscustmic-solo-pretOnMic/train/*/mixture.wav; do python predict.py --load_model checkpoints/waveunet_guit_gscustmic-solo-free-pretOnMic/best_checkpoint_ --cuda --input "$file"; done
-
-for file in ../datasets/datasep-mic-preds-gscustmic-solo-pretOnMic/test/*/mixture.wav; do python predict.py --load_model checkpoints/waveunet_guit_gscustmic-solo-free-pretOnMic/best_checkpoint_ --cuda --input "$file"; done
-
-python Parallel_TabDataReprGenSep.py --input_path ../../datasets/datasep-mic-preds-gscustmic-solo-pretOnMic
-
-CUDA_VISIBLE_DEVICES=1 python TabCNN.py --partition senvaityte --n_stfts 7 --data_path ../data_multisource/spec_repr_datasep-mic-preds-gscustmic-solo-pretOnMic
-
-
-<!-- 
-```
-
-for file in ../datasets/GuitarSet/datasep-preds/train/*/mixture.wav; do python predict.py --load_model checkpoints/waveunet_guit/best_checkpoint_511525 --cuda --input "$file"; done
-for file in ../datasets/datasep-preds/test/*/mixture.wav; do python predict.py --load_model checkpoints/waveunet_guit/best_checkpoint_511525 --cuda --input "$file"; done
-
-for file in ../datasets/datasep-mic-preds/train/*/mixture.wav; do CUDA_VISIBLE_DEVICES=0 python predict.py --cuda --load_model checkpoints/waveunet_guit_mic/best_checkpoint_555000 --input "$file"; done
-
-for file in ../datasets/datasep-mic-preds/test/*/mixture.wav; do CUDA_VISIBLE_DEVICES=1 python predict.py --cuda --load_model checkpoints/waveunet_guit_mic/best_checkpoint_555000 --input "$file"; done
-
-
-for file in ../datasets/datasep-mix-preds/train/*/mixture.wav; do CUDA_VISIBLE_DEVICES=2 python predict.py --cuda --load_model checkpoints/waveunet_guit_monopickup/best_checkpoint_540200 --input "$file"; done
-
-for file in ../datasets/datasep-mix-preds/train/*/mixture.wav; do python predict.py --load_model checkpoints/waveunet_guit_monopickup/best_checkpoint_540200 --input "$file"; done
-```
-
- -->
 
 
