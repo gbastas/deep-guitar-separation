@@ -36,43 +36,30 @@ After running these scripts, the following directories will be created:
 - **`datasep-mix/`** – for pickup-mix separation data
 
 
-**GS-Aux: Preparing the Dataset**
-
 
 ### Algorithm 1 — Custom Audio Data for GS-Aux
+```
+Input:
+  - Audio mixture x ∈ ℝᵀ from GuitarSet solos
+  - Onset & string pairs {(oᵢ, sᵢ)}₍ᵢ₌₁₎ᴺ
+Output:
+  - String-wise diarized x′ ∈ ℝ⁶ˣᵀ
+  - Overlaid melodies x″ ∈ ℝ⁶ˣᵀ″
 
-**Input:**
-- Audio mixture **x ∈ ℝᵀ** from GuitarSet solos  
-- Onset & string annotation pairs **{(oᵢ, sᵢ)}₍ᵢ₌₁₎ᴺ**
-
-**Output:**
-- 6-channel string-wise diarized signal **x′ ∈ ℝ⁶ˣᵀ**  
-- 6-channel overlaid-melodies signal **x″ ∈ ℝ⁶ˣᵀ″**
-
----
-
-1. Initialize  
-   - `x'_s[t] ~ N(0, 0.00005)` for all strings `s = 1..6` and timesteps `t = 0..T`  
-   - `x''_s ← {}` for all strings `s = 1..6`  
-
-2. For each note `i`:  
-   - If there exists another note `j` such that  
-     `|oᵢ − oⱼ| < 60 ms` **and** `sᵢ ≠ sⱼ`:  
-     → **continue**  *(skip chord notes)*  
-   - Else:  
-     - `x'_{sᵢ}[oᵢ : oᵢ₊₁] ← x[oᵢ : oᵢ₊₁]` *(render cropped segment)*  
-     - `x''_{sᵢ} ← concat(x''_{sᵢ}, x[oᵢ : oᵢ₊₁])` *(non-silent melodies)*  
-
-3. Compute  
-   - `T″ ← second_longest( { ||x''_s|| } for s = 1..6 )`  
-
-4. Normalize durations  
-   - `x''_s ← crop_or_pad(x''_s, T″)` for all `s ∈ {1..6}`  
-
----
+Procedure:
+  1. Initialize x′ ← small Gaussian noise, x″ ← ∅
+  2. For each note i:
+       if ∃j: |oᵢ - oⱼ| < 60 ms and sᵢ ≠ sⱼ → skip (chord)
+       else:
+         copy segment x[oᵢ:oᵢ₊₁] → x′₍ₛᵢ₎
+         append same segment → x″₍ₛᵢ₎
+  3. Set T″ ← 2nd-longest {‖x″ₛ‖}
+  4. Crop/pad each x″ₛ to length T″
+```
 
 
-Run the following commands to run the algorithm above and extract data **x′** and **x′′**:
+
+Run the following commands to run Algorithm 1 above and extract data **x′** and **x′′**:
 ```
 cd data-manipulation-code/
 python create_gs-aux-solo.py --all_solos
