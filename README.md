@@ -59,7 +59,7 @@ Procedure:
 
 
 
-Run the following commands to run Algorithm 1 above and extract data **x′** and **x′′**:
+Run the following commands to implement Algorithm 1 above and extract **x′** and **x′′**:
 ```
 cd data-manipulation-code/
 python create_gs-aux-solo.py --all_solos

@@ -59,7 +59,6 @@ class Constants():
                     setattr(self, key, value)
                 elif is_string(value):
                     setattr(self, key, value)
-
                 else:
                     raise ValueError("constants.ini arguement with name " + str(key) + "is of innapropriate value."+
                          "chansge value or suplement Constants class in constants_parser.py")    
