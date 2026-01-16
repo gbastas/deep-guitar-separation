@@ -1,6 +1,6 @@
 # Separate and Transcribe
 
-This repository contains the code and experiments from the paper: *Separate and Transcribe: Deep Guitar Separation and its Application for Tablature Enhancement.* It provides implementations and dataset manipulation and preparation code used for training, evaluation, and analysis.
+This repository contains the code and experiments from the paper *Separate and Transcribe: Deep Guitar Separation and its Application for Tablature Enhancement.* It provides and dataset preparation code and experiment implementations for training, evaluation, and further analysis.
 
 
 ## Data Preparation
