@@ -4,6 +4,8 @@ import os
 import shutil
 import csv
 import numpy as np
+from tqdm import tqdm  # Importing tqdm for progress bar
+
 
 path = 'datasep/'
 
@@ -18,12 +20,14 @@ with open('NMFtestSet.csv', newline='') as csvfile:
     testreader = csv.reader(csvfile, delimiter=',')
     testfiles = ['_'.join(row[4].split('_',2)[:2]) for row in testreader] # e.g. [00_Funk1-114-Ab, ...]
 
-print(testfiles)
+# print(testfiles)
+print("Train-Test splitting and storring to ./datasets/datasep")
 
-
-for gt_filename in os.listdir('GuitarSet/data/audio_hex-pickup_debleeded'):
+# for gt_filename in os.listdir('GuitarSet/data/hex_cln'):
+for gt_filename in tqdm(os.listdir('GuitarSet/data/hex_cln'), desc="Processing files", unit="file"):
+    
     guitarist = gt_filename.split('_')[0]
-    gt_filepath = 'GuitarSet/data/audio_hex-pickup_debleeded/'+gt_filename
+    gt_filepath = 'GuitarSet/data/hex_cln/'+gt_filename
     audio_gt, _ = librosa.load(gt_filepath, mono=False, sr=44100) # 6-channel audiofile
 
     # Create and Normalize input mixture
