@@ -38,6 +38,8 @@ After running these scripts, the following directories will be created:
 
 
 ### Algorithm 1 — Custom Audio Data for GS-Aux
+
+Below we sketch out the algorithm to create GS-Aux, either for mic or pickup data:
 ```
 Input:
   - Audio mixture x ∈ ℝᵀ from GuitarSet solos
@@ -87,8 +89,6 @@ rm -r ./pseudo_sep_all_solos_mic_wn/
 rm -r ./pseudocomp_sep_all_solos_mic_wn/
 ```
 
-Hence, our dataset for separation is ready:
-- **`datasep-gscustmic/`** - to train and test our data on our custom auxiliary **GSCustomMic** dataset
 
 
 
@@ -99,10 +99,14 @@ python create_gs-aux-solo.py.py  --all_solos --pickup
 etc.
 ```
 
+Hence, our auxiliary datasets for separation is ready:
+- **`datasep-gscustmic/`** - to train and test our data on our custom auxiliary **GS-Aux-Mic** dataset
+- **`datasep-gscustpckp/`** - to train and test our data on our custom auxiliary **GS-Aux-Pckp** dataset
 
-**MDGP: Preparing the Dataset**
 
-For the creation of the MDGP dataset we first need to gather note instances from the GuitarSet mic solos:
+**ADGP: Preparing our second auxiliary Dataset**
+
+For the creation of the ADGP-Mic dataset we first need to gather note instances from the GuitarSet mic solos:
 ```
 cd data-manipulation-code
 python AuxDataPrep.py --action gather_notes --all_solos
