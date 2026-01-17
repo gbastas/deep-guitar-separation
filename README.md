@@ -59,7 +59,7 @@ Procedure:
 
 
 
-Run the following commands to implement Algorithm 1 above and extract **x′** and **x′′**:
+Run the following commands to implement Algorithm 1 above and extract **x′** and **x′′** for the dataset **GS-Aux-Mix**:
 ```
 cd data-manipulation-code/
 python create_gs-aux-solo.py --all_solos
@@ -67,11 +67,11 @@ python create_gs-aux-comp.py --all_solos
 ```
 
 
-Copy Processed Data into GSCustomMic:
+Copy Processed Data into ```GSCustomMic```:
 ```
 mkdir -p GSCustomMic
 cp -r ./pseudo_sep_all_solos_mic_wn/* GSCustomMic
-cp -r ./pseudocomp_sep_all_notes/* GSCustomMic
+cp -r ./pseudocomp_sep_all_solos_mic_wn/* GSCustomMic
 ```
 
 Perform Train-Test Split: 
@@ -84,19 +84,20 @@ Last but not least:
 ```
 mv GSCustomMic/ ../datasets/datasep-gscustmic/
 rm -r ./pseudo_sep_all_solos_mic_wn/
-rm -r ./pseudocomp_sep_all_notes/
+rm -r ./pseudocomp_sep_all_solos_mic_wn/
 ```
 
 Hence, our dataset for separation is ready:
 - **`datasep-gscustmic/`** - to train and test our data on our custom auxiliary **GSCustomMic** dataset
 
 
-<!-- Act similarly to create GSCustomPckp by running:
+
+Act similarly to create **GS-Aux-Pckp** dataset by running:
 ```
-python PseudoCompSep.py -all_solos --pickup
-python PseudoSep.py  --all_solos --pickup
+python create_gs-aux-solo.py.py -all_solos --pickup
+python create_gs-aux-solo.py.py  --all_solos --pickup
 etc.
-``` -->
+```
 
 
 **MDGP: Preparing the Dataset**
