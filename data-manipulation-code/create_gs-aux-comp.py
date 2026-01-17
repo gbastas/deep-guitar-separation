@@ -3,10 +3,8 @@ import demo_utils
 import argparse
 import os
 import sys
-import crepe 
 
 sys.path.append('./src')
-from track_class import Tablature
 from helper import printProgressBar
 from constants_parser import Constants
 import soundfile as sf
@@ -15,8 +13,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import librosa
 import random
-
-
 
 def GuitarSetProcessing(constants : Constants):
 
@@ -160,92 +156,8 @@ def GuitarSetProcessing(constants : Constants):
         sf.write(dest_path+'mixture.wav', hex_audio, constants.sampling_rate)
         duration_inner += len(hex_audio) / constants.sampling_rate
         
-    print('E and s5', count_active0, count_active1, count_active5)  
+    print()  
     print('Ommited ' + str(count_omitted_note_events) + ' note events out of ' + str(count_total_note_events) +'.')
-    print('Number of  saved examples:', len(past_channels[0]))
-    
-
-    # for i in range(2):
-    #     # for i in range(1500``):
-    #     for i, name in enumerate(lines): # iterate over filenames
-    #         name = name.replace('\n', '')         # e.g. '02_SS2-88-F_solo.jams'
-            
-    #         # print(past_channels[0])
-    #         # pick random past channels excluding current
-    #         rand_channels = [random.choice(past_channels[i]) for i in range(6)]
-    #         lengths = [len(aud) for aud in rand_channels]
-    #         second_longer = np.argsort(lengths)[-2]
-            
-    #         hex_audio_plus = np.random.normal(0, 0.00005, (6, lengths[second_longer]))  # mean=0, std=0.00005     
-        
-        
-    #         # add silent start and end to all channels shorter than the 2nd longest and cut the actual longest to match the 2nd
-    #         for string, aud in enumerate(rand_channels):
-    #             if len(aud)<lengths[second_longer]:
-    #                 s = random.randint(0, lengths[second_longer] - len(aud)-1)
-    #             else:
-    #                 s = 0
-    #             L = min(len(aud), lengths[second_longer])
-    #             hex_audio_plus[string, s:L+s] = np.array(aud[:L])
-
-
-    #         if args.all_solos:
-    #             dest_path = './pseudocomp_sep_all_solos_'+constants.dataset+'_wn/'+name[:-9]+'comp_shuffl_hex_' + constants.dataset + '/'
-    #         else:
-    #             dest_path = './pseudocomp_sep_few_solos_'+constants.dataset+'_wn/'+name[:-9]+'comp_shuffl_hex_' + constants.dataset + '/'
-                
-    #         string_names = ['E', 'A', 'D', 'G', 'B', 'e']
-    #         for j, string_name in enumerate(string_names):
-    #             file_path = os.path.join(dest_path, f"{string_name}.wav")
-
-    #             # Read existing file if exists, else start fresh
-    #             if os.path.exists(file_path):
-    #                 existing_audio, sr = sf.read(file_path)
-    #                 assert sr == constants.sampling_rate
-    #                 concatenated = np.concatenate((existing_audio, hex_audio_plus[j]))
-    #             else:
-    #                 concatenated = hex_audio_plus[j]
-
-    #             # Write back the concatenated audio
-    #             sf.write(file_path, concatenated, constants.sampling_rate)
-
-    #         # Do the same for the mixture
-    #         mix_path = os.path.join(dest_path, "mixture.wav")
-    #         hex_audio_mix = np.sum(hex_audio_plus, axis=0)
-
-    #         if os.path.exists(mix_path):
-    #             existing_mix, sr = sf.read(mix_path)
-    #             assert sr == constants.sampling_rate
-    #             hex_audio_mix = np.concatenate((existing_mix, hex_audio_mix))
-
-    #         sf.write(mix_path, hex_audio_mix, constants.sampling_rate)            
-    #         # print('BBBBBBBB', dest_path)
-
-    #         # TODO concatenate hex_audio
-
-    #         if args.all_solos:
-    #             dest_path = './pseudocomp_sep_all_solos_'+constants.dataset+'_wn/'+'comp_overshuffl_hex_' + str(i) + '_' + constants.dataset + '/'
-    #         else:
-    #             dest_path = './pseudocomp_sep_few_solos_'+constants.dataset+'_wn/'+'comp_overshuffl_hex_' + str(i) + '_' + constants.dataset + '/'
-            
-    #         os.makedirs(dest_path, exist_ok=True)
-
-    #         sf.write(dest_path+'E.wav', hex_audio[0,:], constants.sampling_rate)
-    #         sf.write(dest_path+'A.wav', hex_audio[1,:], constants.sampling_rate)
-    #         sf.write(dest_path+'D.wav', hex_audio[2,:], constants.sampling_rate)
-    #         sf.write(dest_path+'G.wav', hex_audio[3,:], constants.sampling_rate)
-    #         sf.write(dest_path+'B.wav', hex_audio[4,:], constants.sampling_rate)
-    #         sf.write(dest_path+'e.wav', hex_audio[5,:], constants.sampling_rate)					
-
-    #         hex_audio = np.sum(hex_audio, axis=0)
-    #         sf.write(dest_path+'mixture.wav', hex_audio, constants.sampling_rate)
-    #         duration_inter += len(hex_audio) / constants.sampling_rate
-            
-    # print(f"Total inner-song mixture time: {duration_inner:.2f} seconds ({duration_inner / 60:.2f} minutes)")
-    # print(f"Total inter-song mixture time (from shuffled past channels): {duration_inter:.2f} seconds ({duration_inter / 60:.2f} minutes)")
-    
-    # if args.plot:
-    #     plot_note_hist(Strings_gt_total_count)
 
 def plot_note_hist(Strings_gt_total_count):
     plt.figure(figsize=(30,10))
@@ -266,12 +178,9 @@ def plot_note_hist(Strings_gt_total_count):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
-    # parser.add_argument('-pred_onset', action='store_true', help='')
     parser.add_argument('-create_no', action='store_true', help='')
     parser.add_argument('--action', type=str, help='gather_notes, pseudo_sep, pseudocomp_sep')
     parser.add_argument('--all_solos', action='store_true', help='if True: allsolos.txt, else: names.txt')
-    # parser.add_argument('--all_comps', action='store_true', help='if True: allsolos.txt, else: names.txt')
-    # parser.add_argument('--all_tracks', action='store_true', help='if True: allsolos.txt, else: names.txt')
     parser.add_argument('--pickup', action='store_true', help='pickup(="mix") else "mic"')
     parser.add_argument('--plot', action='store_true', help='')
     

@@ -4,19 +4,20 @@ import numpy as np
 import librosa
 
 sys.path.append('./src')
-from track_class import  Tablature #, Annotations #, TrackInstance
+# from track_class import  Tablature #, Annotations #, TrackInstance
+from constants_parser import Constants
+import utils
 
 import jams
-
 import warnings
 warnings.filterwarnings("ignore") 
 
 # TODO: define constants
-constants = {'tuning': [40, 45, 50, 55, 59, 64],
-             'no_of_frets': 23,
-             'sampling_rate': 44100,
-             'crop_win': 3
-}
+# constants = {'tuning': [40, 45, 50, 55, 59, 64],
+#              'no_of_frets': 23,
+#              'sampling_rate': 44100,
+#              'crop_win': 3
+# }
 
 def read_tablature_from_GuitarSet(jam_name, constants, audio=[]):
     """function to read a jam file and return the annotations needed"""

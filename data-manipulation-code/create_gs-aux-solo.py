@@ -3,19 +3,14 @@ import demo_utils
 import argparse
 import os
 import sys
-import crepe 
 
 sys.path.append('./src')
-from track_class import Tablature
 from helper import printProgressBar
 from constants_parser import Constants
 import soundfile as sf
-import utils
 import matplotlib.pyplot as plt
 import numpy as np
 import librosa
-import random
-
 
 
 def GuitarSetProcessing(constants : Constants):
@@ -145,7 +140,6 @@ def plot_note_hist(Strings_gt_total_count):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
-    # parser.add_argument('-pred_onset', action='store_true', help='')
     parser.add_argument('-create_no', action='store_true', help='')
     parser.add_argument('--action', type=str, help='gather_notes, pseudo_sep, pseudocomp_sep')
     parser.add_argument('--all_solos', action='store_true', help='if True: allsolos.txt, else: names.txt')
@@ -153,15 +147,11 @@ if __name__ == "__main__":
     parser.add_argument('--all_tracks', action='store_true', help='if True: allsolos.txt, else: names.txt')
     parser.add_argument('--pickup', action='store_true', help='pickup(="mix") else "mic"')
     parser.add_argument('--plot', action='store_true', help='')
-    
-
     args = parser.parse_args()
 
     config_path = 'constants.ini'
     workspace_folder = '../datasets/GuitarSet/'
-
     constants = Constants(config_path, workspace_folder)    
-    
     constants.dataset_names_path = workspace_folder
 
     GuitarSetProcessing(constants)
