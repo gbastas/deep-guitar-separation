@@ -1,4 +1,6 @@
-We have created `conf/variant/guitarsep_demucs.yaml` and `conf/variant.guitarsep_hdemucs.yaml` as variants of the original demucs configuration `conf/variant/congi_original.yaml` (that was made to be trained on MUSEDB). The needed changes were made in `./demucs/wav.py` to load training, validation and test data correctly. Also in `./demucs/evaluate.py` so that averaged (not median) SDR values are considered.  
+This code is based on repo https://github.com/facebookresearch/demucs. 
+
+We have created `conf/variant/guitarsep_demucs.yaml` and `conf/variant.guitarsep_hdemucs.yaml` as variants of the original demucs configuration `conf/variant/congi_original.yaml` (that was made to be trained on MUSEDB). The main code changes were made in `./demucs/wav.py` to load training, validation and test data correctly. Also in `./demucs/evaluate.py` so that the averaged (not median) SDR values are considered as for Wave-U-Net.  
 
 To train the standard Demucs model on GuitarSet:
 ```
