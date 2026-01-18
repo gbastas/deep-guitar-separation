@@ -36,6 +36,76 @@ After running these scripts, the following directories will be created:
 - **`datasep-mix/`** – for pickup-mix separation data
 
 
+## Basic commands for training and evaluation of Wave-U-Net for guitar string separation:
+
+(The implementation code for Wave-U-Net is based on [this repository](https://github.com/f90/Wave-U-Net-Pytorch).)
+
+
+Firstly:
+```
+cd Wave-U-Net-Pytorvh-6string
+```
+
+Clean training:
+```
+python train.py \
+  --dataset_dir ../datasets/GuitarSet/<your_dataset_dir> \
+  --hdf_dir hdfs/<choose_dirname> \
+  --checkpoint_dir checkpoints/<choose_dirname> \
+  --patience 200 \
+  --channels 1 \
+  --cuda
+```
+
+For Quantitative Evaluation:
+```
+python train.py \
+  --dataset_dir datasets/GuitarSet/<your_dataset_dir> \
+  --hdf_dir hdfs/<your_hdf_dir> \
+  --checkpoint_dir checkpoints/<your_checkpoint_dir> \
+  --patience -1 \
+  --load_model checkpoints/<your_checkpoint_dir>/best_checkpoint_<N>
+```
+
+Qualitative Testing:
+```
+python predict.py --load_model checkpoints/{checkpoint_dir}/best_checkpoint_<N> --input path/to/wav --cuda
+```
+
+Results Visualisation:
+
+```
+cd Wave-U-Net-Pytorch-6string
+tensorboard --logdir logs/
+```
+
+
+## Separation Experiments - First Set
+
+**Wave-U-Net ablation experiments**
+
+To train the core separation model (multi-channel Wave-U-Net), run:
+
+```
+python train.py --dataset_dir ../datasets/datasep/ --cuda --hdf_dir hdfs/hdf_guit --checkpoint_dir checkpoints/waveunet_guit_hex --channels 1 --patience 200 
+```
+
+To train the one-channel Wave-U-Net, run:
+```
+python train.py --dataset_dir ../datasets/datasep/ --cuda --hdf_dir hdfs/hdf_guit --checkpoint_dir checkpoints/waveunet_guit_monosep --channels 1 --patience 200 --separate 0
+```
+
+To train multi-channel Wave-U-Net solely on Comp or soleley on Solo, run the following commands accrodingly:
+```
+python train.py --dataset_dir ../datasets/datasep/ --cuda --hdf_dir hdfs/hdf_guit-comp --checkpoint_dir checkpoints/waveunet_guit_hex-comp --channels 1 --patience 200 --version HQ-comp
+python train.py --dataset_dir ../datasets/datasep/ --cuda --hdf_dir hdfs/hdf_guit-solo --checkpoint_dir checkpoints/waveunet_guit_hex-solo --channels 1 --patience 200 --version HQ-solo
+```
+
+To train on Demucs and Demucs HT move to dir ```demucs``` and follow the instructions in the corresponding README.md file.
+[TODO]
+
+
+## Auxiliary Datasets Creation
 
 ### Algorithm 1 — Custom Audio Data for GS-Aux
 
@@ -190,74 +260,9 @@ python gather_notes.py --plot --all_tracks
 ```
 
 
-## Basic commands for training and evaluation of Wave-U-Net for guitar string separation:
-
-(The implementation code for Wave-U-Net is based on [this repository](https://github.com/f90/Wave-U-Net-Pytorch).)
 
 
-Firstly:
-```
-cd Wave-U-Net-Pytorvh-6string
-```
-
-Clean training:
-```
-python train.py \
-  --dataset_dir ../datasets/GuitarSet/<your_dataset_dir> \
-  --hdf_dir hdfs/<choose_dirname> \
-  --checkpoint_dir checkpoints/<choose_dirname> \
-  --patience 200 \
-  --channels 1 \
-  --cuda
-```
-
-For Quantitative Evaluation:
-```
-python train.py \
-  --dataset_dir datasets/GuitarSet/<your_dataset_dir> \
-  --hdf_dir hdfs/<your_hdf_dir> \
-  --checkpoint_dir checkpoints/<your_checkpoint_dir> \
-  --patience -1 \
-  --load_model checkpoints/<your_checkpoint_dir>/best_checkpoint_<N>
-```
-
-Qualitative Testing:
-```
-python predict.py --load_model checkpoints/{checkpoint_dir}/best_checkpoint_<N> --input path/to/wav --cuda
-```
-
-Results Visualisation:
-
-```
-cd Wave-U-Net-Pytorch-6string
-tensorboard --logdir logs/
-```
-
-
-## Experiments
-
-**Wave-U-Net ablation experiments**
-
-To train the core separation model (multi-channel Wave-U-Net), run:
-
-```
-python train.py --dataset_dir ../datasets/datasep/ --cuda --hdf_dir hdfs/hdf_guit --checkpoint_dir checkpoints/waveunet_guit_hex --channels 1 --patience 200 
-```
-
-To train the one-channel Wave-U-Net, run:
-```
-python train.py --dataset_dir ../datasets/datasep/ --cuda --hdf_dir hdfs/hdf_guit --checkpoint_dir checkpoints/waveunet_guit_monosep --channels 1 --patience 200 --separate 0
-```
-
-To train multi-channel Wave-U-Net solely on Comp or soleley on Solo, run the following commands accrodingly:
-```
-python train.py --dataset_dir ../datasets/datasep/ --cuda --hdf_dir hdfs/hdf_guit-comp --checkpoint_dir checkpoints/waveunet_guit_hex-comp --channels 1 --patience 200 --version HQ-comp
-python train.py --dataset_dir ../datasets/datasep/ --cuda --hdf_dir hdfs/hdf_guit-solo --checkpoint_dir checkpoints/waveunet_guit_hex-solo --channels 1 --patience 200 --version HQ-solo
-```
-
-To train on Demucs and Demucs HT move to dir ```demucs``` and and follow the instructions in the corresponding README.md file.
-[TODO]
-
+## Separation Experiments - Second Set
 
 **Wave-U-Net dataset-wise experiments**
 
@@ -281,19 +286,7 @@ python train.py --dataset_dir ../datasets/datasep-gscustmic-mdgp/ --cuda --hdf_d
 python train.py --dataset_dir ../datasets/datasep-gscustmic-mdgp/ --cuda --hdf_dir hdfs/hdf_guit-gscustmic-mdgp --checkpoint_dir checkpoints/waveunet_guit_gscustmic-mdgp-pretOnHex --load_model checkpoints/waveunet_guit_hex/<best_checkpoint> --channels 1 --patience 200
 ```
 
-
-**Wave-U-Net-Tab**
-
-Train with pretrained Wave-U-Net on Pckp:
-```
-python train.py --dataset_dir ../datasets/GuitarSet/datasep-mix/ --hdf_dir hdfs/hdf_guit-pret-mix --checkpoint_dir ../Wave-U-Net-Pytorch-6string/checkpoints/waveunet_guit_mix-pret5up5down-freeze --load_model ../Wave-U-Net-Pytorch-6string/checkpoints/waveunet_guit_monopickup/best_checkpoint_<N> --cuda --patience 20  --batch_size 1 --fakeframes_n 87 --task tablature --tab_version 2up2down --freeze
-```
-
-Train with pretrained Wave-U-Net on Mic:
-
-```
-python train.py --dataset_dir ../datasets/GuitarSet/datasep-mic/ --hdf_dir hdfs/hdf_guit-pret-mic --checkpoint_dir ../Wave-U-Net-Pytorch-6string/checkpoints/waveunet_guit_mic-pret5up5down-freeze --load_model ../Wave-U-Net-Pytorch-6string/checkpoints/waveunet_guit_mic/best_checkpoint_<N> --cuda --patience 20 --batch_size 1 --fakeframes_n 87 --task tablature --tab_version 2up2down --freeze
-```
+## Tablature Experiments 
 
 **TabCNN**
 First, create the separated sources to be used by TabCNN:
