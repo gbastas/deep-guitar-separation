@@ -60,14 +60,12 @@ Procedure:
 ```
 
 
-
-Run the following commands to implement Algorithm 1 above and extract **x′** and **x′′** for the dataset **GS-Aux-Mix**:
+Run the following commands to implement Algorithm 1 above and extract **x′** and **x′′** for the dataset **GS-Aux-Mic**:
 ```
 cd data-manipulation-code/
 python create_gs-aux-solo.py --all_solos
 python create_gs-aux-comp.py --all_solos
 ```
-
 
 Copy Processed Data into ```GSCustomMic```:
 ```
@@ -89,9 +87,6 @@ rm -r ./pseudo_sep_all_solos_mic_wn/
 rm -r ./pseudocomp_sep_all_solos_mic_wn/
 ```
 
-
-
-
 Act similarly to create **GS-Aux-Pckp** dataset by running:
 ```
 python create_gs-aux-solo.py.py -all_solos --pickup
@@ -103,20 +98,51 @@ Hence, our auxiliary datasets for separation is ready:
 - **`datasep-gscustmic/`** - to train and test our data on our custom auxiliary **GS-Aux-Mic** dataset
 - **`datasep-gscustpckp/`** - to train and test our data on our custom auxiliary **GS-Aux-Pckp** dataset
 
+### Algorithm 2 — Custom Audio Data for ADGP auxiliary Dataset
 
-**ADGP: Preparing our second auxiliary Dataset**
+```
+Input:
+  - GuitarSet solo audio x ∈ ℝᵀ
+  - GuitarSet onset & string annotations {(oᵢ, sᵢ)}ᵢ₌₁ᴺ
+  - DadaGP tablature tracks with note times {τₖ}ₖ₌₁ᴹ
 
-For the creation of the ADGP-Mic dataset we first need to gather note instances from the GuitarSet mic solos:
+Output:
+  - Synthesized ADGP dataset (string-wise rendered audio)
+
+Procedure:
+
+Phase I — Note Event Collection
+  1. Initialize event bank 𝔈 ← ∅
+  2. For each annotated note (oᵢ, sᵢ):
+       if ∃j ≠ i such that |oᵢ − oⱼ| < 60 ms and sᵢ ≠ sⱼ:
+         skip (chord note)
+       else:
+         extract event e ← x[oᵢ : oᵢ₊₁]
+         store (e, sᵢ) in 𝔈
+
+Phase II — Tablature-Informed Rendering
+  3. Randomly sample 5% of tablature tracks {τₖ}
+  4. For each selected tablature track τ:
+       initialize 6-channel signal y with small Gaussian noise
+       for each tablature note (tⱼ, sⱼ) in τ:
+         if ∃(e, sⱼ) ∈ 𝔈:
+           rescale event e′ ← U[0.5, 1.0] · e
+           write e′ into channel sⱼ at time tⱼ
+```
+
+Run the following commands to implement Algorithm 2 and extract **ADGP**.
+
+For the creation of the ADGP-Mic dataset in particular we first need to gather note instances from the GuitarSet mic solos:
 ```
 cd data-manipulation-code
-python AuxDataPrep.py --action gather_notes --all_solos
+python gather_notes.py --all_solos
 ```
 
 The command will create dir ```note_instances_mic/data/```.
-Next, we need to create audio representationions of the symbolic DadaGP (MIDI) data by rendering the gathered note events accordingly:
+Next, we need to sonify the symbolic DadaGP (MIDI) data by rendering the gathered note events accordingly. This normally takes more than 10 min:
 
 ```
-python midi2audio_recs.py --note_instances note_instances/ --input_dir gp_token_examples --guitar micguitar --n_samples 30
+python midi2audio_recs.py --note_instances note_instances_mic/ --input_dir gp_token_examples --guitar micguitar --n_samples 30
 ```
 
 The command above will create a set of audio tracks and store them in ```mdgp```. We then need to move this dir to the right place:
@@ -125,22 +151,25 @@ mv mdgp ../datasets/
 cd -
 ```
 
-Now, we can further insert these tracks into distinct training sets to create the baseses for new separation and transcription experiments:
+Now, we can further insert these tracks into distinct training sets to create the bases for new separation and transcription experiments:
 ```
 cp -r datasets/datasep-mic datasets/datasep-mic-mdgp
-cp -r datasets/datasep-mic datasets/datasep-gscustmic-mdgp
-cp -r dadatsets/mdgp/* datasets/datasep-mic-mdgp/train/
-cp -r dadatsets/mdgp/* datasets/datasep-gscustmic-mdgp/train/
+cp -r datasets/datasep-gscustmic datasets/datasep-gscustmic-mdgp
+cp -r datasets/mdgp/* datasets/datasep-mic-mdgp/train/
+cp -r datasets/mdgp/* datasets/datasep-gscustmic-mdgp/train/
 ```
+
 
 And so we have created:
-- **`datasep-mic-mdgp/`** - this is **Mic+MDGP** dataset
-- **`datasep-gscustmic-mdgp/`** - this is **GSCustomMic+MDGP** dataset
+- **`mdgp/`** - this is **ADGP-Mic** dataset
+- **`datasep-mic-mdgp/`** - this is **Mic & ADGP-Mic** dataset
+- **`datasep-gscustmic-mdgp/`** - this is **GS-Aux-Mic & ADGP-mic** dataset
 
 
-Act similarly to create GSCustomPckp by running:
+Act similarly to create GS-Aux-Pckp by running:
 ```
-python AuxDataPrep.py -all_solos --pickup
+cd 
+python gather_notes.py --all_solos --pickup
 etc.
 ```
 
