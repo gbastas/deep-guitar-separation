@@ -136,9 +136,6 @@ def GuitarSetProcessing(constants : Constants):
                 continue
             
             note_audio = audio[start:end]                                                                           
-            duration_in_seconds = len(note_audio) / constants.sampling_rate
-            # print(f"Duration of note_audio: {duration_in_seconds:.2f} seconds")
-
 
             Matrix[string,fret]+=1
             if Matrix[string,fret]>100:
@@ -151,16 +148,18 @@ def GuitarSetProcessing(constants : Constants):
             sf.write(dest_path, note_audio, constants.sampling_rate)
 
             # Handle txt file creation and replacing .wav with .txt
-            txt_filename = os.path.splitext(os.path.basename(dest_path))[0] + '.txt'
             txt_file_stringdir = os.path.join(onset_instances_dir+str(int(Matrix[string,fret])), 'string'+str(string+1))
             os.makedirs(txt_file_stringdir, exist_ok=True)
             dest_path = os.path.join(txt_file_stringdir, str(fret))+'.txt'
             with open(dest_path, 'w') as txt_file:
                 txt_file.write("0")
 
-    print('Ommited ' + str(count_omitted_note_events) + ' note events out of ' + str(count_total_note_events) +'.')
     if args.plot:
         plot_note_hist(Strings_gt_total_count)
+        print('Bar histogram saved as bar_total.png')
+    else:
+        print('Ommited ' + str(count_omitted_note_events) + ' note events out of ' + str(count_total_note_events) +'.')
+        
 
 def plot_note_hist(Strings_gt_total_count):
     plt.figure(figsize=(30,10))
