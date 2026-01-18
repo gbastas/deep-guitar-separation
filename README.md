@@ -102,7 +102,6 @@ python train.py --dataset_dir ../datasets/datasep/ --cuda --hdf_dir hdfs/hdf_gui
 ```
 
 To train on Demucs and Demucs HT move to dir ```demucs``` and follow the instructions in the corresponding README.md file.
-[TODO]
 
 
 ## Auxiliary Datasets Creation

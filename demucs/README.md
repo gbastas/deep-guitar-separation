@@ -9,7 +9,7 @@ python3 -m tools.export e96d2e8c
 python3 -m tools.test_pretrained --repo ./release_models -n e96d2e8c test.shifts=0
 demucs --repo ./release_models -n e96d2e8c 00_BN1-129-Eb_comp/mixture.wav
 ```
-To train the standard HD Demucs model on GuitarSet:
+To train the standard HT Demucs model on GuitarSet:
 ```
 CUDA_VISIBLE_DEVICES=0 dora run -d -f variant=guitarsep_hdemucs
 python3 -m tools.export 0f9500b1
