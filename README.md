@@ -89,12 +89,18 @@ rm -r ./pseudocomp_sep_all_solos_mic_wn/
 
 Act similarly to create **GS-Aux-Pckp** dataset by running:
 ```
-python create_gs-aux-solo.py.py -all_solos --pickup
-python create_gs-aux-solo.py.py  --all_solos --pickup
-etc.
+python create_gs-aux-solo.py --all_solos --pickup
+python create_gs-aux-solo.py --all_solos --pickup
+mkdir -p GSCustomPckp
+cp -r ./pseudo_sep_all_solos_mix_wn/* GSCustomPckp
+cp -r ./pseudocomp_sep_all_solos_mix_wn/* GSCustomPckp
+python pseudo_train_test_split.py -d GSCustomPckp
+mv GSCustomPckp/ ../datasets/datasep-gscustpckp/
+rm -r ./pseudo_sep_all_solos_mix_wn/
+rm -r ./pseudocomp_sep_all_solos_mix_wn/
 ```
 
-Hence, our auxiliary datasets for separation is ready:
+Hence, our auxiliary datasets for separation are ready:
 - **`datasep-gscustmic/`** - to train and test our data on our custom auxiliary **GS-Aux-Mic** dataset
 - **`datasep-gscustpckp/`** - to train and test our data on our custom auxiliary **GS-Aux-Pckp** dataset
 
@@ -142,7 +148,7 @@ The command will create dir ```note_instances_mic/data/```.
 Next, we need to sonify the symbolic DadaGP (MIDI) data by rendering the gathered note events accordingly. This normally takes more than 10 min:
 
 ```
-python midi2audio_recs.py --note_instances note_instances_mic/ --input_dir gp_token_examples --guitar micguitar --n_samples 30
+python midi2audio_recs.py --note_instances note_instances_mic/ --input_dir gp_token_examples --n_samples 30
 ```
 
 The command above will create a set of audio tracks and store them in ```mdgp```. We then need to move this dir to the right place:
@@ -168,8 +174,11 @@ And so we have created:
 
 Act similarly to create GS-Aux-Pckp by running:
 ```
-cd 
+cd data-manipulation-code
 python gather_notes.py --all_solos --pickup
+python midi2audio_recs.py --note_instances note_instances_mic/ --input_dir gp_token_examples --n_samples 30 --out_dir pdgp
+mv pdgp ../datasets/
+cd -
 etc. 
 ```
 
@@ -177,7 +186,7 @@ etc.
 
 ```
 cd data-manipulation-code
-python AuxDataPrep.py --action plot --all_tracks
+python gather_notes.py --plot --all_tracks
 ```
 
 
@@ -223,24 +232,6 @@ Results Visualisation:
 cd Wave-U-Net-Pytorch-6string
 tensorboard --logdir logs/
 ```
-
-## Basic commands for training and evaluation of Wave-U-Net-Tab for guitar tablature transcription:
-
-Firstly:
-```
-cd Wave-U-Net-Pytorvh-6string-tablature
-```
-
-Clean training:
-```
-python train.py
---dataset_dir ../datasets/GuitarSet/datasep-mix/
---hdfs/{hdf_guit-pret-mix, hdf_guit-pret-mic, hdf_guit-pret-mic-fakemic, hdf_guit-pret-mic-pseudoboth, hdf_guit-pret-mic-pseudoboth-fakemic}
---checkpoint_dir ../Wave-U-Net-Pytorch-6string/checkpoints/{waveunet_guit, waveunet_guit_monopickup, waveunet_guit_mic, waveunet_guit_mic_fakemic, waveunet_guit_pseudoboth_wn, waveunet_guit_pseudoboth_sep_all_solos_fake}
---load_model ../Wave-U-Net-Pytorch-6string/checkpoints/{waveunet_guit, waveunet_guit_monopickup, waveunet_guit_mic, waveunet_guit_mic_fakemic, waveunet_guit_pseudoboth_wn, waveunet_guit_pseudoboth_sep_all_solos_fake}/best_checkpoint_{}
---cuda --patience 20 --batch_size 1 --fakeframes_n 87 --task tablature --tab_version 2up2down {--freeze}
-```
-
 
 
 ## Experiments
