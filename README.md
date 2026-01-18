@@ -170,7 +170,7 @@ Act similarly to create GS-Aux-Pckp by running:
 ```
 cd 
 python gather_notes.py --all_solos --pickup
-etc.
+etc. 
 ```
 
 **Plot GuitarSet Note-String Histogram**
