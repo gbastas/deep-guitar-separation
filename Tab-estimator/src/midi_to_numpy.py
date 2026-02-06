@@ -428,5 +428,6 @@ if __name__ == "__main__":
     # check for missing file
     for midi_filename in midi_filename_list:
         name = os.path.split(midi_filename)[1][:-4]
+        print(name)
         if not os.path.exists("data/npz/original/" + name + ".npz"):
             print(f"{name} does not exist!")
