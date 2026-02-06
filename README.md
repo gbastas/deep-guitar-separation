@@ -103,6 +103,7 @@ python train.py --dataset_dir ../datasets/datasep/ --cuda --hdf_dir hdfs/hdf_gui
 
 To train on Demucs and Demucs HT move to dir ```demucs``` and follow the instructions in the corresponding README.md file.
 
+## Separation Experiments - Second Set
 
 ## Auxiliary Datasets Creation
 
@@ -258,8 +259,6 @@ cd data-manipulation-code
 python gather_notes.py --plot --all_tracks
 ```
 
-
-## Separation Experiments - Second Set
 
 **Wave-U-Net dataset-wise experiments**
 
