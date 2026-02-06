@@ -26,6 +26,6 @@ Logs.md
 img_insights*
 TabCNN/model-tensor-sep/saved
 TabCNN/spec_repr*
-Tab-Estimator/model/*
-Tab-Estimator/result/*
-Tab-Estimator/tensorboard/*
+Tab-estimator/model/
+Tab-estimator/result/
+Tab-estimator/tensorboard/

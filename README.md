@@ -5,6 +5,7 @@ This repository contains the code and experiments from the paper: *Separate and 
 
 ## Data Preparation
 
+First of, install ```requirements.txt```.
 
 **GuitarSet**
 
@@ -286,9 +287,9 @@ python train.py --dataset_dir ../datasets/datasep-gscustmic-mdgp/ --cuda --hdf_d
 ## Tablature Experiments 
 
 **TabCNN**
-pip install -r re
+Create new environment, install ```TabCNN/requirements.txt``` and activate it.
 
-First, create the separated sources to be used by TabCNN:
+Create the separated sources to be used by TabCNN:
 ```
 cd Wave-U-Net-Pytorch-6string
 cp -r ../datasets/datasep-{mix, mic} ../datasets/datasep-{mix, mic}-preds-{codename-of-waveunet}
@@ -309,4 +310,30 @@ cd ../model-tensor-sep
 python TabCNN.py --partition senvaityte --n_stfts 7 --data_path ../data_multisource/spec_repr_datasep-{mix, mix}-preds-{codename-of-waveunet} 
 ```
 
+## Tablature Experiments 
 
+**Tab-Estimator**
+
+Create new environment, install ```Tab-estimator/requirements.txt``` and activate it.
+
+```
+cd Tab-estimator
+python src/midi_to_numpy.py --mode 7-pred --audio_dir datasep-{mix, mic}-preds-{codename-of-waveunet} 
+```
+
+Change src/config.yaml accordingly:
+```
+partition_mode: "senvaityte"      
+feat_mode: "7-pred"               
+npz_path: "npz_datasep-{mix, mic}-preds-{codename-of-waveunet} " 
+```
+
+Then train the model:
+```
+python src/train.py
+```
+
+The model is saved in Tab-estimator/model/. Check the ```modeln_name`` and use it to get predictions:
+```
+python src/predict.py {modeln_name}
+```

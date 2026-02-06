@@ -24,4 +24,4 @@ use_galoss: True
 
 partition_mode: "senvaityte"      # "6-fold" or "senvaityte"
 feat_mode: "7-pred"               # "original" or "7-pred" or "7-target"
-npz_path: "npz_datasep-mix-preds"
+npz_path: "npz_datasep-mix-preds-hex"
