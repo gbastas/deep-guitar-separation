@@ -55,7 +55,6 @@ import csv
 import glob
 # torch.backends.cudnn.benchmark = True
 
-import csv
 import numpy as np
 
 def _fmt_pm(mean, lo, hi, dec=2):
@@ -339,8 +338,6 @@ def main(args):
                     header += [f"{m}_mean", f"{m}_ci95_lo", f"{m}_ci95_hi"]
                 w.writerow(header)
 
-
-
                 # Pretty print (paper-ready) for TOTAL split: Overall SDR with 95% CI
                 if key.lower() == "total":
                     sdr_overall_vals = collected["SDR"]["overall"]
@@ -385,8 +382,6 @@ def main(args):
             print(f"[bootstrap] wrote 95% CIs -> {ci_csv_path}")
 
 
-
-
         # Write most important metrics into Tensorboard log
         avg_SDRs = {inst : np.mean([np.nanmean(song[inst]["SDR"]) for song in metrics]) for inst in args.instruments}
         avg_SIRs = {inst : np.mean([np.nanmean(song[inst]["SIR"]) for song in metrics]) for inst in args.instruments}
@@ -403,15 +398,13 @@ def main(args):
             csvwriter.writerow([inst, round(avg_SDRs[inst],3), round(avg_SIRs[inst],3), round(avg_SARs[inst],3), round(avg_SISDRs[inst],3)])
         #     print(inst, round(avg_SDRs[inst],3), round(avg_SIRs[inst],3), round(avg_SARs[inst],3), round(avg_SISDRs[inst],3))
 
-
-
         overall_SDR = np.mean([v for v in avg_SDRs.values()])
         overall_SIR = np.mean([v for v in avg_SIRs.values()])
         overall_SAR = np.mean([v for v in avg_SARs.values()])
         overall_SISDR = np.mean([v for v in avg_SISDRs.values()])
 
         csvwriter.writerow([" "])
-        csvwriter.writerow([round(overall_SDR,3), round(overall_SIR,3), round(overall_SAR,3), round(overall_SISDR,3)])
+        csvwriter.writerow([" ", round(overall_SDR,3), round(overall_SIR,3), round(overall_SAR,3), round(overall_SISDR,3)])
 
         print("SDR: " + str(overall_SDR))
         print("SIR: " + str(overall_SIR))
