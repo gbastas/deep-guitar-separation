@@ -467,15 +467,7 @@ if __name__ == "__main__":
         feat_mode = obj["feat_mode"]
         npz_path = obj["npz_path"]
         
-    # parser = argparse.ArgumentParser()
 
-    # parser.add_argument("-m", "--feat_mode", type=str, required=True,
-    #                     help="'standard' or '7-target' or '7-pred'")
-
-    # parser.add_argument("-p", "--npz_path", type=str, required=True,
-    #                     help="(e.g. npz_datasep-mic-preds)'")
-
-    # args = parser.parse_args()
 
     assert input_feature_type == "cqt" or input_feature_type == "melspec"
     assert mode == "F0" or mode == "tab"

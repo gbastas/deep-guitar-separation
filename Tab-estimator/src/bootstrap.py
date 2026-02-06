@@ -287,13 +287,7 @@ def calc_score(args, test_num, trained_model, use_model_epoch, config_path,
     # per-file counts for micro bootstrapping
     per_file_rows: List[Dict] = []
 
-    # global (micro) counters (overall + subsets)
-    # totals = dict(
-    #     frame_tp=0, frame_fp=0, frame_fn=0,
-    #     note_tp=0,  note_fp=0,  note_fn=0,
-    #     frameF0_tp=0, frameF0_fp=0, frameF0_fn=0,
-    #     noteF0_tp=0,  noteF0_fp=0,  noteF0_fn=0
-    # )
+
     totals = dict(
         frame_tp=0, frame_fp=0, frame_fn=0,
         frameF0_tp=0, frameF0_fp=0, frameF0_fn=0
@@ -385,16 +379,7 @@ def calc_score(args, test_num, trained_model, use_model_epoch, config_path,
 
         subset = 'solo' if "_solo_" in npz_filename else ('comp' if "_comp_" in npz_filename else 'all')
 
-        # per_file_rows.append(dict(
-        #     file=os.path.basename(npz_filename),
-        #     subset=subset,
-        #     frame_tp=fr_tp, frame_fp=fr_fp, frame_fn=fr_fn,
-        #     note_tp=no_tp,  note_fp=no_fp,  note_fn=no_fn,
-        #     frameF0_tp=frF0_tp, frameF0_fp=frF0_fp, frameF0_fn=frF0_fn,
-        #     noteF0_tp=noF0_tp,  noteF0_fp=noF0_fp,  noteF0_fn=noF0_fn,
-        #     frame_tdr_num=frame_TP_tab, frame_tdr_den=frame_TP_F0, # NOTE
-        #     note_tdr=note_tdr,  # note_tdr_den=note_TP_F0,
-        # ))        
+  
 
         per_file_rows.append(dict(
             file=os.path.basename(npz_filename),
@@ -477,20 +462,6 @@ def calc_score(args, test_num, trained_model, use_model_epoch, config_path,
         c_frame_p = c_frame_r = c_frame_f1 = 0.0
         c_frameF0_p = c_frameF0_r = c_frameF0_f1 = 0.0
 
-
-    # if solo_present:
-    #     (s_frame_p, s_frame_r, s_frame_f1), (s_note_p, s_note_r, s_note_f1), \
-    #     (s_frameF0_p, s_frameF0_r, s_frameF0_f1), (s_noteF0_p, s_noteF0_r, s_noteF0_f1) = safe_prf(totals_solo)
-    # else:
-    #     s_frame_p=s_frame_r=s_frame_f1=s_note_p=s_note_r=s_note_f1= \
-    #     s_frameF0_p=s_frameF0_r=s_frameF0_f1=s_noteF0_p=s_noteF0_r=s_noteF0_f1 = 0.0
-
-    # if comp_present:
-    #     (c_frame_p, c_frame_r, c_frame_f1), (c_note_p, c_note_r, c_note_f1), \
-    #     (c_frameF0_p, c_frameF0_r, c_frameF0_f1), (c_noteF0_p, c_noteF0_r, c_noteF0_f1) = safe_prf(totals_comp)
-    # else:
-    #     c_frame_p=c_frame_r=c_frame_f1=c_note_p=c_note_r=c_note_f1= \
-    #     c_frameF0_p=c_frameF0_r=c_frameF0_f1=c_noteF0_p=c_noteF0_r=c_noteF0_f1 = 0.0
 
     # pack results (MICRO ONLY)
     result = pd.DataFrame([[

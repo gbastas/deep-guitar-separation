@@ -130,7 +130,6 @@ def calc_score(args, test_num, trained_model, use_model_epoch, config_path, plot
         test_data_list_solo = []
         test_data_list_comp = []
 
-        # SenveityteNameList = os.path.join('GuitarSet', 'NMFtestSet.csv')
         SenveityteNameList = os.path.join('../datasets', 'NMFtestSet.csv')
         print('SenveityteNameList', SenveityteNameList)
         with open(SenveityteNameList, newline='') as csvfile:
@@ -147,12 +146,10 @@ def calc_score(args, test_num, trained_model, use_model_epoch, config_path, plot
         #         test_data_list_solo.append(filename)
 
         print("testfiles", testfiles)            
-        # print('test_data_list', test_data_list)    
         test_data_list = [datapath for datapath in test_data_list if '_'.join(os.path.split(datapath)[1].split('_')[:2]) in testfiles]   
         test_data_list_solo = [datapath for datapath in test_data_list if '_'.join(os.path.split(datapath)[1].split('_')[:2]) in testfiles and '_solo_' in '_'.join(os.path.split(datapath)[1].split('_'))]   
         test_data_list_comp = [datapath for datapath in test_data_list if '_'.join(os.path.split(datapath)[1].split('_')[:2]) in testfiles and '_comp_' in '_'.join(os.path.split(datapath)[1].split('_'))]   
-        # print('test_data_list_comp', test_data_list_comp)    
-        # aaaa
+
 
     else:
         test_data_path = os.path.join("data", "npz", f"original", "split", f"0{test_num}_*.npz")

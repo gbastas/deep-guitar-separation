@@ -286,13 +286,14 @@ python train.py --dataset_dir ../datasets/datasep-gscustmic-mdgp/ --cuda --hdf_d
 ## Tablature Experiments 
 
 **TabCNN**
+pip install -r re
+
 First, create the separated sources to be used by TabCNN:
 ```
 cd Wave-U-Net-Pytorch-6string
 cp -r ../datasets/datasep-{mix, mic} ../datasets/datasep-{mix, mic}-preds-{codename-of-waveunet}
 export CUDA_VISIBLE_DEVICES=#
-
-python multi-predict.py --load_model checkpoints/waveunet_guit_{codename-of-waveunet}/best_checkpoint_ --cuda --input_dir ../datasets/datasep-{mix, mic}-preds-{codename-of-waveunet}
+python multi-predict.py --load_model checkpoints/waveunet_guit_{codename-of-waveunet}/best_checkpoint_# --cuda --input_dir ../datasets/datasep-{mix, mic}datasep-mix-preds-{codename-of-waveunet}
 ```
 
 Then, extract CQTs for all mixtures, reference and estimated sources:
@@ -305,7 +306,7 @@ python Parallel_TabDataReprGenSep.py --input_path ../../datasets/datasep-{mix, m
 Now, let's train the model
 ```
 cd ../model-tensor-sep
-python TabCNN.py --partition senvaityte --n_stfts 7 --data_path ../data_multisource/spec_repr_{codename-f-waveunet} 
+python TabCNN.py --partition senvaityte --n_stfts 7 --data_path ../data_multisource/spec_repr_datasep-{mix, mix}-preds-{codename-of-waveunet} 
 ```
 
 
