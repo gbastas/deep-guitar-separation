@@ -286,7 +286,8 @@ python train.py --dataset_dir ../datasets/datasep-gscustmic-mdgp/ --cuda --hdf_d
 
 ## Tablature Experiments 
 
-**TabCNN**
+### TabCNN
+
 Create new environment, install ```TabCNN/requirements.txt``` and activate it.
 
 Create the separated sources to be used by TabCNN:
@@ -310,9 +311,7 @@ cd ../model-tensor-sep
 python TabCNN.py --partition senvaityte --n_stfts 7 --data_path ../data_multisource/spec_repr_datasep-{mix, mix}-preds-{codename-of-waveunet} 
 ```
 
-## Tablature Experiments 
-
-**Tab-Estimator**
+### Tab-Estimator
 
 Create new environment, install ```Tab-estimator/requirements.txt``` and activate it.
 
