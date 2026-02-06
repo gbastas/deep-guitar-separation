@@ -397,7 +397,6 @@ def main(mode, input_feature_type, encoder_type, use_custom_decimation_func, use
         
         #####################################################################################################################################
         if partition_mode == 'senvaityte':
-            # SenveityteNameList = os.path.join('GuitarSet', 'NMFtestSet.csv')
             SenveityteNameList = os.path.join('../datasets', 'NMFtestSet.csv')
 
             with open(SenveityteNameList, newline='') as csvfile:

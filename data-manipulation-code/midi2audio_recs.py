@@ -116,7 +116,7 @@ if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--note_instances', type=str)
 	parser.add_argument('--input_dir', type=str, default='gp_token_examples', help='gp_token_examples or DadaGP-v1.1')
-	parser.add_argument('--out_dir', type=str, default='adgp-mic', help= 'adgp-mic or adgp-pckp')
+	parser.add_argument('--out_dir', type=str, default='mdgp', help= 'mdgp or pdgp')
 	parser.add_argument('--max_fret', type=int, default=18)
 	parser.add_argument('--n_samples', type=int, default=100)
 	parser.add_argument('--sampling_rate', type=int, default=44100)
